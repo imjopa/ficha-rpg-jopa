@@ -1,0 +1,1547 @@
+/* CharacterSheet.css */
+body{
+    background-color: #000;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 0 20px;
+    font-family: 'JMH Typewriter', monospace;
+    color: #fff;
+}
+
+.section {
+    border: 2px solid #fff;
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #000;
+}
+
+.sectionHeader {
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    font-weight: bold;
+    padding: 6px 0;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    user-select: none;
+}
+
+.label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.levelLabel {
+    display: block;
+    font-weight: 600;
+    margin-left: 100px;
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.input {
+    border: none;
+    border-bottom: 1.5px solid #fff;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 4px 2px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+}
+
+.levelInput {
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #fff;
+    color: #000;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 100px;
+    margin-bottom: 12px;
+}
+
+.textarea {
+    border: 1.5px solid #fff;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 60px;
+    background-color: #000;
+    color: #fff;
+}
+
+.flexRow {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.flexCol {
+    flex: 1 1 300px;
+    min-width: 280px;
+}
+
+.barsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: center;
+}
+
+/* Marks and Scars Styles */
+.marksContainer {
+    width: 70%;
+    display: flex;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #fff;
+}
+
+.marksLabel {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+}
+
+.marksCategories {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.marksCategory {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}
+
+.marksCategoryLabel {
+    font-size: 0.9rem;
+    color: #fff;
+    font-weight: bold;
+    text-align: center;
+}
+
+.marksInputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.checkboxesContainer {
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.markCheckbox {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.markCheckbox:checked {
+    background-color: yellow;
+    box-shadow: 0 0 10px yellow;
+}
+
+.scarsContainer {
+    display: flex;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 400px;
+    flex-direction: column;
+    gap: 5px;
+    border: 1px solid #fff;
+}
+
+.scarsLabel {
+    font-size: 1.1rem;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    padding-right: 40px;
+}
+
+.scarsList {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.scarItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.scarCheckbox {
+   appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scarCheckbox:checked {
+    background-color: rgb(112, 23, 23);
+    box-shadow: 0 0 10px rgb(253, 81, 51);
+}
+
+.scarInput {
+    flex: 1;
+    width: 90%;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 4px;
+    min-height: 24px;
+    outline: none;
+    font-family: inherit;
+}
+
+.barLabel {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #fff;
+}
+
+.overlayInput {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 20px;
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+}
+
+.smallInput {
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    width: 25px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.barText {
+    font-size: 0.8rem;
+    color: #fff;
+}
+
+.skillRow {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.skillInput {
+    border: none;
+    border-bottom: 1.5px solid #fff;
+    font-size: 0.9rem;
+    padding: 4px 2px;
+    font-family: inherit;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+}
+
+.buttonPrimary {
+    background: #000000ff;
+    color: white;
+    border: 2px solid #fff;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.buttonDanger {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.modalButton {
+    background: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.headerTitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 700;
+    font-size: 2rem;
+    color: #fff;
+}
+
+.logoutButton {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.saveButtons {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.saveButton {
+    background: #27ae60;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.disabledButton {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.cancelButton {
+    background: #7f8c8d;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.attributesGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 15px;
+}
+
+.attributeColumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+}
+
+.attributeHeader {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.attribute-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    width: 120px;
+}
+
+.fullLabel {
+    font-weight: bold;
+    font-size: 1.0rem;
+    margin-bottom: 5px;
+    display: block;
+    color: #fff;
+    text-align: center;
+}
+
+.valueInput {
+    width: 34px;
+    height: 34px;
+    border: none;
+    text-align: center;
+    font-size: 1.1rem;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: inherit;
+    outline: none;
+    margin: 0 auto;
+}
+
+.diceButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inputRow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.derivedRow {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.derivedItem {
+    text-align: center;
+    flex: 1;
+}
+
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modalContent {
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    border-radius: 0;
+    text-align: center;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    border: 3px solid #fff;
+    position: relative;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.modalTitle {
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px 0;
+    font-size: 1.2rem;
+    border-bottom: 2px solid #fff;
+    margin: -10px -10px 10px -10px;
+}
+
+.modalDescription {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-style: italic;
+    color: #ccc;
+}
+
+.diceResults {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.diceBox {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: bolder;
+    border: 2px solid #000;
+}
+
+.diceBoxWhite {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: bolder;
+    border: 2px solid #000;
+    margin: 0 10px;
+}
+
+.diceBoxBlack {
+    width: 40px;
+    height: 40px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: bolder;
+    border: 2px solid #fff;
+    margin: 0 10px;
+}
+
+.constantBox {
+    width: 40px;
+    height: 40px;
+    background-color: #000;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid #fff;
+}
+
+.successIndicator {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.subSkills {
+    text-align: left;
+    margin-top: 10px;
+    font-size: 0.8rem;
+}
+
+.subSkillItem {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 2px 5px;
+    background-color: #111;
+    border-radius: 3px;
+}
+
+.modalClose {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #c0392b;
+    color: white;
+    border: none;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modalSelect {
+    padding: 8px;
+    font-size: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    border: 2px solid #fff;
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 200px;
+}
+
+.modalInput {
+    width: 80px;
+    padding: 8px;
+    font-size: 16px;
+    font-family: 'Cormorant Garamond', serif;
+    border: 2px solid #fff;
+    background-color: #000;
+    color: #fff;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.modalForm {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+}
+
+.modalButtonRow {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.rollingSpinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #333;
+    border-top: 5px solid #fff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.th {
+    border: 1px solid #fff;
+    padding: 8px;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.theq {
+    width: 90px;
+    border: 1px solid #fff;
+    padding: 8px;
+    background-color: #fff;
+    color: #000;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.td {
+    border: 1px solid #fff;
+    padding: 4px;
+    text-align: center;
+    vertical-align: middle;
+    color: #fff;
+}
+
+.tableInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 2px;
+    background-color: black;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+    color: #ffffffff;
+}
+
+.nameInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    width: 60px;
+    font-size: 0.9rem;
+    padding: 2px;
+    background-color: black;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+    color: #ffffffff;
+}
+
+.quantityInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    width: 20px;
+    font-size: 0.9rem;
+    padding: 2px;
+    background-color: black;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+    color: #ffffffff;
+}
+
+.descriptionInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    width: 100%;
+    font-size: 0.9rem;
+    padding: 2px;
+    background-color: black;
+    font-family: inherit;
+    outline: none;
+    text-align: left;
+    color: #ffffffff;
+}
+
+/* Additional styles from dangerouslySetInnerHTML */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.attribute-item:hover {
+    border: 1px solid black;
+}
+
+.dice-icon:hover {
+    transform: rotate(360deg);
+    transition: transform 0.5s ease;
+}
+
+.button-primary {
+    background: black;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 2px 6px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    position:relative;
+    overflow: hidden;
+}
+
+.button-primary:hover {
+    background: linear-gradient(135deg, #000000, #868686);
+    border-color: #a8a8a8;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+
+
+.button-primary span {
+    margin-left: 20px;
+}
+
+.dark-mode .button-primary:hover {
+    border-color: #f39c12;
+}
+
+/* New classes for moved inline styles */
+
+.errorText {
+    color: red;
+}
+
+.detailsContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.leftColumn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rightColumn {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.imageDiceContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.imageContainer {
+    cursor: pointer;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid black;
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.characterImage {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.noImage {
+    width: 150px;
+    height: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+
+.diceButtonInline {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.diceImage {
+    width: 150px;
+    height: 150px;
+    vertical-align: middle;
+}
+
+.fileInput {
+    display: none;
+}
+
+.barContainer {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.luckLevelContainer {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.barInline {
+    width: 150px;
+    position: relative;
+}
+
+.barFill {
+    height: 100%;
+}
+
+.whiteText {
+    color: #fff;
+}
+
+
+
+.scarsLabel {
+    margin-left: 47px;
+}
+
+.scarsWrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.attributesBorder {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+.diceIconSmall {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.diceIconSmall:hover {
+    transform: rotate(360deg);
+    transition: transform 0.5s ease;
+}
+
+.diceIconInline {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.diceIconInline:hover {
+    transform: rotate(360deg);
+    transition: transform 0.5s ease;
+}
+
+.diceImage {
+    width: 150px;
+    height: 150px;
+    vertical-align: middle;
+}
+
+.diceImage:hover {
+    transform: rotate(360deg);
+    transition: transform 0.5s ease;
+}
+
+.textareaMinHeight {
+    min-height: 100px;
+}
+
+.damageTd {
+    display: flex;
+    align-items: center;
+}
+
+.damageRollImg {
+    width: 24px;
+    height: 24px;
+}
+
+.textareaSmall {
+    min-height: 80px;
+    width: 400px;
+}
+
+.textareaMedium {
+    min-height: 60px;
+    width: 410px;
+}
+
+.textareaLarge {
+    min-height: 130px;
+    width: 859px;
+}
+
+.flexRowGap {
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.sectionFlex {
+    flex: 1 1 400px;
+    min-width: 300px;
+}
+
+.textareaAdventure {
+    min-height: 400px;
+    width: 400px;
+}
+
+.textareaMythos {
+    min-height: 100px;
+    width: 400px;
+}
+
+.rollingImage {
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.modalP {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.okButton {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.modalLabel {
+    color: #fff;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.selectOption {
+    background-color: #000;
+    color: #fff;
+}
+
+.modalButtonMinWidth {
+    min-width: 70px;
+}
+
+/* Additional classes for inline styles */
+
+.diceIconInline {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+.textareaMinHeight100 {
+    min-height: 100px;
+}
+
+.damageTdFlex {
+    display: flex;
+    align-items: center;
+}
+
+.damageRollImg24 {
+    width: 32px;
+    height: 32px;
+}
+
+.damageRollImg24:hover {
+    transform: rotate(360deg);
+    transition: transform 1.0s ease;
+}
+
+
+.textarea80x400 {
+    min-height: 80px;
+    width: 400px;
+}
+
+.textarea60x410 {
+    min-height: 60px;
+    width: 410px;
+}
+
+.textarea130x859 {
+    min-height: 130px;
+    width: 859px;
+}
+
+.flexRowGap15Wrap {
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.sectionFlex400 {
+    flex: 1 1 400px;
+    min-width: 300px;
+}
+
+.textarea400x400 {
+    min-height: 400px;
+    width: 400px;
+}
+
+.textarea100x400 {
+    min-height: 100px;
+    width: 400px;
+}
+
+.rollingImg50 {
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.modalPMargin {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.okBtnGreen {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.modalLabelWhite {
+    color: #fff;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.selectOptionBlack {
+    background-color: #000;
+    color: #fff;
+}
+
+.modalBtnMin70 {
+    min-width: 70px;
+}
+
+.okMargin {
+    margin-right: 10px;
+}
+
+/* Inline styles moved to CSS classes */
+
+/* Bar fill styles */
+.barFill {
+    height: 100%;
+}
+
+/* Dice icon styles */
+.diceIconSmall {
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+}
+
+/* Section border */
+.sectionBorder {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+/* Textarea min heights */
+.textareaMinHeight {
+    min-height: 100px;
+}
+
+/* Damage TD flex */
+.damageTd {
+    display: flex;
+    align-items: center;
+}
+
+/* Damage roll image */
+.damageRollImg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Textarea sizes */
+.textareaSmall {
+    min-height: 80px;
+    width: 400px;
+}
+
+.textareaMedium {
+    min-height: 60px;
+    width: 410px;
+}
+
+.textareaLarge {
+    min-height: 130px;
+    width: 859px;
+}
+
+.flexRowGap {
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.sectionFlex {
+    flex: 1 1 400px;
+    min-width: 300px;
+}
+
+.textareaAdventure {
+    min-height: 400px;
+    width: 400px;
+}
+
+.textareaMythos {
+    min-height: 100px;
+    width: 400px;
+}
+
+.rollingImage {
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.modalP {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.okButton {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.modalLabel {
+    color: #fff;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.selectOption {
+    background-color: #000;
+    color: #fff;
+}
+
+.modalButtonMinWidth {
+    min-width: 70px;
+}
+/* New classes for remaining inline styles */
+
+.flexRowGap15Wrap {
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.sectionFlex400 {
+    flex: 1 1 400px;
+    min-width: 300px;
+}
+
+.textarea100x400 {
+    min-height: 100px;
+    width: 400px;
+}
+
+.rollingImg50x50 {
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.modalPMargin20Center {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.okBtnGreenNoMargin {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.modalLabelWhiteBlock {
+    color: #fff;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.selectOptionBlackWhite {
+    background-color: #000;
+    color: #fff;
+}
+
+.modalBtnMin70px {
+    min-width: 70px;
+}
+
+.okMarginRight10px {
+    margin-right: 10px;
+}
+
+/* História do Personagem textarea */
+.historyTextarea {
+    border: 1.5px solid #fff;
+    width: 860px;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 200px;
+    background-color: #000;
+    color: #fff;
+}
+
+/* Notas Gerais textarea */
+.generalNotesTextarea {
+    border: 1.5px solid #fff;
+    width: 860px;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 150px;
+    background-color: #000;
+    color: #fff;
+}
+
+/* Skills section styles */
+.skillsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.skillItem {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.skillTextarea {
+    min-height: 200px;
+    width: 840px;
+}
+
+.corpoColumn {
+    margin-left: 20px;
+}
+
+.astuciaColumn {
+    margin-left: 10px;
+}
+
+.intuicaoColumn {
+    margin-left: 10px;
+}
+
+/* Impulsos and Resistências Styles */
+.impulsosContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+}
+
+.impulsosInputs {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.impulsoCheckbox {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.impulsoCheckbox:checked {
+    background-color: yellow;
+    box-shadow: 0 0 10px yellow;
+}
+
+.resistenciasContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    border-top: 1px solid #fff;
+    padding-top: 10px;
+}
+
+.resistenciaCheckbox {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.resistenciaCheckbox:checked {
+    background-color: yellow;
+    box-shadow: 0 0 10px yellow;
+}
+
+.douradoCheckbox {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    margin-top: 10px;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.douradoCheckbox:checked {
+    background-color: yellow;
+    box-shadow: 0 0 10px yellow;
+}
+
+.diceBoxYellow {
+    width: 40px;
+    height: 40px;
+    background-color: yellow;
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.7rem;
+    font-weight: bolder;
+    border: 2px solid #000;
+    margin: 0 10px;
+}
+/* New classes for remaining inline styles */
+
+.flexRowGap15Wrap {
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.sectionFlex400 {
+    flex: 1 1 400px;
+    min-width: 300px;
+}
+
+.textarea100x400 {
+    min-height: 100px;
+    width: 400px;
+}
+
+.rollingImg50x50 {
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+.modalPMargin20Center {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.okBtnGreenNoMargin {
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+.modalLabelWhiteBlock {
+    color: #fff;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.selectOptionBlackWhite {
+    background-color: #000;
+    color: #fff;
+}
+
+.modalBtnMin70px {
+    min-width: 70px;
+}
+
+.okMarginRight10px {
+    margin-right: 10px;
+}

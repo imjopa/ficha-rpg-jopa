@@ -1,0 +1,116 @@
+/* src/styles/PlayerDashboard.css */
+
+.dashboard-container {
+  padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  color: white;
+  position: relative;
+}
+
+.dashboard-header::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100vw;
+  height: 1px;
+  background-color: #fff;
+}
+
+.logout-button {
+  background: #c0392b;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.create-button {
+  background: #27ae60;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.error-text {
+  color: red;
+}
+
+.characters-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-header {
+  border-bottom: 2px solid #ddd;
+}
+
+.table-header th {
+  text-align: left;
+  padding: 10px;
+}
+
+.table-header th:last-child {
+  text-align: center;
+}
+
+.table-body tr {
+  border-bottom: 1px solid #eee;
+}
+
+.table-body td {
+  padding: 10px;
+}
+
+.character-name {
+  cursor: pointer;
+  color: #2980b9;
+  display: flex;
+  align-items: center;
+}
+
+.character-name-icon {
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.edit-button {
+  background: #2980b9;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.delete-button {
+  background: #c0392b;
+  border: none;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.actions-cell {
+  text-align: center;
+}

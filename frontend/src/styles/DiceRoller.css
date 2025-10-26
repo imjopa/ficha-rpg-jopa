@@ -1,0 +1,45 @@
+/* src/styles/DiceHistory.css */
+
+.dice-history-container {
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 15px;
+  width: 845px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #ffffffff;
+  color: #000000ff;
+}
+
+.dice-history-title {
+  margin-bottom: 10px;
+  font-size: 1.0rem;
+  font-weight: bold;
+}
+
+.dice-history-list {
+  list-style: none;
+  padding: 0;
+}
+
+.dice-history-list-item {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ffffffff;
+  padding-bottom: 5px;
+  font-size: 0.7rem;
+}
+
+.dice-history-roll-type {
+  font-weight: bold;
+  color: #666;
+}
+
+.dice-history-success-level {
+  font-style: italic;
+  color: #888;
+}
+
+.dice-history-breakdown {
+  font-size: 0.8rem;
+  margin-top: 2px;
+}
