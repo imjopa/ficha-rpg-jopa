@@ -9,8 +9,9 @@
 ## 2. Preparar Frontend para Netlify
 - [x] Editar frontend/src/services/api.js para usar REACT_APP_API_URL
 - [x] Build o app React (com ESLint desabilitado para warnings)
+- [x] Adicionar "homepage": "." no package.json para SPA routing
 - [ ] Configurar REACT_APP_API_URL no Netlify apontando para backend no Render
-- [ ] Deploy frontend no Netlify
+- [ ] Redeploy frontend no Netlify
 
 ## 3. Testes Finais
 - [ ] Testar aplicação após deploy
