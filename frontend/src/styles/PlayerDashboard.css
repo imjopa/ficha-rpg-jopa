@@ -114,3 +114,66 @@
 .actions-cell {
   text-align: center;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  .dashboard-header::after {
+    width: 100%;
+  }
+
+  .logout-button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .create-button {
+    padding: 10px 16px;
+    font-size: 14px;
+    gap: 6px;
+  }
+
+  .characters-table {
+    font-size: 14px;
+  }
+
+  .table-header th,
+  .table-body td {
+    padding: 8px 4px;
+  }
+
+  .character-name {
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+  }
+
+  .character-name-icon {
+    margin-right: 0;
+  }
+
+  .edit-button,
+  .delete-button {
+    padding: 5px 8px;
+    font-size: 12px;
+    margin-right: 4px;
+  }
+
+  .actions-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+  }
+}

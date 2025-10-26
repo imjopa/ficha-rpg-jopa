@@ -18,6 +18,32 @@
   max-width: 400px;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .login-container {
+    padding: 10px;
+  }
+
+  .login-card {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .login-title {
+    font-size: 24px;
+  }
+
+  .input-field {
+    font-size: 14px;
+    padding: 10px 10px 10px 40px;
+  }
+
+  .submit-button {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
 .login-header {
   text-align: center;
   margin-bottom: 30px;

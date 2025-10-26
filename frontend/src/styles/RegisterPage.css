@@ -18,6 +18,37 @@
   max-width: 450px;
 }
 
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .register-container {
+    padding: 10px;
+  }
+
+  .register-card {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .register-title {
+    font-size: 24px;
+  }
+
+  .input-field {
+    font-size: 14px;
+    padding: 10px 10px 10px 40px;
+  }
+
+  .select-field {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .submit-button {
+    padding: 12px;
+    font-size: 14px;
+  }
+}
+
 .register-header {
   text-align: center;
   margin-bottom: 30px;

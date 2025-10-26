@@ -23,12 +23,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
+
 }
 
 .master-dashboard-title {
   margin: 0;
-  
+
 }
 
 .master-dashboard-logout-btn {
@@ -231,4 +231,86 @@
   gap: 8px;
   width: 100%;
   justify-content: center;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .master-dashboard-header {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .master-dashboard-header-content {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .master-dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .master-dashboard-logout-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+
+  .master-dashboard-main {
+    padding: 15px;
+  }
+
+  .master-dashboard-create-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .master-dashboard-search {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .master-dashboard-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .master-dashboard-card {
+    padding: 12px;
+  }
+
+  .master-dashboard-card-img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .master-dashboard-card-name {
+    font-size: 16px;
+  }
+
+  .master-dashboard-card-stats {
+    gap: 8px;
+  }
+
+  .master-dashboard-card-hp,
+  .master-dashboard-card-level {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+
+  .master-dashboard-card-buttons {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .master-dashboard-card-edit-btn,
+  .master-dashboard-card-delete-btn {
+    padding: 5px 8px;
+    font-size: 12px;
+  }
+
+  .master-dashboard-create-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 }

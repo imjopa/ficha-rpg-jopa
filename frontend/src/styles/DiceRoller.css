@@ -43,3 +43,24 @@
   font-size: 0.8rem;
   margin-top: 2px;
 }
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .dice-history-container {
+    width: 100%;
+    padding: 10px;
+    max-height: 250px;
+  }
+
+  .dice-history-title {
+    font-size: 0.9rem;
+  }
+
+  .dice-history-list-item {
+    font-size: 0.6rem;
+  }
+
+  .dice-history-breakdown {
+    font-size: 0.7rem;
+  }
+}
