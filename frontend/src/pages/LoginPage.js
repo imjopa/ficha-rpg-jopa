@@ -56,7 +56,7 @@ const LoginPage = () => {
             <LogIn size={40} color="white" />
           </div>
           <h1 className="login-title">
-            Call of Cthulhu RPG
+            Nosso RPG
           </h1>
           <p className="login-subtitle">
             Faça login para acessar suas fichas
