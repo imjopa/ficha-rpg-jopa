@@ -4,6 +4,7 @@ import { characterAPI } from '../services/api';
 import { useAuth } from '../context/AuthContext';
 
 import DiceHistory from '../components/DiceRoller';
+import Notification from '../components/Notification';
 import '../styles/CharacterSheet.css';
 
 const translations = {
@@ -80,6 +81,9 @@ const CharacterSheet = () => {
     const [showAddSkillModal, setShowAddSkillModal] = useState(false);
     const [newSkillName, setNewSkillName] = useState('');
     const [newSkillValue, setNewSkillValue] = useState(0);
+
+    // Notification states
+    const [notifications, setNotifications] = useState([]);
 
     // No início do componente, adicione um estado para a imagem preview:
     const [imagePreview, setImagePreview] = useState('');
@@ -273,14 +277,23 @@ const CharacterSheet = () => {
         setCharacter(prev => ({ ...prev, weapons: newWeapons }));
     };
 
+    const showNotification = (message, type = 'info') => {
+        const id = Date.now();
+        setNotifications(prev => [...prev, { id, message, type }]);
+        setTimeout(() => {
+            setNotifications(prev => prev.filter(n => n.id !== id));
+        }, 3000);
+    };
+
     const handleSave = async () => {
         setSaving(true);
         setError('');
         try {
             await characterAPI.update(id, { ...character, diceHistory });
-            alert('Ficha salva com sucesso!');
+            showNotification('Ficha salva com sucesso!', 'success');
         } catch (err) {
             setError('Erro ao salvar ficha.');
+            showNotification('Erro ao salvar ficha.', 'error');
         }
         setSaving(false);
     };
@@ -531,6 +544,14 @@ const CharacterSheet = () => {
 
     return (
         <>
+            {notifications.map(notification => (
+                <Notification
+                    key={notification.id}
+                    message={notification.message}
+                    type={notification.type}
+                    onClose={() => setNotifications(prev => prev.filter(n => n.id !== notification.id))}
+                />
+            ))}
             <div className="container">
                 {isNPCOrMonster && (
                     <div className="npcMonsterNotice">

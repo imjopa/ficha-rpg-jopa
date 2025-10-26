@@ -1,0 +1,109 @@
+/* Notification.css */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    min-width: 300px;
+    max-width: 500px;
+    padding: 0;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    font-family: 'JMH Typewriter', monospace;
+    animation: slideIn 0.3s ease-out;
+}
+
+.notification.success {
+    background-color: #27ae60;
+    border: 2px solid #2ecc71;
+    color: #fff;
+}
+
+.notification.error {
+    background-color: #e74c3c;
+    border: 2px solid #c0392b;
+    color: #fff;
+}
+
+.notification.info {
+    background-color: #3498db;
+    border: 2px solid #2980b9;
+    color: #fff;
+}
+
+.notification.warning {
+    background-color: #f39c12;
+    border: 2px solid #e67e22;
+    color: #fff;
+}
+
+.notification-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+}
+
+.notification-message {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: inherit;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 10px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s ease;
+}
+
+.notification-close:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .notification {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        min-width: auto;
+        max-width: none;
+    }
+
+    .notification-content {
+        padding: 12px 15px;
+    }
+
+    .notification-message {
+        font-size: 0.9rem;
+    }
+
+    .notification-close {
+        font-size: 1.2rem;
+        width: 25px;
+        height: 25px;
+    }
+}
