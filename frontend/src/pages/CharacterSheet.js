@@ -184,24 +184,24 @@ const CharacterSheet = () => {
                         movement: charData.combat?.movement || 0
                     },
                     skills: {
-                        acrobacia: { value: charData.skills?.acrobacia?.value || 0 },
-                        arcanismo: { value: charData.skills?.arcanismo?.value || 0 },
-                        atletismo: { value: charData.skills?.atletismo?.value || 0 },
-                        atuacao: { value: charData.skills?.atuacao?.value || 0 },
-                        blefar: { value: charData.skills?.blefar?.value || 0 },
-                        furtividade: { value: charData.skills?.furtividade?.value || 0 },
-                        historia: { value: charData.skills?.historia?.value || 0 },
-                        intimidacao: { value: charData.skills?.intimidacao?.value || 0 },
-                        intuicao: { value: charData.skills?.intuicao?.value || 0 },
-                        investigacao: { value: charData.skills?.investigacao?.value || 0 },
-                        lidarComAnimais: { value: charData.skills?.lidarComAnimais?.value || 0 },
-                        medicina: { value: charData.skills?.medicina?.value || 0 },
-                        natureza: { value: charData.skills?.natureza?.value || 0 },
-                        percepcao: { value: charData.skills?.percepcao?.value || 0 },
-                        persuasao: { value: charData.skills?.persuasao?.value || 0 },
-                        prestidigitacao: { value: charData.skills?.prestidigitacao?.value || 0 },
-                        religiao: { value: charData.skills?.religiao?.value || 0 },
-                        sobrevivencia: { value: charData.skills?.sobrevivencia?.value || 0 }
+                        acrobacia: { value: charData.skills?.acrobacia?.value || 0, checked: charData.skills?.acrobacia?.checked || false },
+                        arcanismo: { value: charData.skills?.arcanismo?.value || 0, checked: charData.skills?.arcanismo?.checked || false },
+                        atletismo: { value: charData.skills?.atletismo?.value || 0, checked: charData.skills?.atletismo?.checked || false },
+                        atuacao: { value: charData.skills?.atuacao?.value || 0, checked: charData.skills?.atuacao?.checked || false },
+                        blefar: { value: charData.skills?.blefar?.value || 0, checked: charData.skills?.blefar?.checked || false },
+                        furtividade: { value: charData.skills?.furtividade?.value || 0, checked: charData.skills?.furtividade?.checked || false },
+                        historia: { value: charData.skills?.historia?.value || 0, checked: charData.skills?.historia?.checked || false },
+                        intimidacao: { value: charData.skills?.intimidacao?.value || 0, checked: charData.skills?.intimidacao?.checked || false },
+                        intuicao: { value: charData.skills?.intuicao?.value || 0, checked: charData.skills?.intuicao?.checked || false },
+                        investigacao: { value: charData.skills?.investigacao?.value || 0, checked: charData.skills?.investigacao?.checked || false },
+                        lidarComAnimais: { value: charData.skills?.lidarComAnimais?.value || 0, checked: charData.skills?.lidarComAnimais?.checked || false },
+                        medicina: { value: charData.skills?.medicina?.value || 0, checked: charData.skills?.medicina?.checked || false },
+                        natureza: { value: charData.skills?.natureza?.value || 0, checked: charData.skills?.natureza?.checked || false },
+                        percepcao: { value: charData.skills?.percepcao?.value || 0, checked: charData.skills?.percepcao?.checked || false },
+                        persuasao: { value: charData.skills?.persuasao?.value || 0, checked: charData.skills?.persuasao?.checked || false },
+                        prestidigitacao: { value: charData.skills?.prestidigitacao?.value || 0, checked: charData.skills?.prestidigitacao?.checked || false },
+                        religiao: { value: charData.skills?.religiao?.value || 0, checked: charData.skills?.religiao?.checked || false },
+                        sobrevivencia: { value: charData.skills?.sobrevivencia?.value || 0, checked: charData.skills?.sobrevivencia?.checked || false }
                     },
                     equipment: charData.equipment || [],
                     notes: {
@@ -958,7 +958,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="atletismoBlock">
-                                    <h4 className="atletismoHeader">Atletismo</h4>
+                                    <h4 className="atletismoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.atletismo?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    atletismo: { ...prev.skills.atletismo, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Atletismo
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -968,7 +982,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                atletismo: { value: Number(e.target.value) }
+                                                atletismo: { ...prev.skills.atletismo, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="atletismoInput"
@@ -1010,7 +1024,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="acrobaciaBlock">
-                                    <h4 className="acrobaciaHeader">Acrobacia</h4>
+                                    <h4 className="acrobaciaHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.acrobacia?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    acrobacia: { ...prev.skills.acrobacia, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Acrobacia
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1020,7 +1048,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                acrobacia: { value: Number(e.target.value) }
+                                                acrobacia: { ...prev.skills.acrobacia, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="acrobaciaInput"
@@ -1028,7 +1056,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="furtividadeBlock">
-                                    <h4 className="furtividadeHeader">Furtividade</h4>
+                                    <h4 className="furtividadeHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.furtividade?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    furtividade: { ...prev.skills.furtividade, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Furtividade
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1038,7 +1080,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                furtividade: { value: Number(e.target.value) }
+                                                furtividade: { ...prev.skills.furtividade, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="furtividadeInput"
@@ -1046,7 +1088,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="prestidigitacaoBlock">
-                                    <h4 className="prestidigitacaoHeader">Prestidigitação</h4>
+                                    <h4 className="prestidigitacaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.prestidigitacao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    prestidigitacao: { ...prev.skills.prestidigitacao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Prestidigitação
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1056,7 +1112,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                prestidigitacao: { value: Number(e.target.value) }
+                                                prestidigitacao: { ...prev.skills.prestidigitacao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="prestidigitacaoInput"
@@ -1132,7 +1188,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="arcanismoBlock">
-                                    <h4 className="arcanismoHeader">Arcanismo</h4>
+                                    <h4 className="arcanismoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.arcanismo?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    arcanismo: { ...prev.skills.arcanismo, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Arcanismo
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1142,7 +1212,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                arcanismo: { value: Number(e.target.value) }
+                                                arcanismo: { ...prev.skills.arcanismo, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="arcanismoInput"
@@ -1150,7 +1220,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="historiaBlock">
-                                    <h4 className="historiaHeader">História</h4>
+                                    <h4 className="historiaHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.historia?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    historia: { ...prev.skills.historia, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        História
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1160,7 +1244,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                historia: { value: Number(e.target.value) }
+                                                historia: { ...prev.skills.historia, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="historiaInput"
@@ -1168,7 +1252,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="investigacaoBlock">
-                                    <h4 className="investigacaoHeader">Investigação</h4>
+                                    <h4 className="investigacaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.investigacao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    investigacao: { ...prev.skills.investigacao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Investigação
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1178,7 +1276,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                investigacao: { value: Number(e.target.value) }
+                                                investigacao: { ...prev.skills.investigacao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="investigacaoInput"
@@ -1186,7 +1284,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="naturezaBlock">
-                                    <h4 className="naturezaHeader">Natureza</h4>
+                                    <h4 className="naturezaHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.natureza?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    natureza: { ...prev.skills.natureza, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Natureza
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1196,7 +1308,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                natureza: { value: Number(e.target.value) }
+                                                natureza: { ...prev.skills.natureza, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="naturezaInput"
@@ -1204,7 +1316,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="religiaoBlock">
-                                    <h4 className="religiaoHeader">Religião</h4>
+                                    <h4 className="religiaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.religiao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    religiao: { ...prev.skills.religiao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Religião
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1214,7 +1340,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                religiao: { value: Number(e.target.value) }
+                                                religiao: { ...prev.skills.religiao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="religiaoInput"
@@ -1256,7 +1382,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="intuicaoBlock">
-                                    <h4 className="intuicaoHeader">Intuição</h4>
+                                    <h4 className="intuicaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.intuicao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    intuicao: { ...prev.skills.intuicao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Intuição
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1266,7 +1406,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                intuicao: { value: Number(e.target.value) }
+                                                intuicao: { ...prev.skills.intuicao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="intuicaoInput"
@@ -1274,7 +1414,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="lidarComAnimaisBlock">
-                                    <h4 className="lidarComAnimaisHeader">Lidar com Animais</h4>
+                                    <h4 className="lidarComAnimaisHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.lidarComAnimais?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    lidarComAnimais: { ...prev.skills.lidarComAnimais, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Lidar com Animais
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1284,7 +1438,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                lidarComAnimais: { value: Number(e.target.value) }
+                                                lidarComAnimais: { ...prev.skills.lidarComAnimais, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="lidarComAnimaisInput"
@@ -1292,7 +1446,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="medicinaBlock">
-                                    <h4 className="medicinaHeader">Medicina</h4>
+                                    <h4 className="medicinaHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.medicina?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    medicina: { ...prev.skills.medicina, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Medicina
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1302,7 +1470,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                medicina: { value: Number(e.target.value) }
+                                                medicina: { ...prev.skills.medicina, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="medicinaInput"
@@ -1310,7 +1478,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="percepcaoBlock">
-                                    <h4 className="percepcaoHeader">Percepção</h4>
+                                    <h4 className="percepcaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.percepcao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    percepcao: { ...prev.skills.percepcao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Percepção
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1320,7 +1502,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                percepcao: { value: Number(e.target.value) }
+                                                percepcao: { ...prev.skills.percepcao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="percepcaoInput"
@@ -1328,7 +1510,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="sobrevivenciaBlock">
-                                    <h4 className="sobrevivenciaHeader">Sobrevivência</h4>
+                                    <h4 className="sobrevivenciaHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.sobrevivencia?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    sobrevivencia: { ...prev.skills.sobrevivencia, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Sobrevivência
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1338,7 +1534,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                sobrevivencia: { value: Number(e.target.value) }
+                                                sobrevivencia: { ...prev.skills.sobrevivencia, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="sobrevivenciaInput"
@@ -1380,7 +1576,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="atuacaoBlock">
-                                    <h4 className="atuacaoHeader">Atuação</h4>
+                                    <h4 className="atuacaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.atuacao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    atuacao: { ...prev.skills.atuacao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Atuação
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1390,7 +1600,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                atuacao: { value: Number(e.target.value) }
+                                                atuacao: { ...prev.skills.atuacao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="atuacaoInput"
@@ -1398,7 +1608,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="blefarBlock">
-                                    <h4 className="blefarHeader">Blefar</h4>
+                                    <h4 className="blefarHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.blefar?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    blefar: { ...prev.skills.blefar, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Blefar
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1408,7 +1632,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                blefar: { value: Number(e.target.value) }
+                                                blefar: { ...prev.skills.blefar, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="blefarInput"
@@ -1416,7 +1640,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="intimidacaoBlock">
-                                    <h4 className="intimidacaoHeader">Intimidação</h4>
+                                    <h4 className="intimidacaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.intimidacao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    intimidacao: { ...prev.skills.intimidacao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Intimidação
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1426,7 +1664,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                intimidacao: { value: Number(e.target.value) }
+                                                intimidacao: { ...prev.skills.intimidacao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="intimidacaoInput"
@@ -1434,7 +1672,21 @@ const CharacterSheet = () => {
                                     />
                                 </div>
                                 <div className="persuasaoBlock">
-                                    <h4 className="persuasaoHeader">Persuasão</h4>
+                                    <h4 className="persuasaoHeader">
+                                        <input
+                                            type="checkbox"
+                                            checked={character.skills?.persuasao?.checked || false}
+                                            onChange={e => setCharacter(prev => ({
+                                                ...prev,
+                                                skills: {
+                                                    ...prev.skills,
+                                                    persuasao: { ...prev.skills.persuasao, checked: e.target.checked }
+                                                }
+                                            }))}
+                                            className="skillCheckbox"
+                                        />
+                                        Persuasão
+                                    </h4>
                                     <input
                                         type="number"
                                         min="0"
@@ -1444,7 +1696,7 @@ const CharacterSheet = () => {
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                persuasao: { value: Number(e.target.value) }
+                                                persuasao: { ...prev.skills.persuasao, value: Number(e.target.value) }
                                             }
                                         }))}
                                         className="persuasaoInput"

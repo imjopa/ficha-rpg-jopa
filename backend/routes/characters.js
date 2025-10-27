@@ -81,9 +81,9 @@ router.put('/:id', auth, async (req, res) => {
       return res.status(403).json({ message: 'Acesso negado' });
     }
 
-    const updatedCharacter = await Character.findByIdAndUpdate(
-      req.params.id,
-      { ...req.body, lastAccessed: new Date() },
+    const updatedCharacter = await Character.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { ...req.body, lastAccessed: new Date() } },
       { new: true }
     ).populate('owner', 'username email');
 

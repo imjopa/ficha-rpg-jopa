@@ -137,24 +137,24 @@ const characterSchema = new mongoose.Schema({
   
   // Perícias do personagem
   skills: {
-    acrobacia: { value: { type: Number, default: 0 } },
-    arcanismo: { value: { type: Number, default: 0 } },
-    atletismo: { value: { type: Number, default: 0 } },
-    atuacao: { value: { type: Number, default: 0 } },
-    blefar: { value: { type: Number, default: 0 } },
-    furtividade: { value: { type: Number, default: 0 } },
-    historia: { value: { type: Number, default: 0 } },
-    intimidacao: { value: { type: Number, default: 0 } },
-    intuicao: { value: { type: Number, default: 0 } },
-    investigacao: { value: { type: Number, default: 0 } },
-    lidarComAnimais: { value: { type: Number, default: 0 } },
-    medicina: { value: { type: Number, default: 0 } },
-    natureza: { value: { type: Number, default: 0 } },
-    percepcao: { value: { type: Number, default: 0 } },
-    persuasao: { value: { type: Number, default: 0 } },
-    prestidigitacao: { value: { type: Number, default: 0 } },
-    religiao: { value: { type: Number, default: 0 } },
-    sobrevivencia: { value: { type: Number, default: 0 } }
+    acrobacia: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    arcanismo: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    atletismo: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    atuacao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    blefar: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    furtividade: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    historia: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    intimidacao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    intuicao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    investigacao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    lidarComAnimais: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    medicina: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    natureza: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    percepcao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    persuasao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    prestidigitacao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    religiao: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } },
+    sobrevivencia: { value: { type: Number, default: 0 }, checked: { type: Boolean, default: false } }
   },
   
   // Equipamentos
