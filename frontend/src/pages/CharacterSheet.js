@@ -317,6 +317,23 @@ const CharacterSheet = () => {
         }));
     };
 
+    const handleMagicSlotCheckboxChange = (level, index) => {
+        setCharacter(prev => {
+            const currentUsed = prev.magicSlots[level]?.used || 0;
+            const newUsed = index + 1 === currentUsed ? index : index + 1;
+            return {
+                ...prev,
+                magicSlots: {
+                    ...prev.magicSlots,
+                    [level]: {
+                        ...prev.magicSlots[level],
+                        used: newUsed,
+                    },
+                },
+            };
+        });
+    };
+
     const handleAttributeChange = (attribute, field, value) => {
         setCharacter(prev => ({
             ...prev,
@@ -835,7 +852,7 @@ const CharacterSheet = () => {
                                                 <input
                                                     key={index}
                                                     type="checkbox"
-                                                    className="checkboxInput"
+                                                    className="checkboxInput failure"
                                                     checked={(character.status?.deathSaves?.failure || 0) > index}
                                                     onChange={e => {
                                                         const newStatus = { ...character.status };
@@ -1982,20 +1999,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level1?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level1', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level1?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level1', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level1?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level1?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level1', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2017,20 +2036,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level2?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level2', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level2?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level2', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level2?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level2?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level2', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2052,20 +2073,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level3?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level3', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level3?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level3', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level3?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level3?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level3', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2087,20 +2110,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level4?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level4', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level4?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level4', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level4?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level4?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level4', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2122,20 +2147,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level5?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level5', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level5?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level5', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level5?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level5?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level5', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2157,20 +2184,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level6?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level6', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level6?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level6', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level6?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level6?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level6', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2192,20 +2221,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level7?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level7', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level7?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level7', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level7?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level7?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level7', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2227,20 +2258,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level8?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level8', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level8?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level8', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level8?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level8?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level8', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea
@@ -2262,20 +2295,22 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                value={character.magicSlots?.level9?.used || 0}
-                                                onChange={e => handleMagicSlotsChange('level9', 'used', Number(e.target.value))}
-                                                className="smallInput"
-                                                placeholder="Usados"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                min="0"
                                                 value={character.magicSlots?.level9?.max || 0}
                                                 onChange={e => handleMagicSlotsChange('level9', 'max', Number(e.target.value))}
                                                 className="smallInput"
                                                 placeholder="Total"
                                             />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.magicSlots?.level9?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.magicSlots?.level9?.used || 0) > index}
+                                                        onChange={() => handleMagicSlotCheckboxChange('level9', index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
                                         </div>
                                     </div>
                                     <textarea

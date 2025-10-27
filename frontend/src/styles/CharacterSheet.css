@@ -1541,13 +1541,18 @@ input[type="number"] {
 }
 
 .checkboxInput:checked {
-    background-color: red;
-    box-shadow: 0 0 10px red;
+    background-color: #fff;
+    box-shadow: 0 0 10px #fff;
 }
 
 .checkboxInput.success:checked {
     background-color: green;
     box-shadow: 0 0 10px green;
+}
+
+.checkboxInput.failure:checked {
+    background-color: rgb(211, 39, 16);
+    box-shadow: 0 0 10px rgb(196, 0, 0);
 }
 
 .checkboxLabel {
