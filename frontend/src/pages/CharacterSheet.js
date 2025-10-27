@@ -169,32 +169,32 @@ const CharacterSheet = () => {
                     },
                     attributes: {
                         strength: {
-                            score: charData.attributes?.strength?.score || 10,
+                            score: charData.attributes?.strength?.score || 0,
                             modifier: charData.attributes?.strength?.modifier || 0,
                             savingThrow: charData.attributes?.strength?.savingThrow || 0
                         },
                         dexterity: {
-                            score: charData.attributes?.dexterity?.score || 10,
+                            score: charData.attributes?.dexterity?.score || 0,
                             modifier: charData.attributes?.dexterity?.modifier || 0,
                             savingThrow: charData.attributes?.dexterity?.savingThrow || 0
                         },
                         constitution: {
-                            score: charData.attributes?.constitution?.score || 10,
+                            score: charData.attributes?.constitution?.score || 0,
                             modifier: charData.attributes?.constitution?.modifier || 0,
                             savingThrow: charData.attributes?.constitution?.savingThrow || 0
                         },
                         intelligence: {
-                            score: charData.attributes?.intelligence?.score || 10,
+                            score: charData.attributes?.intelligence?.score || 0,
                             modifier: charData.attributes?.intelligence?.modifier || 0,
                             savingThrow: charData.attributes?.intelligence?.savingThrow || 0
                         },
                         wisdom: {
-                            score: charData.attributes?.wisdom?.score || 10,
+                            score: charData.attributes?.wisdom?.score || 0,
                             modifier: charData.attributes?.wisdom?.modifier || 0,
                             savingThrow: charData.attributes?.wisdom?.savingThrow || 0
                         },
                         charisma: {
-                            score: charData.attributes?.charisma?.score || 10,
+                            score: charData.attributes?.charisma?.score || 0,
                             modifier: charData.attributes?.charisma?.modifier || 0,
                             savingThrow: charData.attributes?.charisma?.savingThrow || 0
                         }
@@ -994,7 +994,7 @@ const CharacterSheet = () => {
                                         type="number"
                                         min="1"
                                         max="30"
-                                        value={character.attributes?.strength?.score || 10}
+                                        value={character.attributes?.strength?.score || 0}
                                         onChange={e => handleAttributeChange('strength', 'score', Number(e.target.value))}
                                         className="valueInput"
                                         placeholder="Score"
@@ -1060,7 +1060,7 @@ const CharacterSheet = () => {
                                         type="number"
                                         min="1"
                                         max="30"
-                                        value={character.attributes?.dexterity?.score || 10}
+                                        value={character.attributes?.dexterity?.score || 0}
                                         onChange={e => handleAttributeChange('dexterity', 'score', Number(e.target.value))}
                                         className="valueInput"
                                         placeholder="Score"
@@ -1190,7 +1190,7 @@ const CharacterSheet = () => {
                                         type="number"
                                         min="1"
                                         max="30"
-                                        value={character.attributes?.constitution?.score || 10}
+                                        value={character.attributes?.constitution?.score || 0}
                                         onChange={e => handleAttributeChange('constitution', 'score', Number(e.target.value))}
                                         className="valueInput"
                                         placeholder="Score"
@@ -1224,7 +1224,7 @@ const CharacterSheet = () => {
                                         type="number"
                                         min="1"
                                         max="30"
-                                        value={character.attributes?.intelligence?.score || 10}
+                                        value={character.attributes?.intelligence?.score || 0}
                                         onChange={e => handleAttributeChange('intelligence', 'score', Number(e.target.value))}
                                         className="valueInput"
                                         placeholder="Score"
@@ -1418,7 +1418,7 @@ const CharacterSheet = () => {
                                         type="number"
                                         min="1"
                                         max="30"
-                                        value={character.attributes?.wisdom?.score || 10}
+                                        value={character.attributes?.wisdom?.score || 0}
                                         onChange={e => handleAttributeChange('wisdom', 'score', Number(e.target.value))}
                                         className="valueInput"
                                         placeholder="Score"
@@ -1612,7 +1612,7 @@ const CharacterSheet = () => {
                                         type="number"
                                         min="1"
                                         max="30"
-                                        value={character.attributes?.charisma?.score || 10}
+                                        value={character.attributes?.charisma?.score || 0}
                                         onChange={e => handleAttributeChange('charisma', 'score', Number(e.target.value))}
                                         className="valueInput"
                                         placeholder="Score"
@@ -1797,9 +1797,10 @@ const CharacterSheet = () => {
                             <label className="combatLabel">Iniciativa</label>
                             <input
                                 type="number"
-                                min="0"
-                                value={character.combat?.initiative || 0}
-                                onChange={e => handleChange('combat', 'initiative', Number(e.target.value))}
+                                min="-5"
+                                max="10"
+                                value={character.attributes?.dexterity?.modifier || 0}
+                                readOnly
                                 className="combatInput"
                                 placeholder="0"
                             />

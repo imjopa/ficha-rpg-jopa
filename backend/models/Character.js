@@ -67,32 +67,32 @@ const characterSchema = new mongoose.Schema({
   // Atributos D&D
   attributes: {
     strength: {
-      score: { type: Number, default: 10 },
+      score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
       savingThrow: { type: Number, default: 0 }
     },
     dexterity: {
-      score: { type: Number, default: 10 },
+      score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
       savingThrow: { type: Number, default: 0 }
     },
     constitution: {
-      score: { type: Number, default: 10 },
+      score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
       savingThrow: { type: Number, default: 0 }
     },
     intelligence: {
-      score: { type: Number, default: 10 },
+      score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
       savingThrow: { type: Number, default: 0 }
     },
     wisdom: {
-      score: { type: Number, default: 10 },
+      score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
       savingThrow: { type: Number, default: 0 }
     },
     charisma: {
-      score: { type: Number, default: 10 },
+      score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
       savingThrow: { type: Number, default: 0 }
     }
@@ -101,7 +101,7 @@ const characterSchema = new mongoose.Schema({
   // Status do personagem
   status: {
     health: {
-      current: { type: Number, default: 10 },
+      current: { type: Number, default: 0 },
       max: { type: Number, default: 10 },
       temporary: { type: Number, default: 0 }
     },
