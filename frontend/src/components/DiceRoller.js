@@ -11,6 +11,9 @@ const DiceHistory = ({ history }) => {
         <ul className="dice-history-list">
           {history.map((roll, index) => (
             <li key={index} className="dice-history-list-item">
+              <div className="dice-history-header">
+                <span className="dice-history-category">{roll.category || 'Geral'}</span>
+              </div>
               <div>{roll.timestamp}</div>
               <div className="dice-history-roll-type">
                 {roll.rollType === 'attribute' && `Atributo: ${roll.rollName}`}
@@ -19,9 +22,6 @@ const DiceHistory = ({ history }) => {
                 {roll.rollType === 'damage' && `Dano: ${roll.rollName || 'Arma'}`}
                 {roll.rollType === 'general' && `Geral: ${roll.numDice}x${roll.diceType}`}
               </div>
-              {(roll.rollType === 'attribute' || roll.rollType === 'skill' || roll.rollType === 'luck') && roll.successLevel && (
-                <div>Teste: {roll.rollName} - Resultado: {roll.total} - {roll.successLevel}</div>
-              )}
               {roll.rollType === 'damage' && (
                 <div>Rolou {roll.numDice}x{roll.diceType}: Total {roll.total}</div>
               )}

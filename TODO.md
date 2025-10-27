@@ -1,16 +1,13 @@
-# TODO: Make CSS Responsive for Mobile Screens
+# TODO: Update Dice Roll History with Categories
 
-## Overview
-Add media queries for screens ≤768px to make the project mobile-friendly. Adjustments include flexible widths, reduced padding, vertical stacking, and touch-friendly elements.
-
-## Steps
-- [ ] Update frontend/src/index.css (if needed, minimal changes)
-- [ ] Update frontend/src/App.css (if needed, minimal changes)
-- [ ] Update frontend/src/styles/LoginPage.css
-- [ ] Update frontend/src/styles/RegisterPage.css
-- [ ] Update frontend/src/styles/CharacterSheet.css
-- [ ] Update frontend/src/styles/DiceRoller.css
-- [ ] Update frontend/src/styles/LoadingSpinner.css
-- [ ] Update frontend/src/styles/MasterDashboard.css
-- [ ] Update frontend/src/styles/PlayerDashboard.css
-- [ ] Test responsiveness (optional, using browser_action if needed)
+## Tasks
+- [ ] Modify handleRollD20 in CharacterSheet.js to accept a category parameter (default 'ATRIBUTOS')
+- [ ] Update dice button in attributes section to pass 'ATRIBUTOS' to handleRollD20
+- [ ] Update dice button in combat section to pass 'COMBATE' to handleRollD20
+- [ ] Add category field to roll objects in handleRollLuck: 'Atributos e Perícias'
+- [ ] Add category field to roll objects in handleRollD20: based on parameter
+- [ ] Add category field to roll objects in rollDice: 'Geral'
+- [ ] Add category field to roll objects in rollDamageDice: 'Dano'
+- [ ] Update DiceHistory component to display dice icon and category mark next to each history item
+- [ ] Update DiceRoller.css to style the new dice icon and category elements
+- [ ] Test dice rolling in different sections to ensure categories are correctly assigned and displayed

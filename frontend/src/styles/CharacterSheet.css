@@ -11,425 +11,6 @@ body{
     color: #fff;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-    * {
-        box-sizing: border-box;
-    }
-
-    .container {
-        max-width: 100%;
-        padding: 0 5px;
-        margin: 5px auto;
-        font-size: 0.9rem;
-        width: 100%;
-        overflow-x: hidden;
-    }
-
-    .section {
-        padding: 5px;
-        margin-bottom: 8px;
-        border-width: 1px;
-        width: 100%;
-    }
-
-    .sectionHeader {
-        font-size: 1rem;
-        padding: 3px 0;
-        margin-bottom: 5px;
-        width: 100%;
-    }
-
-    .label {
-        font-size: 0.9rem;
-        margin-bottom: 3px;
-        width: 100%;
-        display: block;
-    }
-
-    .levelLabel {
-        font-size: 0.9rem;
-        margin-bottom: 3px;
-        width: 100%;
-    }
-
-
-    .input {
-        font-size: 0.9rem;
-        padding: 2px 1px;
-        margin-bottom: 8px;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .levelInput {
-        width: 40px;
-        height: 40px;
-        font-size: 0.9rem;
-        margin-left: 0;
-        margin-bottom: 8px;
-    }
-
-    .textarea {
-        font-size: 0.9rem;
-        padding: 3px 4px;
-        min-height: 40px;
-        margin-bottom: 8px;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .flexRow {
-        flex-direction: column;
-        gap: 8px;
-        width: 100%;
-    }
-
-    .flexCol {
-        min-width: auto;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .barsContainer {
-        align-items: stretch;
-        gap: 5px;
-        width: 100%;
-    }
-
-    .marksContainer {
-        width: 100%;
-        padding: 10px 5px;
-        max-width: 100%;
-    }
-
-    .scarsContainer {
-        width: 100%;
-        padding: 10px 5px;
-        max-width: 100%;
-    }
-
-    .attributesGrid {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        width: 100%;
-    }
-
-    .attributeColumn {
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        align-items: center;
-        width: 100%;
-        max-width: 100%;
-        text-align: center;
-        padding: 10px;
-        border: 1px solid #fff;
-        background-color: #000;
-    }
-
-    .corpoColumn {
-        order: 1;
-    }
-
-    .astuciaColumn {
-        order: 2;
-    }
-
-    .intuicaoColumn {
-        order: 3;
-    }
-
-    .attributeHeader {
-        font-size: 1.1rem;
-        margin-bottom: 8px;
-        width: 100%;
-        text-align: center;
-    }
-
-    .valueInput {
-        width: 30px;
-        height: 30px;
-        font-size: 0.9rem;
-        margin: 0 auto;
-    }
-
-    .header {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-        margin-bottom: 15px;
-        width: 100%;
-    }
-
-    .headerTitle {
-        font-size: 1.5rem;
-        width: 100%;
-    }
-
-    .saveButtons {
-        flex-direction: column;
-        gap: 8px;
-        margin-top: 20px;
-        width: 100%;
-    }
-
-    .saveButton, .cancelButton {
-        padding: 8px 16px;
-        font-size: 0.9rem;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .modalContent {
-        max-width: 95vw;
-        padding: 5px;
-        max-height: 90vh;
-        width: 95vw;
-    }
-
-    .modalTitle {
-        font-size: 0.9rem;
-        padding: 4px 0;
-        margin: -5px -5px 5px -5px;
-        width: 100%;
-    }
-
-    .diceResults {
-        gap: 5px;
-        flex-wrap: wrap;
-        justify-content: center;
-        width: 100%;
-    }
-
-    .diceBox, .diceBoxWhite, .diceBoxBlack, .constantBox, .diceBoxYellow {
-        width: 30px;
-        height: 30px;
-        font-size: 1.3rem;
-        margin: 0 3px;
-    }
-
-    .table {
-        font-size: 0.7rem;
-        overflow-x: auto;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .th, .theq {
-        padding: 4px;
-        font-size: 0.7rem;
-        width: auto;
-    }
-
-    .td {
-        padding: 2px;
-        width: auto;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 2px;
-    }
-
-    .tableInput, .nameInput, .quantityInput, .descriptionInput {
-        font-size: 0.7rem;
-        padding: 1px;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .historyTextarea, .generalNotesTextarea, .skillTextarea {
-        width: 100%;
-        font-size: 0.9rem;
-        min-height: 120px;
-        max-width: 100%;
-    }
-
-    .detailsContainer {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        align-items: stretch;
-    }
-
-    .leftColumn {
-        flex: none;
-        width: 100%;
-        max-width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-    }
-
-    .rightColumn {
-        flex: none;
-        width: 50%;
-        max-width: 50%;
-    }
-
-
-    .imageContainer, .characterImage, .noImage {
-        width: 100px;
-        height: 100px;
-        max-width: 100%;
-    }
-
-    .diceImage {
-        width: 100px;
-        height: 100px;
-        max-width: 100%;
-    }
-
-    .imageDiceContainer {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        max-width: 100%;
-        align-items: center;
-    }
-
-    .barContainer {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .barInline {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .luckLevelContainer {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-    }
-
-    .scarsWrapper {
-        justify-content: center;
-        width: 100%;
-    }
-
-    .skillsContainer .skillItem {
-        gap: 3px;
-        width: 100%;
-    }
-
-    .corpoColumn, .astuciaColumn, .intuicaoColumn {
-        margin-left: 0;
-        width: 100%;
-    }
-
-    .skillRow {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 3px;
-        width: 100%;
-    }
-
-    .skillInput {
-        width: 100%;
-        font-size: 0.8rem;
-        max-width: 100%;
-    }
-
-    .impulsosContainer, .resistenciasContainer {
-        align-items: stretch;
-        gap: 3px;
-        width: 100%;
-    }
-
-    .impulsosInputs, .resistenciasInputs {
-        flex-direction: column;
-        gap: 3px;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .scarInput {
-        width: 100%;
-        font-size: 0.8rem;
-        max-width: 100%;
-    }
-
-    .marksInputs {
-        flex-direction: column;
-        gap: 3px;
-        align-items: center;
-        width: 100%;
-    }
-
-    .checkboxesContainer {
-        justify-content: center;
-        gap: 3px;
-        width: 100%;
-    }
-
-    .markCheckbox, .scarCheckbox, .impulsoCheckbox, .resistenciaCheckbox, .douradoCheckbox {
-        width: 18px;
-        height: 18px;
-    }
-
-    .textareaSmall, .textareaMedium, .textareaLarge, .textareaAdventure, .textareaMythos {
-        width: 100%;
-        font-size: 0.9rem;
-        max-width: 100%;
-    }
-
-    .textareaSmall {
-        min-height: 80px;
-    }
-
-    .textareaMedium {
-        min-height: 60px;
-    }
-
-    .textareaLarge {
-        min-height: 120px;
-    }
-
-    .textareaAdventure {
-        min-height: 250px;
-    }
-
-    .textareaMythos {
-        min-height: 100px;
-    }
-
-    .buttonPrimary, .buttonDanger {
-        padding: 6px 12px;
-        font-size: 0.8rem;
-        margin-bottom: 6px;
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .derivedRow {
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-    }
-
-    .inputRow {
-        gap: 3px;
-        width: 100%;
-    }
-
-    /* Override all fixed widths */
-    .historyTextarea,
-    .generalNotesTextarea,
-    .skillTextarea,
-    .textareaSmall,
-    .textareaMedium,
-    .textareaLarge,
-    .textareaAdventure,
-    .textareaMythos {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-}
-
-
 .section {
     border: 2px solid #fff;
     margin-bottom: 15px;
@@ -446,6 +27,28 @@ body{
     font-size: 1.4rem;
     margin-bottom: 10px;
     user-select: none;
+}
+
+
+
+.sectionHeaderWithDice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    padding: 6px 0;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    user-select: none;
+}
+
+.sectionTitle {
+    flex: 1;
+    text-align: center;
+    margin-left: 35px;
 }
 
 .label {
@@ -529,76 +132,6 @@ body{
     align-items: center;
 }
 
-/* Marks and Scars Styles */
-.marksContainer {
-    width: 70%;
-    display: flex;
-    padding-top: 15px;
-    padding-bottom: 15px;
-    padding-left: 10px;
-    padding-right: 10px;
-    flex-direction: column;
-    gap: 10px;
-    border: 1px solid #fff;
-}
-
-.marksLabel {
-    font-size: 1.1rem;
-    margin-bottom: 5px;
-    text-align: center;
-    color: #fff;
-    font-weight: bold;
-}
-
-.marksCategories {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.marksCategory {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: center;
-}
-
-.marksCategoryLabel {
-    font-size: 0.9rem;
-    color: #fff;
-    font-weight: bold;
-    text-align: center;
-}
-
-.marksInputs {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.checkboxesContainer {
-    display: flex;
-    gap: 2px;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.markCheckbox {
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border: 1px solid #fff;
-    border-radius: 30%;
-    background-color: #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.markCheckbox:checked {
-    background-color: yellow;
-    box-shadow: 0 0 10px yellow;
-}
-
 .scarsContainer {
     display: flex;
     padding-top: 15px;
@@ -632,21 +165,6 @@ body{
     gap: 5px;
 }
 
-.scarCheckbox {
-   appearance: none;
-    width: 15px;
-    height: 15px;
-    border: 1px solid #fff;
-    border-radius: 30%;
-    background-color: #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.scarCheckbox:checked {
-    background-color: rgb(112, 23, 23);
-    box-shadow: 0 0 10px rgb(253, 81, 51);
-}
 
 .scarInput {
     flex: 1;
@@ -691,6 +209,97 @@ body{
     gap: 1px;
 }
 
+.overlayText {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-align: center;
+    font-family: inherit;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+}
+
+.bar {
+    width: 150px;
+    height: 20px;
+    border: 1px solid #fff;
+    background-color: #000;
+    position: relative;
+}
+
+.hpBar {
+    background-color: #4CAF50;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.emptyBar {
+    background-color: #f44336;
+    height: 100%;
+    transition: width 0.3s ease;
+}
+
+.healthInputsContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+    align-items: center;
+}
+
+.healthInputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.healthDiceInputs {
+    gap: 10px;
+    margin-left: 27px;
+}
+
+
+.healthDiceContainer {
+    border: 1px solid white;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.hpBarContainer {
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.healthBarLabel {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #fff;
+}
+
+.healthInput {
+    border: none;
+    border-bottom: 1.5px solid #fff;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 4px 2px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+}
+
 .smallInput {
     border: none;
     background: transparent;
@@ -702,6 +311,35 @@ body{
     font-family: inherit;
     outline: none;
 }
+
+
+.smallInputmd {
+    border: 1px solid #fff;
+    background: transparent;
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: bold;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.smallInputst {
+    border: 1px solid #fff;
+    background: transparent;
+    color: #ff5656;
+    font-size: 0.8rem;
+    font-weight: bold;
+    height: 30px;
+    width: 30px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+
 
 .barText {
     font-size: 0.8rem;
@@ -812,45 +450,12 @@ body{
 }
 
 .attributesGrid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    width: 100%;
-}
-
-@media (min-width: 769px) {
-    .attributesGrid {
-        display: grid;
+     display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 20px;
         margin-bottom: 15px;
-    }
 }
 
-.attributeColumn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    justify-content: center;
-}
-
-.attributeHeader {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #fff;
-    text-align: center;
-    margin-bottom: 5px;
-}
-
-.attribute-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    text-align: center;
-    width: 120px;
-}
 
 .fullLabel {
     font-weight: bold;
@@ -862,9 +467,9 @@ body{
 }
 
 .valueInput {
-    width: 34px;
-    height: 34px;
-    border: none;
+    width: 37px;
+    height: 37px;
+    border: 1px solid #fff;
     text-align: center;
     font-size: 1.1rem;
     padding: 0;
@@ -1378,6 +983,335 @@ input[type="number"] {
     padding: 10px;
 }
 
+.attributesSkillsContainer .section {
+    flex: 1;
+    min-width: 300px;
+}
+
+.strengthColumn {
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+.strengthHeader {
+    text-align: center;
+}
+
+.strengthItem {
+    text-align: center;
+}
+
+.atletismoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.dexterityColumn {
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+.dexterityHeader {
+    text-align: center;
+}
+
+.dexterityItem{
+    text-align: center;
+}
+
+.acrobaciaInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.furtividadeInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.prestidigitacaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.constitutionColumn {
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+.constitutionHeader {
+    text-align: center;
+}
+
+.constitutionItem{
+    text-align: center;
+}
+
+.intelligenceColumn {
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+.intelligenceHeader {
+    text-align: center;
+}
+
+.intelligenceItem{
+    text-align: center;
+}
+
+.arcanismoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.historiaInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.investigacaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.naturezaInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.religiaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.wisdomColumn {
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+.wisdomHeader {
+    text-align: center;
+}
+
+.wisdomItem{
+    text-align: center;
+}
+
+.intuicaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.lidarComAnimaisInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.medicinaInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.percepcaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.sobrevivenciaInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.charismaColumn {
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 10px;
+}
+
+.charismaHeader {
+    text-align: center;
+}
+
+.charismaItem{
+    text-align: center;
+}
+
+.atuacaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.blefarInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.intimidacaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.persuasaoInput {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background-color: #000;
+    color: #fff;
+    font-size: 1rem;
+    padding: 4px 2px;
+    width: 50px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
 .diceIconSmall {
     width: 40px;
     height: 40px;
@@ -1425,220 +1359,30 @@ input[type="number"] {
     height: 24px;
 }
 
-.textareaSmall {
-    min-height: 80px;
-    width: 400px;
-}
-
-.textareaMedium {
-    min-height: 60px;
-    width: 410px;
-}
-
-.textareaLarge {
-    min-height: 130px;
-    width: 859px;
-}
-
-.flexRowGap {
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.sectionFlex {
-    flex: 1 1 400px;
-    min-width: 300px;
-}
-
-.textareaAdventure {
-    min-height: 400px;
-    width: 400px;
-}
-
-.textareaMythos {
-    min-height: 100px;
-    width: 400px;
-}
-
-.rollingImage {
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
-
-.modalP {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.okButton {
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-.modalLabel {
-    color: #fff;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.selectOption {
-    background-color: #000;
-    color: #fff;
-}
-
-.modalButtonMinWidth {
-    min-width: 70px;
-}
-
-/* Additional classes for inline styles */
-
-.diceIconInline {
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-}
-
-.textareaMinHeight100 {
-    min-height: 100px;
-}
-
-.damageTdFlex {
-    display: flex;
-    align-items: center;
-}
-
 .damageRollImg24 {
-    width: 32px;
-    height: 32px;
-}
-
-.damageRollImg24:hover {
-    transform: rotate(360deg);
-    transition: transform 1.0s ease;
-}
-
-
-.textarea80x400 {
-    min-height: 80px;
-    width: 400px;
-}
-
-.textarea60x410 {
-    min-height: 60px;
-    width: 410px;
-}
-
-.textarea130x859 {
-    min-height: 130px;
-    width: 859px;
-}
-
-.flexRowGap15Wrap {
-    gap: 15px;
-    flex-wrap: wrap;
-}
-
-.sectionFlex400 {
-    flex: 1 1 400px;
-    min-width: 300px;
-}
-
-.textarea400x400 {
-    min-height: 400px;
-    width: 400px;
-}
-
-.textarea100x400 {
-    min-height: 100px;
-    width: 400px;
-}
-
-.rollingImg50 {
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
-}
-
-.modalPMargin {
-    margin-top: 20px;
-    text-align: center;
-}
-
-.okBtnGreen {
-    background-color: #27ae60;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-.modalLabelWhite {
-    color: #fff;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.selectOptionBlack {
-    background-color: #000;
-    color: #fff;
-}
-
-.modalBtnMin70 {
-    min-width: 70px;
-}
-
-.okMargin {
-    margin-right: 10px;
-}
-
-/* Inline styles moved to CSS classes */
-
-/* Bar fill styles */
-.barFill {
-    height: 100%;
-}
-
-/* Dice icon styles */
-.diceIconSmall {
-    width: 40px;
-    height: 40px;
-    vertical-align: middle;
-}
-
-/* Section border */
-.sectionBorder {
-    border: 1px solid black;
-    padding: 10px;
-}
-
-/* Textarea min heights */
-.textareaMinHeight {
-    min-height: 100px;
-}
-
-/* Damage TD flex */
-.damageTd {
-    display: flex;
-    align-items: center;
-}
-
-/* Damage roll image */
-.damageRollImg {
     width: 24px;
     height: 24px;
 }
 
-/* Textarea sizes */
+.damageTd {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.diceButtonSmall {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin: 0;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .textareaSmall {
     min-height: 80px;
     width: 400px;
@@ -1766,6 +1510,32 @@ input[type="number"] {
 
 .okMarginRight10px {
     margin-right: 10px;
+}
+
+.checkboxInput {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.checkboxInput:checked {
+    background-color: red;
+    box-shadow: 0 0 10px red;
+}
+
+.checkboxInput.success:checked {
+    background-color: green;
+    box-shadow: 0 0 10px green;
+}
+
+.checkboxLabel {
+    display: inline-block;
+    cursor: pointer;
 }
 
 /* História do Personagem textarea */
@@ -1796,180 +1566,240 @@ input[type="number"] {
     color: #fff;
 }
 
+/* Informações Pessoais textareas */
+.personalDescriptionTextarea {
+    border: 1.5px solid #fff;
+    width: 400px;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    background-color: #000;
+    color: #fff;
+}
+
+.familyAndFriendsTextarea {
+    border: 1.5px solid #fff;
+    width: 400px;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    background-color: #000;
+    color: #fff;
+}
+
+.insanityEpisodesTextarea {
+    border: 1.5px solid #fff;
+    width: 400px;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    background-color: #000;
+    color: #fff;
+}
+
+.woundsTextarea {
+    border: 1.5px solid #fff;
+    width: 400px;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+    background-color: #000;
+    color: #fff;
+}
+
 /* Skills section styles */
 .skillsContainer {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 10px;
 }
 
 .skillItem {
+    flex: 1;
     display: flex;
     flex-direction: column;
     gap: 5px;
 }
 
-.skillTextarea {
-    min-height: 200px;
-    width: 840px;
+.habilidadesTextarea {
+    width: 415px;
+    min-height: 300px;
+    resize: vertical;
 }
 
-.corpoColumn {
-    margin-left: 20px;
-}
-
-.astuciaColumn {
-    margin-left: 10px;
-}
-
-.intuicaoColumn {
-    margin-left: 10px;
-}
-
-/* Impulsos and Resistências Styles */
-.impulsosContainer {
+/* Truques styles */
+.truquesHeader {
     display: flex;
-    flex-direction: column;
     align-items: center;
-    gap: 5px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #fff;
-    padding-bottom: 10px;
+    gap: 10px;
+    margin-bottom: 5px;
 }
 
-.impulsosInputs {
+.truquesLabel {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+.truquesLevelContainer {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.impulsoCheckbox {
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border: 1px solid #fff;
-    border-radius: 30%;
-    background-color: #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.impulsoCheckbox:checked {
-    background-color: yellow;
-    box-shadow: 0 0 10px yellow;
-}
-
-.resistenciasContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    margin-top: 10px;
-    border-top: 1px solid #fff;
-    padding-top: 10px;
-}
-
-.resistenciaCheckbox {
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border: 1px solid #fff;
-    border-radius: 30%;
-    background-color: #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.resistenciaCheckbox:checked {
-    background-color: yellow;
-    box-shadow: 0 0 10px yellow;
-}
-
-.douradoCheckbox {
-    appearance: none;
-    width: 15px;
-    height: 15px;
-    border: 1px solid #fff;
-    border-radius: 30%;
-    margin-top: 10px;
-    background-color: #000;
-    cursor: pointer;
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.douradoCheckbox:checked {
-    background-color: yellow;
-    box-shadow: 0 0 10px yellow;
-}
-
-.diceBoxYellow {
-    width: 40px;
-    height: 40px;
-    background-color: yellow;
-    color: #000;
+.truquesLevelCircle {
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    background-color: #fff;
+    color: #000;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.7rem;
-    font-weight: bolder;
-    border: 2px solid #000;
-    margin: 0 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
 }
-/* New classes for remaining inline styles */
 
-.flexRowGap15Wrap {
+.truquesLevelInput {
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: bold;
+    width: 30px;
+    text-align: center;
+    font-family: inherit;
+    outline: none;
+}
+
+.slotsContainer {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.magicContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    flex-wrap: wrap;
 }
 
-.sectionFlex400 {
-    flex: 1 1 400px;
-    min-width: 300px;
-}
-
-.textarea100x400 {
-    min-height: 100px;
+.truquesTextarea {
     width: 400px;
+    min-height: 200px;
 }
 
-.rollingImg50x50 {
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
+/* Combat stats styles */
+.combatStats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.modalPMargin20Center {
-    margin-top: 20px;
+.combatStat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 120px;
+}
+
+.combatInput {
+    border: none;
+    border-bottom: 1.5px solid #fff;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 4px 2px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    outline: none;
+    background-color: #000;
+    color: #fff;
     text-align: center;
 }
 
-.okBtnGreenNoMargin {
-    background-color: #27ae60;
-    color: white;
+.combatLabel {
+    text-align: center;
+}
+
+.inspirationProficiencyContainer {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.inspirationStat, .proficiencyStat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 120px;
+}
+
+.inspirationInput, .proficiencyInput {
     border: none;
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-.modalLabelWhiteBlock {
-    color: #fff;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.selectOptionBlackWhite {
+    border-bottom: 1.5px solid #fff;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 4px 2px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    outline: none;
     background-color: #000;
     color: #fff;
+    text-align: center;
 }
 
-.modalBtnMin70px {
-    min-width: 70px;
+.proficiencyLabel {
+    text-align: center;
 }
 
-.okMarginRight10px {
-    margin-right: 10px;
+/* Death Saves */
+.deathSavesContainer {
+    border: 2px solid #fff;
+    padding: 10px;
+    background-color: #000;
+    margin-bottom: 10px;
 }
+
+.deathSavesLabel {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+    text-align: center;
+    color: #fff;
+}
+
+.deathSavesInputs {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.deathSaveRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.deathSaveType {
+    font-size: 0.8rem;
+    color: #fff;
+    min-width: 60px;
+    text-align: center;
+}
+

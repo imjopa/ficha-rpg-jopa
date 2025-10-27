@@ -8,26 +8,14 @@ import Notification from '../components/Notification';
 import '../styles/CharacterSheet.css';
 
 const translations = {
-    body: {
-        move: 'Mover',
-        attack: 'Atacar',
-        control: 'Controlar'
+    attributes: {
+        strength: 'Força',
+        dexterity: 'Destreza',
+        constitution: 'Constituição',
+        intelligence: 'Inteligência',
+        wisdom: 'Sabedoria',
+        charisma: 'Carisma'
     },
-    cunning: {
-        sway: 'Persuadir',
-        read: 'Ler',
-        hide: 'Esconder'
-    },
-    intuition: {
-        search: 'Investigar',
-        focus: 'Focar',
-        sense: 'Sentir'
-    },
-    status: {
-        marks: 'Marcas',
-        scars: 'Cicatrizes',
-        luck: 'Sorte'
-    }
 };
 
 const diceTypes = [
@@ -68,7 +56,6 @@ const CharacterSheet = () => {
     const [rollName, setRollName] = useState('');
     const [rollCategory, setRollCategory] = useState('');
     const [isSkillRoll, setIsSkillRoll] = useState(false);
-    const [douradoRoll, setDouradoRoll] = useState(0);
 
     const [diceHistory, setDiceHistory] = useState([]);
     const [showDiceModal, setShowDiceModal] = useState(false);
@@ -90,10 +77,7 @@ const CharacterSheet = () => {
 
     const imageInputRef = useRef(null);
 
-    // Local states for maxImpulsos inputs to allow free typing
-    const [bodyInput, setBodyInput] = useState('0');
-    const [cunningInput, setCunningInput] = useState('0');
-    const [intuitionInput, setIntuitionInput] = useState('0');
+
 
     // Função para lidar com upload da imagem
     const handleImageChange = e => {
@@ -120,85 +104,104 @@ const CharacterSheet = () => {
                 let charData = response.data;
                 setDiceHistory(charData.diceHistory || []);
 
-                // Ensure Candela Jopa structure is initialized
+                // Ensure D&D structure is initialized
                 charData = {
                     ...charData,
                     basicInfo: {
                         name: charData.basicInfo?.name || '',
                         player: charData.basicInfo?.player || '',
-                        role: charData.basicInfo?.role || '',
-                        specialty: charData.basicInfo?.specialty || '',
-                        circle: charData.basicInfo?.circle || '',
+                        race: charData.basicInfo?.race || '',
+                        class: charData.basicInfo?.class || '',
+                        background: charData.basicInfo?.background || '',
                         level: charData.basicInfo?.level || 0,
-                        birthplace: charData.basicInfo?.birthplace || '',
+                        alignment: charData.basicInfo?.alignment || '',
                         characterImage: charData.basicInfo?.characterImage || '',
                         personalDescription: charData.basicInfo?.personalDescription || '',
                         familyAndFriends: charData.basicInfo?.familyAndFriends || '',
                         insanityEpisodes: charData.basicInfo?.insanityEpisodes || '',
-                        wounds: charData.basicInfo?.wounds || ''
+                        wounds: charData.basicInfo?.wounds || '',
+
                     },
-                    body: {
-                        move: charData.body?.move || 0,
-                        attack: charData.body?.attack || 0,
-                        control: charData.body?.control || 0,
-                        moveDourado: charData.body?.moveDourado || false,
-                        attackDourado: charData.body?.attackDourado || false,
-                        controlDourado: charData.body?.controlDourado || false,
-                        maxImpulsos: charData.body?.maxImpulsos || 0,
-                        impulsos: Array.isArray(charData.body?.impulsos) ? charData.body.impulsos : [],
-                        acoes: Array.isArray(charData.body?.acoes) ? charData.body.acoes : [],
-                        resistencias: Array.isArray(charData.body?.resistencias) ? charData.body.resistencias : []
-                    },
-                    cunning: {
-                        sway: charData.cunning?.sway || 0,
-                        read: charData.cunning?.read || 0,
-                        hide: charData.cunning?.hide || 0,
-                        swayDourado: charData.cunning?.swayDourado || false,
-                        readDourado: charData.cunning?.readDourado || false,
-                        hideDourado: charData.cunning?.hideDourado || false,
-                        maxImpulsos: charData.cunning?.maxImpulsos || 0,
-                        impulsos: Array.isArray(charData.cunning?.impulsos) ? charData.cunning.impulsos : [],
-                        acoes: Array.isArray(charData.cunning?.acoes) ? charData.cunning.acoes : [],
-                        resistencias: Array.isArray(charData.cunning?.resistencias) ? charData.cunning.resistencias : []
-                    },
-                    intuition: {
-                        search: charData.intuition?.search || 0,
-                        focus: charData.intuition?.focus || 0,
-                        sense: charData.intuition?.sense || 0,
-                        searchDourado: charData.intuition?.searchDourado || false,
-                        focusDourado: charData.intuition?.focusDourado || false,
-                        senseDourado: charData.intuition?.senseDourado || false,
-                        maxImpulsos: charData.intuition?.maxImpulsos || 0,
-                        impulsos: Array.isArray(charData.intuition?.impulsos) ? charData.intuition.impulsos : [],
-                        acoes: Array.isArray(charData.intuition?.acoes) ? charData.intuition.acoes : [],
-                        resistencias: Array.isArray(charData.intuition?.resistencias) ? charData.intuition.resistencias : []
+                    attributes: {
+                        strength: {
+                            score: charData.attributes?.strength?.score || 10,
+                            modifier: charData.attributes?.strength?.modifier || 0,
+                            savingThrow: charData.attributes?.strength?.savingThrow || 0
+                        },
+                        dexterity: {
+                            score: charData.attributes?.dexterity?.score || 10,
+                            modifier: charData.attributes?.dexterity?.modifier || 0,
+                            savingThrow: charData.attributes?.dexterity?.savingThrow || 0
+                        },
+                        constitution: {
+                            score: charData.attributes?.constitution?.score || 10,
+                            modifier: charData.attributes?.constitution?.modifier || 0,
+                            savingThrow: charData.attributes?.constitution?.savingThrow || 0
+                        },
+                        intelligence: {
+                            score: charData.attributes?.intelligence?.score || 10,
+                            modifier: charData.attributes?.intelligence?.modifier || 0,
+                            savingThrow: charData.attributes?.intelligence?.savingThrow || 0
+                        },
+                        wisdom: {
+                            score: charData.attributes?.wisdom?.score || 10,
+                            modifier: charData.attributes?.wisdom?.modifier || 0,
+                            savingThrow: charData.attributes?.wisdom?.savingThrow || 0
+                        },
+                        charisma: {
+                            score: charData.attributes?.charisma?.score || 10,
+                            modifier: charData.attributes?.charisma?.modifier || 0,
+                            savingThrow: charData.attributes?.charisma?.savingThrow || 0
+                        }
                     },
                     status: {
-                        marks: {
-                            body: {
-                                maxMarks: charData.status?.marks?.body?.maxMarks || 0,
-                                marks: Array.isArray(charData.status?.marks?.body?.marks) ? charData.status.marks.body.marks : []
+                        health: {
+                            current: charData.status?.health?.current || 0,
+                            max: charData.status?.health?.max || 0,
+                            temporary: charData.status?.health?.temporary || 0
+                        },
+                        healthDice: {
+                            total: charData.status?.healthDice?.total || 0,
+                            max: charData.status?.healthDice?.max || 0
+                        },
+                        deathSaves: {
+                            success: {
+                                min: charData.status?.deathSaves?.success?.min || 0,
+                                max: charData.status?.deathSaves?.success?.max || 3
                             },
-                            mind: {
-                                maxMarks: charData.status?.marks?.mind?.maxMarks || 0,
-                                marks: Array.isArray(charData.status?.marks?.mind?.marks) ? charData.status.marks.mind.marks : []
-                            },
-                            blood: {
-                                maxMarks: charData.status?.marks?.blood?.maxMarks || 0,
-                                marks: Array.isArray(charData.status?.marks?.blood?.marks) ? charData.status.marks.blood.marks : []
+                            failure: {
+                                min: charData.status?.deathSaves?.failure?.min || 0,
+                                max: charData.status?.deathSaves?.failure?.max || 3
                             }
                         },
-                        scars: Array.isArray(charData.status?.scars) ? charData.status.scars : [
-                            { checked: false, description: '' },
-                            { checked: false, description: '' },
-                            { checked: false, description: '' }
-                        ],
-                        luck: charData.status?.luck || 0
+
+                    },
+                    inspiration: charData.inspiration || 0,
+                    proficiencyBonus: charData.proficiencyBonus || 0,
+                    combat: {
+                        defense: charData.combat?.defense || 0,
+                        initiative: charData.combat?.initiative || 0,
+                        movement: charData.combat?.movement || 0
                     },
                     skills: {
-                        roleskills: charData.skills?.roleskills || '',
-                        specialtyskills: charData.skills?.specialtyskills || '',
-                        circleskills: charData.skills?.circleskills || ''
+                        acrobacia: { value: charData.skills?.acrobacia?.value || 0 },
+                        arcanismo: { value: charData.skills?.arcanismo?.value || 0 },
+                        atletismo: { value: charData.skills?.atletismo?.value || 0 },
+                        atuacao: { value: charData.skills?.atuacao?.value || 0 },
+                        blefar: { value: charData.skills?.blefar?.value || 0 },
+                        furtividade: { value: charData.skills?.furtividade?.value || 0 },
+                        historia: { value: charData.skills?.historia?.value || 0 },
+                        intimidacao: { value: charData.skills?.intimidacao?.value || 0 },
+                        intuicao: { value: charData.skills?.intuicao?.value || 0 },
+                        investigacao: { value: charData.skills?.investigacao?.value || 0 },
+                        lidarComAnimais: { value: charData.skills?.lidarComAnimais?.value || 0 },
+                        medicina: { value: charData.skills?.medicina?.value || 0 },
+                        natureza: { value: charData.skills?.natureza?.value || 0 },
+                        percepcao: { value: charData.skills?.percepcao?.value || 0 },
+                        persuasao: { value: charData.skills?.persuasao?.value || 0 },
+                        prestidigitacao: { value: charData.skills?.prestidigitacao?.value || 0 },
+                        religiao: { value: charData.skills?.religiao?.value || 0 },
+                        sobrevivencia: { value: charData.skills?.sobrevivencia?.value || 0 }
                     },
                     equipment: charData.equipment || [],
                     notes: {
@@ -208,6 +211,66 @@ const CharacterSheet = () => {
                     },
                     history: charData.history || '',
                     weapons: Array.isArray(charData.weapons) ? charData.weapons : []
+                };
+
+                // Remove incomeAndEconomy from character data if it exists
+                delete charData.incomeAndEconomy;
+
+                // Ensure magicSlots structure is initialized
+                charData = {
+                    ...charData,
+                    magicSlots: {
+                        level0: {
+                            used: charData.magicSlots?.level0?.used || 0,
+                            max: charData.magicSlots?.level0?.max || 0,
+                            spells: charData.magicSlots?.level0?.spells || ''
+                        },
+                        level1: {
+                            used: charData.magicSlots?.level1?.used || 0,
+                            max: charData.magicSlots?.level1?.max || 0,
+                            spells: charData.magicSlots?.level1?.spells || ''
+                        },
+                        level2: {
+                            used: charData.magicSlots?.level2?.used || 0,
+                            max: charData.magicSlots?.level2?.max || 0,
+                            spells: charData.magicSlots?.level2?.spells || ''
+                        },
+                        level3: {
+                            used: charData.magicSlots?.level3?.used || 0,
+                            max: charData.magicSlots?.level3?.max || 0,
+                            spells: charData.magicSlots?.level3?.spells || ''
+                        },
+                        level4: {
+                            used: charData.magicSlots?.level4?.used || 0,
+                            max: charData.magicSlots?.level4?.max || 0,
+                            spells: charData.magicSlots?.level4?.spells || ''
+                        },
+                        level5: {
+                            used: charData.magicSlots?.level5?.used || 0,
+                            max: charData.magicSlots?.level5?.max || 0,
+                            spells: charData.magicSlots?.level5?.spells || ''
+                        },
+                        level6: {
+                            used: charData.magicSlots?.level6?.used || 0,
+                            max: charData.magicSlots?.level6?.max || 0,
+                            spells: charData.magicSlots?.level6?.spells || ''
+                        },
+                        level7: {
+                            used: charData.magicSlots?.level7?.used || 0,
+                            max: charData.magicSlots?.level7?.max || 0,
+                            spells: charData.magicSlots?.level7?.spells || ''
+                        },
+                        level8: {
+                            used: charData.magicSlots?.level8?.used || 0,
+                            max: charData.magicSlots?.level8?.max || 0,
+                            spells: charData.magicSlots?.level8?.spells || ''
+                        },
+                        level9: {
+                            used: charData.magicSlots?.level9?.used || 0,
+                            max: charData.magicSlots?.level9?.max || 0,
+                            spells: charData.magicSlots?.level9?.spells || ''
+                        }
+                    }
                 };
 
                 setCharacter(charData);
@@ -235,6 +298,8 @@ const CharacterSheet = () => {
         }));
     };
 
+
+
     const handleChange = (section, field, value) => {
         setCharacter(prev => ({
             ...prev,
@@ -245,16 +310,37 @@ const CharacterSheet = () => {
         }));
     };
 
-    const handleIncomeChange = (field, value) => {
+    const handleMagicSlotsChange = (level, field, value) => {
         setCharacter(prev => ({
             ...prev,
-            incomeAndEconomy: {
-                possessions: prev.incomeAndEconomy?.possessions || '',
-                properties: prev.incomeAndEconomy?.properties || '',
-                [field]: value,
+            magicSlots: {
+                ...prev.magicSlots,
+                [level]: {
+                    ...prev.magicSlots[level],
+                    [field]: value,
+                },
             },
         }));
     };
+
+    const handleAttributeChange = (attribute, field, value) => {
+        setCharacter(prev => ({
+            ...prev,
+            attributes: {
+                ...prev.attributes,
+                [attribute]: {
+                    ...prev.attributes[attribute],
+                    [field]: value,
+                },
+            },
+        }));
+    };
+
+
+
+
+
+
 
     // Removed unused functions: handleSkillChange, addSkill, removeSkill
 
@@ -267,7 +353,7 @@ const CharacterSheet = () => {
     const addWeapon = () => {
         setCharacter(prev => ({
             ...prev,
-            weapons: [...(prev.weapons || []), { name: '', type: '', damage: '', currentAmmo: 0, maxAmmo: 0, range: '', attack: '' }],
+            weapons: [...(prev.weapons || []), { name: '', type: '', damage: '', range: '', attack: '' }],
         }));
     };
 
@@ -325,44 +411,43 @@ const CharacterSheet = () => {
 
     const rollDamageDice = (index) => {
         const weapon = character.weapons[index];
+        const parsed = parseDamageDice(weapon.damage);
 
-        // Always roll 1d12 for damage
+        if (!parsed) {
+            showNotification('Formato de dano inválido. Use algo como "1d6+2".', 'error');
+            return;
+        }
+
         setIsRollingDice(true);
         setShowDiceModal(true);
         setRollResult(null);
 
         setTimeout(() => {
-            const roll = Math.floor(Math.random() * 12) + 1;
+            let total = 0;
+            let rolls = [];
+            let constants = [];
 
-            // Determine marks based on roll
-            let marksDealt = 0;
-            if (roll >= 10) marksDealt = 2;
-            else if (roll >= 7) marksDealt = 1;
-            else marksDealt = 0;
-
-            // Determine success level
-            let successLevel = 'Fracasso';
-            if (roll >= 10) successLevel = 'Sucesso Total';
-            else if (roll >= 7) successLevel = 'Sucesso Parcial';
-            else successLevel = 'Fracasso';
-
-            // Reduce ammo for firearms or bows
-            if (weapon.type === 'Armas de fogo' || weapon.type === 'Arcos') {
-                const newWeapons = [...character.weapons];
-                newWeapons[index] = { ...newWeapons[index], currentAmmo: Math.max(0, (newWeapons[index].currentAmmo || 0) - 1) };
-                setCharacter(prev => ({ ...prev, weapons: newWeapons }));
+            for (const part of parsed) {
+                if (part.type === 'dice') {
+                    for (let i = 0; i < part.numDice; i++) {
+                        const roll = Math.floor(Math.random() * part.sides) + 1;
+                        rolls.push(roll);
+                        total += roll;
+                    }
+                } else if (part.type === 'constant') {
+                    constants.push(part.value);
+                    total += part.value;
+                }
             }
 
             const newRoll = {
-                diceType: '1d12',
-                numDice: 1,
-                total: roll,
-                rolls: [roll],
-                constants: [],
+                diceType: weapon.damage,
+                numDice: rolls.length,
+                total,
+                rolls,
+                constants,
                 isDamage: true,
-                successLevel,
-                marksDealt,
-                description: `${successLevel} - ${marksDealt} marca(s)`,
+                description: `Total: ${total}`,
                 timestamp: new Date().toLocaleString()
             };
 
@@ -414,7 +499,6 @@ const CharacterSheet = () => {
             setRollValue(total);
             setRollDie(roll);
             setRollModifier(0);
-            setDouradoRoll(0);
 
             let level = 'Fracasso';
             let success = false;
@@ -452,86 +536,36 @@ const CharacterSheet = () => {
         }, 1500);
     };
 
-    const handleRollAttribute = (modifier, name, isSkill = false) => {
+    const handleRollD20 = (category) => {
+        if (typeof category !== 'string') category = 'ATRIBUTOS';
         setIsRolling(true);
         setShowModal(true);
         setModalMessage("Rolando dados...");
-        setIsSkillRoll(isSkill);
-
-        // Infer category for skills
-        let category = '';
-        if (isSkill) {
-            if (name.toLowerCase().includes('arco') || name.toLowerCase().includes('armas de fogo') || name.toLowerCase().includes('fogo')) {
-                category = 'PERÍCIAS DE FOGO';
-            } else if (name.toLowerCase().includes('luta') || name.toLowerCase().includes('combate')) {
-                category = 'PERÍCIAS DE LUTA';
-            } else {
-                category = name.toUpperCase(); // Fallback to skill name
-            }
-        } else {
-            category = name; // For attributes, use name as title
-        }
+        setIsSkillRoll(false);
         setRollCategory(category);
-        setRollName(name);
-
-        // Check if attribute is dourado
-        let isDourado = false;
-        if (!isSkill) {
-            if (name === translations.body.move) isDourado = character.body?.moveDourado || false;
-            else if (name === translations.body.attack) isDourado = character.body?.attackDourado || false;
-            else if (name === translations.body.control) isDourado = character.body?.controlDourado || false;
-            else if (name === translations.cunning.sway) isDourado = character.cunning?.swayDourado || false;
-            else if (name === translations.cunning.read) isDourado = character.cunning?.readDourado || false;
-            else if (name === translations.cunning.hide) isDourado = character.cunning?.hideDourado || false;
-            else if (name === translations.intuition.search) isDourado = character.intuition?.searchDourado || false;
-            else if (name === translations.intuition.focus) isDourado = character.intuition?.focusDourado || false;
-            else if (name === translations.intuition.sense) isDourado = character.intuition?.senseDourado || false;
-        }
+        setRollName('1d20');
 
         setTimeout(() => {
             const roll = Math.floor(Math.random() * 20) + 1;
-            const total = roll + modifier;
-            setRollValue(total); // Now showing total instead of just roll
+            setRollValue(roll);
             setRollDie(roll);
-            setRollModifier(modifier);
+            setRollModifier(0);
+            setSuccessLevel('');
+            setIsSuccess(true);
 
-            let dourado = 0;
-            if (isDourado) {
-                dourado = Math.floor(Math.random() * 20) + 1;
-            }
-            setDouradoRoll(dourado);
-
-            let level = 'Fracasso';
-            let success = false;
-            if (total <= 1) {
-                level = 'Desastre';
-                success = false;
-            } else if (total >= 2 && total <= 7) {
-                level = 'Fracasso';
-                success = false;
-            } else if (total >= 8 && total <= 14) {
-                level = 'Sucesso Parcial';
-                success = true;
-            } else if (total >= 15) {
-                level = 'Sucesso Completo';
-                success = true;
-            }
-            setSuccessLevel(level);
-            setIsSuccess(success);
-
-            // Keep modalMessage for backward compatibility, but new data is in states
-            const message = `Resultado de ${name}: Dado ${roll} + Mod ${modifier} = ${total} - ${level}`;
+            const message = `Resultado de 1d20: ${roll}`;
             setModalMessage(message);
             setIsRolling(false);
 
             // Add roll to history
-            const rollType = name === 'Sanidade' ? 'sanity' : (isSkill ? 'skill' : 'attribute');
             const newRoll = {
-                rollType,
-                rollName: name,
+                rollType: 'general',
+                rollName: '1d20',
                 diceType: 'd20',
-                total: total,
-                successLevel: level,
+                numDice: 1,
+                total: roll,
+                rolls: [roll],
+                category: category === 'ATRIBUTOS' ? 'Atributos e Perícias' : category === 'COMBATE' ? 'Combate' : 'Geral',
                 timestamp: new Date().toLocaleString()
             };
             setDiceHistory(prev => [newRoll, ...prev]);
@@ -594,41 +628,41 @@ const CharacterSheet = () => {
                                 className="input"
                                 placeholder="Nome do Jogador"
                             />
-                            <label className="label">Papel</label>
+                            <label className="label">Raça</label>
                             <input
                                 type="text"
-                                value={character.basicInfo.role || ''}
-                                onChange={e => handleBasicInfoChange('role', e.target.value)}
+                                value={character.basicInfo.race || ''}
+                                onChange={e => handleBasicInfoChange('race', e.target.value)}
                                 className="input"
-                                placeholder="Papel"
+                                placeholder="Raça"
                             />
-                            <label className="label">Especialidade</label>
+                            <label className="label">Classe</label>
                             <input
                                 type="text"
-                                value={character.basicInfo.specialty || ''}
-                                onChange={e => handleBasicInfoChange('specialty', e.target.value)}
+                                value={character.basicInfo.class || ''}
+                                onChange={e => handleBasicInfoChange('class', e.target.value)}
                                 className="input"
-                                placeholder="Especialidade"
+                                placeholder="Classe"
                             />
                             {!isMonster && (
                                 <>
-                                    <label className="label">Círculo</label>
+                                    <label className="label">Antecedentes</label>
                                     <input
                                         type="text"
-                                        value={character.basicInfo.circle || ''}
-                                        onChange={e => handleBasicInfoChange('circle', e.target.value)}
+                                        value={character.basicInfo.background || ''}
+                                        onChange={e => handleBasicInfoChange('background', e.target.value)}
                                         className="input"
-                                        placeholder="Círculo"
+                                        placeholder="Antecedentes"
                                     />
                                 </>
                             )}
-                            <label className="label">Local de Nascimento</label>
+                            <label className="label">Tendência</label>
                             <input
                                 type="text"
-                                value={character.basicInfo.birthplace || ''}
-                                onChange={e => handleBasicInfoChange('birthplace', e.target.value)}
+                                value={character.basicInfo.alignment || ''}
+                                onChange={e => handleBasicInfoChange('alignment', e.target.value)}
                                 className="input"
-                                placeholder="Local de Nascimento"
+                                placeholder="Tendência"
                             />
                             <label className="levelLabel">Nível</label>
                             <input
@@ -680,185 +714,167 @@ const CharacterSheet = () => {
 
                             {/* Status Bars */}
                             <div className="barsContainer">
-                                {/* Marks */}
-                                <div className="marksContainer">
-                                    <div className="marksLabel">Marcas</div>
-                                    <div className="marksCategories">
-                                        {/* Body Marks */}
-                                        <div className="marksCategory">
-                                            <label className="marksCategoryLabel">Corpo</label>
-                                            <div className="marksInputs">
-                                                <input
-                                                    type="number"
-                                                    min="0"
-                                                    max="99"
-                                                    value={character.status?.marks?.body?.maxMarks || 0}
-                                                    onChange={e => {
-                                                        const newStatus = { ...character.status };
-                                                        const newMax = Number(e.target.value);
-                                                        newStatus.marks = { ...newStatus.marks };
-                                                        newStatus.marks.body = { ...newStatus.marks.body, maxMarks: newMax };
-                                                        // Ensure marks array has correct length
-                                                        const currentMarks = newStatus.marks.body.marks || [];
-                                                        newStatus.marks.body.marks = currentMarks.slice(0, newMax).concat(new Array(Math.max(0, newMax - currentMarks.length)).fill(false));
-                                                        setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                    }}
-                                                    className="smallInput"
-                                                    placeholder="Max"
-                                                />
-                                                <div className="checkboxesContainer">
-                                                    {(character.status?.marks?.body?.marks || []).map((checked, index) => (
-                                                        <input
-                                                            key={`body-${index}`}
-                                                            type="checkbox"
-                                                            checked={checked}
-                                                            onChange={e => {
-                                                                const newStatus = { ...character.status };
-                                                                newStatus.marks = { ...newStatus.marks };
-                                                                newStatus.marks.body = { ...newStatus.marks.body };
-                                                                newStatus.marks.body.marks = [...newStatus.marks.body.marks];
-                                                                newStatus.marks.body.marks[index] = e.target.checked;
-                                                                setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                            }}
-                                                            className="markCheckbox"
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Mind Marks */}
-                                        <div className="marksCategory">
-                                            <label className="marksCategoryLabel">Mente</label>
-                                            <div className="marksInputs">
-                                                <input
-                                                    type="number"
-                                                    min="0"
-                                                    max="99"
-                                                    value={character.status?.marks?.mind?.maxMarks || 0}
-                                                    onChange={e => {
-                                                        const newStatus = { ...character.status };
-                                                        const newMax = Number(e.target.value);
-                                                        newStatus.marks = { ...newStatus.marks };
-                                                        newStatus.marks.mind = { ...newStatus.marks.mind, maxMarks: newMax };
-                                                        const currentMarks = newStatus.marks.mind.marks || [];
-                                                        newStatus.marks.mind.marks = currentMarks.slice(0, newMax).concat(new Array(Math.max(0, newMax - currentMarks.length)).fill(false));
-                                                        setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                    }}
-                                                    className="smallInput"
-                                                    placeholder="Max"
-                                                />
-                                                <div className="checkboxesContainer">
-                                                    {(character.status?.marks?.mind?.marks || []).map((checked, index) => (
-                                                        <input
-                                                            key={`mind-${index}`}
-                                                            type="checkbox"
-                                                            checked={checked}
-                                                            onChange={e => {
-                                                                const newStatus = { ...character.status };
-                                                                newStatus.marks = { ...newStatus.marks };
-                                                                newStatus.marks.mind = { ...newStatus.marks.mind };
-                                                                newStatus.marks.mind.marks = [...newStatus.marks.mind.marks];
-                                                                newStatus.marks.mind.marks[index] = e.target.checked;
-                                                                setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                            }}
-                                                            className="markCheckbox"
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Blood Marks */}
-                                        <div className="marksCategory">
-                                            <label className="marksCategoryLabel">Sangria</label>
-                                            <div className="marksInputs">
-                                                <input
-                                                    type="number"
-                                                    min="0"
-                                                    max="99"
-                                                    value={character.status?.marks?.blood?.maxMarks || 0}
-                                                    onChange={e => {
-                                                        const newStatus = { ...character.status };
-                                                        const newMax = Number(e.target.value);
-                                                        newStatus.marks = { ...newStatus.marks };
-                                                        newStatus.marks.blood = { ...newStatus.marks.blood, maxMarks: newMax };
-                                                        const currentMarks = newStatus.marks.blood.marks || [];
-                                                        newStatus.marks.blood.marks = currentMarks.slice(0, newMax).concat(new Array(Math.max(0, newMax - currentMarks.length)).fill(false));
-                                                        setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                    }}
-                                                    className="smallInput"
-                                                    placeholder="Max"
-                                                />
-                                                <div className="checkboxesContainer">
-                                                    {(character.status?.marks?.blood?.marks || []).map((checked, index) => (
-                                                        <input
-                                                            key={`blood-${index}`}
-                                                            type="checkbox"
-                                                            checked={checked}
-                                                            onChange={e => {
-                                                                const newStatus = { ...character.status };
-                                                                newStatus.marks = { ...newStatus.marks };
-                                                                newStatus.marks.blood = { ...newStatus.marks.blood };
-                                                                newStatus.marks.blood.marks = [...newStatus.marks.blood.marks];
-                                                                newStatus.marks.blood.marks[index] = e.target.checked;
-                                                                setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                            }}
-                                                            className="markCheckbox"
-                                                        />
-                                                    ))}
-                                                </div>
-                                            </div>
+                                {/* HP Bar */}
+                                <div className="hpBarContainer">
+                                    <div className="barLabel">Vida</div>
+                                    <div className="bar">
+                                        <div
+                                            className={(character.status?.health?.current || 0) === 0 ? "emptyBar" : "hpBar"}
+                                            style={{
+                                                width: `${Math.min(100, (character.status?.health?.current || 0) / Math.max((character.status?.health?.max || 1), 1) * 100)}%`,
+                                            }}
+                                        />
+                                        <div className="overlayInput">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                max={character.status?.health?.maximum || 99}
+                                                value={character.status?.health?.current || 0}
+                                                onChange={e => {
+                                                    const newStatus = { ...character.status };
+                                                    newStatus.health = { ...newStatus.health, current: Math.min(Number(e.target.value), newStatus.health.maximum || 99) };
+                                                    setCharacter(prev => ({ ...prev, status: newStatus }));
+                                                }}
+                                                className="smallInput"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                max="99"
+                                                value={character.status?.health?.max || 0}
+                                                onChange={e => {
+                                                    const newStatus = { ...character.status };
+                                                    const newMax = Number(e.target.value);
+                                                    newStatus.health = {
+                                                        ...newStatus.health,
+                                                        max: newMax,
+                                                        current: Math.min(newStatus.health.current || 0, newMax)
+                                                    };
+                                                    setCharacter(prev => ({ ...prev, status: newStatus }));
+                                                }}
+                                                className="smallInput"
+                                            />
                                         </div>
                                     </div>
                                 </div>
 
-                                {/* Scars */}
-                                <div className="scarsContainer">
-                                    <div className="scarsLabel">Cicatrizes</div>
-                                    <div className="scarsList">
-                                        {(character.status?.scars || []).map((scar, index) => (
-                                            <div key={index} className="scarItem">
-                                                <input
-                                                    type="checkbox"
-                                                    checked={scar.checked}
-                                                    onChange={e => {
-                                                        const newStatus = { ...character.status };
-                                                        newStatus.scars = [...newStatus.scars];
-                                                        newStatus.scars[index] = { ...newStatus.scars[index], checked: e.target.checked };
-                                                        setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                    }}
-                                                    className="scarCheckbox"
-                                                />
-                                                <input
-                                                    type="text"
-                                                    value={scar.description}
-                                                    onChange={e => {
-                                                        const newStatus = { ...character.status };
-                                                        newStatus.scars = [...newStatus.scars];
-                                                        newStatus.scars[index] = { ...newStatus.scars[index], description: e.target.value };
-                                                        setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                    }}
-                                                    className="scarInput"
-                                                    placeholder="Descrição da cicatriz"
-                                                />
-                                            </div>
-                                        ))}
+                                {/* Temporary Health Input */}
+                                <div className="healthInputsContainer">
+                                    <div className="healthInputGroup">
+                                        <label className="healthBarLabel">Vida Temporária</label>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={character.status?.health?.temporary || 0}
+                                            onChange={e => {
+                                                const newStatus = { ...character.status };
+                                                newStatus.health = { ...newStatus.health, temporary: Number(e.target.value) };
+                                                setCharacter(prev => ({ ...prev, status: newStatus }));
+                                            }}
+                                            className="healthInput"
+                                            placeholder="Temp"
+                                        />
+                                    </div>
+                                </div>
+                                {/* Health Dice */}
+                                <div className="healthDiceContainer">
+                                    <div className="healthDiceLabel">Dados de Vida</div>
+                                    <div className="healthDiceInputs">
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={character.status?.healthDice?.total || 0}
+                                            onChange={e => {
+                                                const newStatus = { ...character.status };
+                                                newStatus.healthDice = { ...newStatus.healthDice, total: Number(e.target.value) };
+                                                setCharacter(prev => ({ ...prev, status: newStatus }));
+                                            }}
+                                            className="smallInput"
+                                            placeholder="Total"
+                                        />
+                                        <span>/</span>
+                                        <input
+                                            type="number"
+                                            min="0"
+                                            value={character.status?.healthDice?.max || 0}
+                                            onChange={e => {
+                                                const newStatus = { ...character.status };
+                                                newStatus.healthDice = { ...newStatus.healthDice, max: Number(e.target.value) };
+                                                setCharacter(prev => ({ ...prev, status: newStatus }));
+                                            }}
+                                            className="smallInput"
+                                            placeholder="Máx"
+                                        />
                                     </div>
                                 </div>
 
-                                {/* Luck */}
-                                <div className="barContainer">
-                                    <div className="barLabel">Sorte</div>
-                                    <button
-                                        onClick={handleRollLuck}
-                                        className="diceButton"
-                                        title="Rolar D20 para Sorte"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconSmall" />
-                                    </button>
+                                {/* Death Saves */}
+                                <div className="deathSavesContainer">
+                                    <div className="deathSavesLabel">Testes Contra a Morte</div>
+                                    <div className="deathSavesInputs">
+                                        <div className="deathSaveRow">
+                                            <span className="deathSaveType">Sucesso</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                max="3"
+                                                value={character.status?.deathSaves?.success?.min || 0}
+                                                onChange={e => {
+                                                    const newStatus = { ...character.status };
+                                                    if (!newStatus.deathSaves) {
+                                                        newStatus.deathSaves = {
+                                                            success: { min: 0, max: 3 },
+                                                            failure: { min: 0, max: 3 }
+                                                        };
+                                                    }
+                                                    newStatus.deathSaves = { ...newStatus.deathSaves, success: { ...newStatus.deathSaves.success, min: Number(e.target.value) } };
+                                                    setCharacter(prev => ({ ...prev, status: newStatus }));
+                                                }}
+                                                className="smallInput"
+                                                placeholder="0"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                value={character.status?.deathSaves?.success?.max || 3}
+                                                readOnly
+                                                className="smallInput"
+                                            />
+                                        </div>
+                                        <div className="deathSaveRow">
+                                            <span className="deathSaveType">Fracasso</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                max="3"
+                                                value={character.status?.deathSaves?.failure?.min || 0}
+                                                onChange={e => {
+                                                    const newStatus = { ...character.status };
+                                                    if (!newStatus.deathSaves) {
+                                                        newStatus.deathSaves = {
+                                                            success: { min: 0, max: 3 },
+                                                            failure: { min: 0, max: 3 }
+                                                        };
+                                                    }
+                                                    newStatus.deathSaves = { ...newStatus.deathSaves, failure: { ...newStatus.deathSaves.failure, min: Number(e.target.value) } };
+                                                    setCharacter(prev => ({ ...prev, status: newStatus }));
+                                                }}
+                                                className="smallInput"
+                                                placeholder="0"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                value={character.status?.deathSaves?.failure?.max || 3}
+                                                readOnly
+                                                className="smallInput"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
 
 
                         </div>
@@ -867,558 +883,622 @@ const CharacterSheet = () => {
 
 
 
-                {/* Atributos */}
-                {(!isNPCOrMonster || (isNPCOrMonster && (character.characterType === 'npc' || character.characterType === 'monster'))) && (
+                {/* Atributos e Perícias */}
                 <section className="section">
-                    <div className="sectionHeader">Atributos</div>
+                    <div className="sectionHeaderWithDice">
+                        <span className="sectionTitle">Atributos e Perícias</span>
+                        <button
+                            onClick={() => handleRollD20('ATRIBUTOS')}
+                            className="diceButton"
+                            title="Rolar 1d20"
+                        >
+                            <img src="/images/unnamed(1).png" alt="Dados" className="diceIconSmall" />
+                        </button>
+                    </div>
+                    <div className="inspirationProficiencyContainer">
+                        <div className="inspirationStat">
+                            <label className="inspirationLabel">Inspiração</label>
+                            <input
+                                type="number"
+                                min="0"
+                                value={character.inspiration || 0}
+                                onChange={e => setCharacter(prev => ({ ...prev, inspiration: Number(e.target.value) }))}
+                                className="inspirationInput"
+                                placeholder="0"
+                            />
+                        </div>
+                        <div className="proficiencyStat">
+                            <label className="proficiencyLabel">Bônus de Proficiência</label>
+                            <input
+                                type="number"
+                                min="0"
+                                value={character.proficiencyBonus || 0}
+                                onChange={e => setCharacter(prev => ({ ...prev, proficiencyBonus: Number(e.target.value) }))}
+                                className="proficiencyInput"
+                                placeholder="0"
+                            />
+                        </div>
+                    </div>
                     <div className="attributesBorder">
                         <div className="attributesGrid">
-                            {/* Corpo */}
-                            <div className="attributeColumn corpoColumn">
-                                {/* Impulsos acima do título */}
-                                <div className="impulsosContainer">
-                                    <label className="label">Impulsos</label>
-                                    <div className="impulsosInputs">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            max="9"
-                                            value={character.body?.maxImpulsos || 0}
-                                            onChange={e => {
-                                                const val = e.target.value;
-                                                const newMax = val === '' ? 0 : Math.max(0, Math.min(9, Number(val)));
-                                                setCharacter(prev => ({
-                                                    ...prev,
-                                                    body: {
-                                                        ...prev.body,
-                                                        maxImpulsos: newMax,
-                                                        impulsos: newMax >= 1 ? (prev.body.impulsos || []).slice(0, newMax).concat(new Array(Math.max(0, newMax - (prev.body.impulsos || []).length)).fill(false)) : [],
-                                                        resistencias: newMax >= 1 ? (prev.body.resistencias || []).slice(0, Math.floor(newMax / 3)).concat(new Array(Math.max(0, Math.floor(newMax / 3) - (prev.body.resistencias || []).length)).fill(false)) : []
-                                                    }
-                                                }));
-                                            }}
-                                            className="smallInput"
-                                            placeholder="Max"
-                                        />
-                                        <div className="checkboxesContainer">
-                                            {(character.body?.impulsos || []).map((checked, index) => (
-                                                <input
-                                                    key={`body-impulso-${index}`}
-                                                    type="checkbox"
-                                                    checked={checked}
-                                                    disabled={index >= (character.body?.maxImpulsos || 1)}
-                                                    onChange={e => {
-                                                        const newImpulsos = [...(character.body?.impulsos || [])];
-                                                        newImpulsos[index] = e.target.checked;
-                                                        setCharacter(prev => ({
-                                                            ...prev,
-                                                            body: {
-                                                                ...prev.body,
-                                                                impulsos: newImpulsos,
-                                                                resistencias: prev.body.resistencias.slice(0, Math.floor((prev.body.maxImpulsos || 1) / 3)).concat(new Array(Math.max(0, Math.floor((prev.body.maxImpulsos || 1) / 3) - prev.body.resistencias.length)).fill(false))
-                                                            }
-                                                        }));
-                                                    }}
-                                                    className="impulsoCheckbox"
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                                <h3 className="attributeHeader">Corpo</h3>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.body?.move || 0, translations.body.move, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconSmall" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.body?.moveDourado || false}
-                                            onChange={e => handleChange('body', 'moveDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.body.move}</label>
-                                    </div>
+                            {/* Força */}
+                            <div className="strengthColumn">
+                                <h3 className="strengthHeader">{translations.attributes.strength}</h3>
+                                <div className="strengthItem">
                                     <input
                                         type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.body?.move || 0}
-                                        onChange={e => handleChange('body', 'move', Number(e.target.value))}
+                                        min="1"
+                                        max="30"
+                                        value={character.attributes?.strength?.score || 10}
+                                        onChange={e => handleAttributeChange('strength', 'score', Number(e.target.value))}
                                         className="valueInput"
+                                        placeholder="Score"
                                     />
-                                </div>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.body?.attack || 0, translations.body.attack, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconSmall" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.body?.attackDourado || false}
-                                            onChange={e => handleChange('body', 'attackDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.body.attack}</label>
-                                    </div>
                                     <input
                                         type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.body?.attack || 0}
-                                        onChange={e => handleChange('body', 'attack', Number(e.target.value))}
-                                        className="valueInput"
+                                        min="-5"
+                                        max="10"
+                                        value={character.attributes?.strength?.modifier || 0}
+                                        onChange={e => handleAttributeChange('strength', 'modifier', Number(e.target.value))}
+                                        className="smallInputmd"
+                                        placeholder="Mod"
                                     />
-                                </div>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.body?.control || 0, translations.body.control, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconSmall" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.body?.controlDourado || false}
-                                            onChange={e => handleChange('body', 'controlDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.body.control}</label>
-                                    </div>
                                     <input
                                         type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.body?.control || 0}
-                                        onChange={e => handleChange('body', 'control', Number(e.target.value))}
-                                        className="valueInput"
+                                        min="0"
+                                        max="5"
+                                        value={character.attributes?.strength?.savingThrow || 0}
+                                        onChange={e => handleAttributeChange('strength', 'savingThrow', Number(e.target.value))}
+                                        className="smallInputst"
+                                        placeholder="ST"
                                     />
                                 </div>
-                                {/* Resistências abaixo */}
-                                <div className="resistenciasContainer">
-                                    <label className="label">Resistências</label>
-                                    <div className="checkboxesContainer">
-                                        {(character.body?.resistencias || []).map((checked, index) => (
-                                            <input
-                                                key={`body-resistencia-${index}`}
-                                                type="checkbox"
-                                                checked={checked}
-                                                onChange={e => {
-                                                    const newResistencias = [...(character.body?.resistencias || [])];
-                                                    newResistencias[index] = e.target.checked;
-                                                    setCharacter(prev => ({
-                                                        ...prev,
-                                                        body: {
-                                                            ...prev.body,
-                                                            resistencias: newResistencias
-                                                        }
-                                                    }));
-                                                }}
-                                                className="resistenciaCheckbox"
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Astúcia */}
-                            <div className="attributeColumn astuciaColumn">
-                                {/* Impulsos acima do título */}
-                                <div className="impulsosContainer">
-                                    <label className="label">Impulsos</label>
-                                    <div className="impulsosInputs">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            max="9"
-                                            value={character.cunning?.maxImpulsos || 0}
-                                            onChange={e => {
-                                                const val = e.target.value;
-                                                const newMax = val === '' ? 0 : Math.max(0, Math.min(9, Number(val)));
-                                                setCharacter(prev => ({
-                                                    ...prev,
-                                                    cunning: {
-                                                        ...prev.cunning,
-                                                        maxImpulsos: newMax,
-                                                        impulsos: newMax >= 1 ? (prev.cunning.impulsos || []).slice(0, newMax).concat(new Array(Math.max(0, newMax - (prev.cunning.impulsos || []).length)).fill(false)) : [],
-                                                        resistencias: newMax >= 1 ? (prev.cunning.resistencias || []).slice(0, Math.floor(newMax / 3)).concat(new Array(Math.max(0, Math.floor(newMax / 3) - (prev.cunning.resistencias || []).length)).fill(false)) : []
-                                                    }
-                                                }));
-                                            }}
-                                            className="smallInput"
-                                            placeholder="Max"
-                                        />
-                                        <div className="checkboxesContainer">
-                                            {(character.cunning?.impulsos || []).map((checked, index) => (
-                                                <input
-                                                    key={`cunning-impulso-${index}`}
-                                                    type="checkbox"
-                                                    checked={checked}
-                                                    disabled={index >= (character.cunning?.maxImpulsos || 1)}
-                                                    onChange={e => {
-                                                        const newImpulsos = [...(character.cunning?.impulsos || [])];
-                                                        newImpulsos[index] = e.target.checked;
-                                                        setCharacter(prev => ({
-                                                            ...prev,
-                                                            cunning: {
-                                                                ...prev.cunning,
-                                                                impulsos: newImpulsos,
-                                                                resistencias: prev.cunning.resistencias.slice(0, Math.floor((prev.cunning.maxImpulsos || 1) / 3)).concat(new Array(Math.max(0, Math.floor((prev.cunning.maxImpulsos || 1) / 3) - prev.cunning.resistencias.length)).fill(false))
-                                                            }
-                                                        }));
-                                                    }}
-                                                    className="impulsoCheckbox"
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                                <h3 className="attributeHeader">Astúcia</h3>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.cunning?.sway || 0, translations.cunning.sway, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconSmall" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.cunning?.swayDourado || false}
-                                            onChange={e => handleChange('cunning', 'swayDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.cunning.sway}</label>
-                                    </div>
+                                <div className="atletismoBlock">
+                                    <h4 className="atletismoHeader">Atletismo</h4>
                                     <input
                                         type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.cunning?.sway || 0}
-                                        onChange={e => handleChange('cunning', 'sway', Number(e.target.value))}
-                                        className="valueInput"
-                                    />
-                                </div>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.cunning?.read || 0, translations.cunning.read, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconInline" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.cunning?.readDourado || false}
-                                            onChange={e => handleChange('cunning', 'readDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.cunning.read}</label>
-                                    </div>
-                                    <input
-                                        type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.cunning?.read || 0}
-                                        onChange={e => handleChange('cunning', 'read', Number(e.target.value))}
-                                        className="valueInput"
-                                    />
-                                </div>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.cunning?.hide || 0, translations.cunning.hide, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconInline" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.cunning?.hideDourado || false}
-                                            onChange={e => handleChange('cunning', 'hideDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.cunning.hide}</label>
-                                    </div>
-                                    <input
-                                        type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.cunning?.hide || 0}
-                                        onChange={e => handleChange('cunning', 'hide', Number(e.target.value))}
-                                        className="valueInput"
-                                    />
-                                </div>
-                                {/* Resistências abaixo */}
-                                <div className="resistenciasContainer">
-                                    <label className="label">Resistências</label>
-                                    <div className="checkboxesContainer">
-                                        {(character.cunning?.resistencias || []).map((checked, index) => (
-                                            <input
-                                                key={`cunning-resistencia-${index}`}
-                                                type="checkbox"
-                                                checked={checked}
-                                                onChange={e => {
-                                                    const newResistencias = [...(character.cunning?.resistencias || [])];
-                                                    newResistencias[index] = e.target.checked;
-                                                    setCharacter(prev => ({
-                                                        ...prev,
-                                                        cunning: {
-                                                            ...prev.cunning,
-                                                            resistencias: newResistencias
-                                                        }
-                                                    }));
-                                                }}
-                                                className="resistenciaCheckbox"
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Intuição */}
-                            <div className="attributeColumn intuicaoColumn">
-                                {/* Impulsos acima do título */}
-                                <div className="impulsosContainer">
-                                    <label className="label">Impulsos</label>
-                                    <div className="impulsosInputs">
-                                        <input
-                                            type="number"
-                                            min="0"
-                                            max="9"
-                                            value={character.intuition?.maxImpulsos || 0}
-                                            onChange={e => {
-                                                const val = e.target.value;
-                                                const newMax = val === '' ? 0 : Math.max(0, Math.min(9, Number(val)));
-                                                setCharacter(prev => ({
-                                                    ...prev,
-                                                    intuition: {
-                                                        ...prev.intuition,
-                                                        maxImpulsos: newMax,
-                                                        impulsos: newMax >= 1 ? (prev.intuition.impulsos || []).slice(0, newMax).concat(new Array(Math.max(0, newMax - (prev.intuition.impulsos || []).length)).fill(false)) : [],
-                                                        resistencias: newMax >= 1 ? (prev.intuition.resistencias || []).slice(0, Math.floor(newMax / 3)).concat(new Array(Math.max(0, Math.floor(newMax / 3) - (prev.intuition.resistencias || []).length)).fill(false)) : []
-                                                    }
-                                                }));
-                                            }}
-                                            className="smallInput"
-                                            placeholder="Max"
-                                        />
-                                        <div className="checkboxesContainer">
-                                            {(character.intuition?.impulsos || []).map((checked, index) => (
-                                                <input
-                                                    key={`intuition-impulso-${index}`}
-                                                    type="checkbox"
-                                                    checked={checked}
-                                                    disabled={index >= (character.intuition?.maxImpulsos || 1)}
-                                                    onChange={e => {
-                                                        const newImpulsos = [...(character.intuition?.impulsos || [])];
-                                                        newImpulsos[index] = e.target.checked;
-                                                        setCharacter(prev => ({
-                                                            ...prev,
-                                                            intuition: {
-                                                                ...prev.intuition,
-                                                                impulsos: newImpulsos,
-                                                                resistencias: prev.intuition.resistencias.slice(0, Math.floor((prev.intuition.maxImpulsos || 1) / 3)).concat(new Array(Math.max(0, Math.floor((prev.intuition.maxImpulsos || 1) / 3) - prev.intuition.resistencias.length)).fill(false))
-                                                            }
-                                                        }));
-                                                    }}
-                                                    className="impulsoCheckbox"
-                                                />
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
-                                <h3 className="attributeHeader">Intuição</h3>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.intuition?.search || 0, translations.intuition.search, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconInline" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.intuition?.searchDourado || false}
-                                            onChange={e => handleChange('intuition', 'searchDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.intuition.search}</label>
-                                    </div>
-                                    <input
-                                        type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.intuition?.search || 0}
-                                        onChange={e => handleChange('intuition', 'search', Number(e.target.value))}
-                                        className="valueInput"
-                                    />
-                                </div>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.intuition?.focus || 0, translations.intuition.focus, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconInline" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.intuition?.focusDourado || false}
-                                            onChange={e => handleChange('intuition', 'focusDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.intuition.focus}</label>
-                                    </div>
-                                    <input
-                                        type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.intuition?.focus || 0}
-                                        onChange={e => handleChange('intuition', 'focus', Number(e.target.value))}
-                                        className="valueInput"
-                                    />
-                                </div>
-                                <div className="attribute-item">
-                                    <button
-                                        onClick={() => handleRollAttribute(character.intuition?.sense || 0, translations.intuition.sense, false)}
-                                        className="diceButton"
-                                        title="Rolar D20"
-                                    >
-                                        <img src="/images/unnamed(1).png" alt="Dados" className="diceIconInline" />
-                                    </button>
-                                    <div className="attributeLabelContainer">
-                                        <input
-                                            type="checkbox"
-                                            checked={character.intuition?.senseDourado || false}
-                                            onChange={e => handleChange('intuition', 'senseDourado', e.target.checked)}
-                                            className="douradoCheckbox"
-                                            title="Dourado"
-                                        />
-                                        <label className="fullLabel">{translations.intuition.sense}</label>
-                                    </div>
-                                    <input
-                                        type="number"
-                                        min="-7"
-                                        max="7"
-                                        value={character.intuition?.sense || 0}
-                                        onChange={e => handleChange('intuition', 'sense', Number(e.target.value))}
-                                        className="valueInput"
-                                    />
-                                </div>
-                                {/* Resistências abaixo */}
-                                <div className="resistenciasContainer">
-                                    <label className="label">Resistências</label>
-                                    <div className="checkboxesContainer">
-                                        {(character.intuition?.resistencias || []).map((checked, index) => (
-                                            <input
-                                                key={`intuition-resistencia-${index}`}
-                                                type="checkbox"
-                                                checked={checked}
-                                                onChange={e => {
-                                                    const newResistencias = [...(character.intuition?.resistencias || [])];
-                                                    newResistencias[index] = e.target.checked;
-                                                    setCharacter(prev => ({
-                                                        ...prev,
-                                                        intuition: {
-                                                            ...prev.intuition,
-                                                            resistencias: newResistencias
-                                                        }
-                                                    }));
-                                                }}
-                                                className="resistenciaCheckbox"
-                                            />
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                )}
-
-                {/* Habilidades */}
-                <section className="section">
-                    <div className="sectionHeader">Habilidades</div>
-                    <div className="sectionBorder">
-                        <div className="skillsContainer">
-                            <div className="skillItem">
-                                <label className="label">Habilidades de Função</label>
-                                <textarea
-                                    value={character.skills?.roleskills || ''}
-                                    onChange={e => setCharacter(prev => ({
-                                        ...prev,
-                                        skills: {
-                                            ...prev.skills,
-                                            roleskills: e.target.value
-                                        }
-                                    }))}
-                                    className="textarea skillTextarea"
-                                    placeholder="Liste as habilidades de função..."
-                                />
-                            </div>
-                            <div className="skillItem">
-                                <label className="label">Habilidades de Especialidade</label>
-                                <textarea
-                                    value={character.skills?.specialtyskills || ''}
-                                    onChange={e => setCharacter(prev => ({
-                                        ...prev,
-                                        skills: {
-                                            ...prev.skills,
-                                            specialtyskills: e.target.value
-                                        }
-                                    }))}
-                                    className="textarea skillTextarea"
-                                    placeholder="Liste as habilidades de especialidade..."
-                                />
-                            </div>
-                            {!isMonster && (
-                                <div className="skillItem">
-                                    <label className="label">Habilidades de Círculo</label>
-                                    <textarea
-                                        value={character.skills?.circleskills || ''}
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.atletismo?.value || 0}
                                         onChange={e => setCharacter(prev => ({
                                             ...prev,
                                             skills: {
                                                 ...prev.skills,
-                                                circleskills: e.target.value
+                                                atletismo: { value: Number(e.target.value) }
                                             }
                                         }))}
-                                        className="textarea skillTextarea"
-                                        placeholder="Liste as Habilidades de círculo..."
+                                        className="atletismoInput"
+                                        placeholder="0"
                                     />
                                 </div>
-                            )}
+                            </div>
+
+                            {/* Destreza */}
+                            <div className="dexterityColumn">
+                                <h3 className="dexterityHeader">{translations.attributes.dexterity}</h3>
+                                <div className="dexterityItem">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="30"
+                                        value={character.attributes?.dexterity?.score || 10}
+                                        onChange={e => handleAttributeChange('dexterity', 'score', Number(e.target.value))}
+                                        className="valueInput"
+                                        placeholder="Score"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="-5"
+                                        max="10"
+                                        value={character.attributes?.dexterity?.modifier || 0}
+                                        onChange={e => handleAttributeChange('dexterity', 'modifier', Number(e.target.value))}
+                                        className="smallInputmd"
+                                        placeholder="Mod"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="5"
+                                        value={character.attributes?.dexterity?.savingThrow || 0}
+                                        onChange={e => handleAttributeChange('dexterity', 'savingThrow', Number(e.target.value))}
+                                        className="smallInputst"
+                                        placeholder="ST"
+                                    />
+                                </div>
+                                <div className="acrobaciaBlock">
+                                    <h4 className="acrobaciaHeader">Acrobacia</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.acrobacia?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                acrobacia: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="acrobaciaInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="furtividadeBlock">
+                                    <h4 className="furtividadeHeader">Furtividade</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.furtividade?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                furtividade: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="furtividadeInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="prestidigitacaoBlock">
+                                    <h4 className="prestidigitacaoHeader">Prestidigitação</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.prestidigitacao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                prestidigitacao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="prestidigitacaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Constituição */}
+                            <div className="constitutionColumn">
+                                <h3 className="constitutionHeader">{translations.attributes.constitution}</h3>
+                                <div className="constitutionItem">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="30"
+                                        value={character.attributes?.constitution?.score || 10}
+                                        onChange={e => handleAttributeChange('constitution', 'score', Number(e.target.value))}
+                                        className="valueInput"
+                                        placeholder="Score"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="-5"
+                                        max="10"
+                                        value={character.attributes?.constitution?.modifier || 0}
+                                        onChange={e => handleAttributeChange('constitution', 'modifier', Number(e.target.value))}
+                                        className="smallInputmd"
+                                        placeholder="Mod"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="5"
+                                        value={character.attributes?.constitution?.savingThrow || 0}
+                                        onChange={e => handleAttributeChange('constitution', 'savingThrow', Number(e.target.value))}
+                                        className="smallInputst"
+                                        placeholder="ST"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Inteligência */}
+                            <div className="intelligenceColumn">
+                                <h3 className="intelligenceHeader">{translations.attributes.intelligence}</h3>
+                                <div className="intelligenceItem">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="30"
+                                        value={character.attributes?.intelligence?.score || 10}
+                                        onChange={e => handleAttributeChange('intelligence', 'score', Number(e.target.value))}
+                                        className="valueInput"
+                                        placeholder="Score"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="-5"
+                                        max="10"
+                                        value={character.attributes?.intelligence?.modifier || 0}
+                                        onChange={e => handleAttributeChange('intelligence', 'modifier', Number(e.target.value))}
+                                        className="smallInputmd"
+                                        placeholder="Mod"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="5"
+                                        value={character.attributes?.intelligence?.savingThrow || 0}
+                                        onChange={e => handleAttributeChange('intelligence', 'savingThrow', Number(e.target.value))}
+                                        className="smallInputst"
+                                        placeholder="ST"
+                                    />
+                                </div>
+                                <div className="arcanismoBlock">
+                                    <h4 className="arcanismoHeader">Arcanismo</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.arcanismo?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                arcanismo: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="arcanismoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="historiaBlock">
+                                    <h4 className="historiaHeader">História</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.historia?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                historia: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="historiaInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="investigacaoBlock">
+                                    <h4 className="investigacaoHeader">Investigação</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.investigacao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                investigacao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="investigacaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="naturezaBlock">
+                                    <h4 className="naturezaHeader">Natureza</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.natureza?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                natureza: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="naturezaInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="religiaoBlock">
+                                    <h4 className="religiaoHeader">Religião</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.religiao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                religiao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="religiaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Sabedoria */}
+                            <div className="wisdomColumn">
+                                <h3 className="wisdomHeader">{translations.attributes.wisdom}</h3>
+                                <div className="wisdomItem">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="30"
+                                        value={character.attributes?.wisdom?.score || 10}
+                                        onChange={e => handleAttributeChange('wisdom', 'score', Number(e.target.value))}
+                                        className="valueInput"
+                                        placeholder="Score"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="-5"
+                                        max="10"
+                                        value={character.attributes?.wisdom?.modifier || 0}
+                                        onChange={e => handleAttributeChange('wisdom', 'modifier', Number(e.target.value))}
+                                        className="smallInputmd"
+                                        placeholder="Mod"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="5"
+                                        value={character.attributes?.wisdom?.savingThrow || 0}
+                                        onChange={e => handleAttributeChange('wisdom', 'savingThrow', Number(e.target.value))}
+                                        className="smallInputst"
+                                        placeholder="ST"
+                                    />
+                                </div>
+                                <div className="intuicaoBlock">
+                                    <h4 className="intuicaoHeader">Intuição</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.intuicao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                intuicao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="intuicaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="lidarComAnimaisBlock">
+                                    <h4 className="lidarComAnimaisHeader">Lidar com Animais</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.lidarComAnimais?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                lidarComAnimais: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="lidarComAnimaisInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="medicinaBlock">
+                                    <h4 className="medicinaHeader">Medicina</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.medicina?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                medicina: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="medicinaInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="percepcaoBlock">
+                                    <h4 className="percepcaoHeader">Percepção</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.percepcao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                percepcao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="percepcaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="sobrevivenciaBlock">
+                                    <h4 className="sobrevivenciaHeader">Sobrevivência</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.sobrevivencia?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                sobrevivencia: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="sobrevivenciaInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Carisma */}
+                            <div className="charismaColumn">
+                                <h3 className="charismaHeader">{translations.attributes.charisma}</h3>
+                                <div className="charismaItem">
+                                    <input
+                                        type="number"
+                                        min="1"
+                                        max="30"
+                                        value={character.attributes?.charisma?.score || 10}
+                                        onChange={e => handleAttributeChange('charisma', 'score', Number(e.target.value))}
+                                        className="valueInput"
+                                        placeholder="Score"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="-5"
+                                        max="10"
+                                        value={character.attributes?.charisma?.modifier || 0}
+                                        onChange={e => handleAttributeChange('charisma', 'modifier', Number(e.target.value))}
+                                        className="smallInputmd"
+                                        placeholder="Mod"
+                                    />
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="5"
+                                        value={character.attributes?.charisma?.savingThrow || 0}
+                                        onChange={e => handleAttributeChange('charisma', 'savingThrow', Number(e.target.value))}
+                                        className="smallInputst"
+                                        placeholder="ST"
+                                    />
+                                </div>
+                                <div className="atuacaoBlock">
+                                    <h4 className="atuacaoHeader">Atuação</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.atuacao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                atuacao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="atuacaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="blefarBlock">
+                                    <h4 className="blefarHeader">Blefar</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.blefar?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                blefar: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="blefarInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="intimidacaoBlock">
+                                    <h4 className="intimidacaoHeader">Intimidação</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.intimidacao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                intimidacao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="intimidacaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                                <div className="persuasaoBlock">
+                                    <h4 className="persuasaoHeader">Persuasão</h4>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="100"
+                                        value={character.skills?.persuasao?.value || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            skills: {
+                                                ...prev.skills,
+                                                persuasao: { value: Number(e.target.value) }
+                                            }
+                                        }))}
+                                        className="persuasaoInput"
+                                        placeholder="0"
+                                    />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
 
                 {/* Combate */}
                 <section className="section">
-                    <div className="sectionHeader">Combate</div>
+                    <div className="sectionHeaderWithDice">
+                        <span className="sectionTitle">Combate</span>
+                        <button
+                            onClick={() => handleRollD20('COMBATE')}
+                            className="diceButton"
+                            title="Rolar 1d20"
+                        >
+                            <img src="/images/unnamed(1).png" alt="Dados" className="diceIconSmall" />
+                        </button>
+                    </div>
+                    <div className="combatStats">
+                        <div className="combatStat">
+                            <label className="combatLabel">Defesa</label>
+                            <input
+                                type="number"
+                                min="0"
+                                value={character.combat?.defense || 0}
+                                onChange={e => handleChange('combat', 'defense', Number(e.target.value))}
+                                className="combatInput"
+                                placeholder="0"
+                            />
+                        </div>
+                        <div className="combatStat">
+                            <label className="combatLabel">Iniciativa</label>
+                            <input
+                                type="number"
+                                min="0"
+                                value={character.combat?.initiative || 0}
+                                onChange={e => handleChange('combat', 'initiative', Number(e.target.value))}
+                                className="combatInput"
+                                placeholder="0"
+                            />
+                        </div>
+                        <div className="combatStat">
+                            <label className="combatLabel">Deslocamento</label>
+                            <input
+                                type="number"
+                                min="0"
+                                value={character.combat?.movement || 0}
+                                onChange={e => handleChange('combat', 'movement', Number(e.target.value))}
+                                className="combatInput"
+                                placeholder="0"
+                            />
+                        </div>
+                    </div>
                     {(character.weapons && character.weapons.length > 0) ? (
                         <table className="table">
                             <thead>
@@ -1426,8 +1506,6 @@ const CharacterSheet = () => {
                                     <th className="th">Nome</th>
                                     <th className="th">Tipo</th>
                                     <th className="th">Dano</th>
-                                    <th className="th">Mun Atual</th>
-                                    <th className="th">Mun Max</th>
                                     <th className="th">Alcance</th>
                                     <th className="th">Ataques</th>
                                 </tr>
@@ -1451,42 +1529,34 @@ const CharacterSheet = () => {
                                                 className="tableInput"
                                             >
                                                 <option value="">Selecione o tipo</option>
-                                                <option value="Briga">Briga</option>
-                                                <option value="Arcos">Arcos</option>
-                                                <option value="Armas de fogo">Armas de fogo</option>
+                                                <option value="Contundente">Contundente</option>
+                                                <option value="Perfurante">Perfurante</option>
+                                                <option value="Cortante">Cortante</option>
+                                                <option value="Ácido">Ácido</option>
+                                                <option value="Mágico">Mágico</option>
+                                                <option value="Necrótico">Necrótico</option>
+                                                <option value="Psíquico">Psíquico</option>
+                                                <option value="Venenoso">Venenoso</option>
                                             </select>
                                         </td>
-                                        <td className="td">
+                                        <td className="td damageTd">
+                                            <input
+                                                type="text"
+                                                value={weapon.damage || ''}
+                                                onChange={e => handleWeaponChange(index, 'damage', e.target.value)}
+                                                className="tableInput"
+                                                placeholder="Dano"
+                                            />
                                             <button
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     rollDamageDice(index);
                                                 }}
-                                                className="diceButton"
+                                                className="diceButtonSmall"
                                                 title="Rolar Dano"
                                             >
                                                 <img src="/images/unnamed(1).png" alt="Rolar Dado" className="damageRollImg24" />
                                             </button>
-                                        </td>
-                                        <td className="td">
-                                            <input
-                                                type="number"
-                                                min={0}
-                                                value={weapon.currentAmmo || 0}
-                                                onChange={e => handleWeaponChange(index, 'currentAmmo', Number(e.target.value))}
-                                                className="tableInput"
-                                                placeholder="Atual"
-                                            />
-                                        </td>
-                                        <td className="td">
-                                            <input
-                                                type="number"
-                                                min={0}
-                                                value={weapon.maxAmmo || 0}
-                                                onChange={e => handleWeaponChange(index, 'maxAmmo', Number(e.target.value))}
-                                                className="tableInput"
-                                                placeholder="Máx"
-                                            />
                                         </td>
                                         <td className="td">
                                             <input
@@ -1617,138 +1687,452 @@ const CharacterSheet = () => {
                     </>
                 )}
 
-                {/* Mágicka */}
+                {/* Habilidades */}
                 <section className="section">
-                    <div className="sectionHeader">Mágicka</div>
+                    <div className="sectionHeader">Habilidades</div>
                     <div className="sectionBorder">
                         <div className="skillsContainer">
                             <div className="skillItem">
-                                <label className="label">Posses Sangria</label>
                                 <textarea
                                     value={character.notes?.treasuredPossessions || ''}
                                     onChange={e => setCharacter(prev => ({
                                         ...prev,
                                         notes: { ...prev.notes, treasuredPossessions: e.target.value }
                                     }))}
-                                    className="textarea skillTextarea"
-                                    placeholder="Posses preciosas..."
+                                    className="textarea habilidadesTextarea"
+                                    placeholder="Habilidades..."
                                 />
                             </div>
                             <div className="skillItem">
-                                <label className="label">Rituais</label>
                                 <textarea
                                     value={character.notes?.rituals || ''}
                                     onChange={e => setCharacter(prev => ({
                                         ...prev,
                                         notes: { ...prev.notes, rituals: e.target.value }
                                     }))}
-                                    className="textarea skillTextarea"
-                                    placeholder="Rituais..."
+                                    className="textarea habilidadesTextarea"
+                                    placeholder="Habilidades..."
                                 />
                             </div>
                         </div>
+
                     </div>
+
                 </section>
+
+
+
+                {/* Mágicka */}
+                <section className="section">
+                    <div className="sectionHeader">Mágicka</div>
+                        <div className="sectionBorder">
+                            <div className="magicContainer">
+                                {/* Truques (Level 0) */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Truques</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">0</div>
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level0?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level0', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea0"
+                                        placeholder="Truques..."
+                                    />
+                                </div>
+
+                                {/* Level 1 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">1</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level1?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level1', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level1?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level1', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level1?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level1', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea1"
+                                        placeholder="Magias de nível 1..."
+                                    />
+                                </div>
+
+                                {/* Level 2 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível </span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">2</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level2?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level2', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level2?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level2', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level2?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level2', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea2"
+                                        placeholder="Magias de nível 2..."
+                                    />
+                                </div>
+
+                                {/* Level 3 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">3</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level3?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level3', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level3?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level3', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level3?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level3', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea3"
+                                        placeholder="Magias de nível 3..."
+                                    />
+                                </div>
+
+                                {/* Level 4 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">4</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level4?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level4', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level4?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level4', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level4?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level4', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea4"
+                                        placeholder="Magias de nível 4..."
+                                    />
+                                </div>
+
+                                {/* Level 5 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">5</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level5?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level5', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level5?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level5', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level5?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level5', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea5"
+                                        placeholder="Magias de nível 5..."
+                                    />
+                                </div>
+
+                                {/* Level 6 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">6</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level6?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level6', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level6?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level6', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level6?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level6', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea6"
+                                        placeholder="Magias de nível 6..."
+                                    />
+                                </div>
+
+                                {/* Level 7 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">7</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level7?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level7', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level7?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level7', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level7?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level7', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea7"
+                                        placeholder="Magias de nível 7..."
+                                    />
+                                </div>
+
+                                {/* Level 8 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">8</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level8?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level8', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level8?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level8', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level8?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level8', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea8"
+                                        placeholder="Magias de nível 8..."
+                                    />
+                                </div>
+
+                                {/* Level 9 */}
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Magias de Nível</span>
+                                        <div className="truquesLevelContainer">
+                                            <div className="truquesLevelCircle">9</div>
+                                        </div>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level9?.used || 0}
+                                                onChange={e => handleMagicSlotsChange('level9', 'used', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Usados"
+                                            />
+                                            <span>/</span>
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.magicSlots?.level9?.max || 0}
+                                                onChange={e => handleMagicSlotsChange('level9', 'max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.magicSlots?.level9?.spells || ''}
+                                        onChange={e => handleMagicSlotsChange('level9', 'spells', e.target.value)}
+                                        className="textarea skillTextarea truquesTextarea truquesTextarea9"
+                                        placeholder="Magias de nível 9..."
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+               
 
                 {/* Detalhes Pessoais */}
                 {!isNPCOrMonster && (
-                <section className="section">
-                    <div className="sectionHeader">Informações Pessoais</div>
-                    <div className="flexRow">
-                        <div className="flexCol">
-                            <label className="label">Descrição Pessoal</label>
-                            <textarea
-                                value={character.basicInfo.personalDescription || ''}
-                                onChange={e => handleBasicInfoChange('personalDescription', e.target.value)}
-                                className="textarea textarea80x400"
-                                placeholder="Descreva o personagem..."
-                            />
+                    <section className="section">
+                        <div className="sectionHeader">Informações Pessoais</div>
+                        <div className="flexRow">
+                            <div className="flexCol">
+                                <label className="label">Descrição Pessoal</label>
+                                <textarea
+                                    value={character.basicInfo.personalDescription || ''}
+                                    onChange={e => handleBasicInfoChange('personalDescription', e.target.value)}
+                                    className="personalDescriptionTextarea"
+                                    placeholder="Descreva o personagem..."
+                                />
 
-                            <label className="label">Família e Amigos</label>
-                            <textarea
-                                value={character.basicInfo.familyAndFriends || ''}
-                                onChange={e => handleBasicInfoChange('familyAndFriends', e.target.value)}
-                                className="textarea textarea80x400"
-                                placeholder="Família, amigos, contatos..."
-                            />
+                                <label className="label">Família e Amigos</label>
+                                <textarea
+                                    value={character.basicInfo.familyAndFriends || ''}
+                                    onChange={e => handleBasicInfoChange('familyAndFriends', e.target.value)}
+                                    className="familyAndFriendsTextarea"
+                                    placeholder="Família, amigos, contatos..."
+                                />
+                            </div>
+
+                            <div className="flexCol">
+                                <label className="label">Episódios de Insanidade</label>
+                                <textarea
+                                    value={character.basicInfo.insanityEpisodes || ''}
+                                    onChange={e => handleBasicInfoChange('insanityEpisodes', e.target.value)}
+                                    className="insanityEpisodesTextarea"
+                                    placeholder="Detalhes sobre insanidade..."
+                                />
+
+                                <label className="label">Ferimentos</label>
+                                <textarea
+                                    value={character.basicInfo.wounds || ''}
+                                    onChange={e => handleBasicInfoChange('wounds', e.target.value)}
+                                    className="woundsTextarea"
+                                    placeholder="Ferimentos e lesões..."
+                                />
+
+
+
+                            </div>
                         </div>
-
-                        <div className="flexCol">
-                            <label className="label">Episódios de Insanidade</label>
-                            <textarea
-                                value={character.basicInfo.insanityEpisodes || ''}
-                                onChange={e => handleBasicInfoChange('insanityEpisodes', e.target.value)}
-                                className="textarea textarea80x400"
-                                placeholder="Detalhes sobre insanidade..."
-                            />
-
-                            <label className="label">Ferimentos</label>
-                            <textarea
-                                value={character.basicInfo.wounds || ''}
-                                onChange={e => handleBasicInfoChange('wounds', e.target.value)}
-                                className="textarea textarea80x400"
-                                placeholder="Ferimentos e lesões..."
-                            />
-                        </div>
-                    </div>
-                </section>
+                    </section>
                 )}
 
                 {/* História do Personagem */}
-                <section className="section">
-                    <div className="sectionHeader">História do Personagem</div>
-                    <label className="label">História do Personagem</label>
-                    <textarea
-                        value={character.history || ''}
-                        onChange={e => setCharacter(prev => ({ ...prev, history: e.target.value }))}
-                        className="historyTextarea"
-                        placeholder="História do personagem..."
-                    />
-                    <label className="label">Notas Gerais</label>
-                    <textarea
-                        value={character.notes?.generalNotes || ''}
-                        onChange={e => setCharacter(prev => ({
-                            ...prev,
-                            notes: { ...prev.notes, generalNotes: e.target.value }
-                        }))}
-                        className="generalNotesTextarea"
-                        placeholder="Notas gerais..."
-                    />
-                </section>
+                {!isMonster && (
+                    <section className="section">
+                        <div className="sectionHeader">História do Personagem</div>
+                        <label className="label">História do Personagem</label>
+                        <textarea
+                            value={character.history || ''}
+                            onChange={e => setCharacter(prev => ({ ...prev, history: e.target.value }))}
+                            className="historyTextarea"
+                            placeholder="História do personagem..."
+                        />
+                        <label className="label">Notas Gerais</label>
+                        <textarea
+                            value={character.notes?.generalNotes || ''}
+                            onChange={e => setCharacter(prev => ({
+                                ...prev,
+                                notes: { ...prev.notes, generalNotes: e.target.value }
+                            }))}
+                            className="generalNotesTextarea"
+                            placeholder="Notas gerais..."
+                        />
 
-
-
-                {/* Renda e Economias */}
-                {!isNPCOrMonster && (
-                <section className="section">
-                    <div className="sectionHeader">Renda e Economias</div>
-                    <div className="sectionBorder">
-                        <div className="skillsContainer">
-                            <div className="skillItem">
-                                <label className="label">Posses</label>
-                                <textarea
-                                    value={character.incomeAndEconomy?.possessions || ''}
-                                    onChange={e => handleIncomeChange('possessions', e.target.value)}
-                                    className="textarea skillTextarea"
-                                    placeholder="Lista de posses..."
-                                />
-                            </div>
-                            <div className="skillItem">
-                                <label className="label">Imóveis</label>
-                                <textarea
-                                    value={character.incomeAndEconomy?.properties || ''}
-                                    onChange={e => handleIncomeChange('properties', e.target.value)}
-                                    className="textarea skillTextarea"
-                                    placeholder="Imóveis e propriedades..."
-                                />
-                            </div>
-                        </div>
-                    </div>
-                </section>
+                    </section>
                 )}
-
-
-
 
                 {/* Dados */}
                 <section className="section">
@@ -1794,11 +2178,6 @@ const CharacterSheet = () => {
                                 <div className="modalDescription">(Rolagem de dado para {rollName})</div>
                                 <div className="diceResults">
                                     <div className="diceBoxWhite">{rollDie}</div>
-                                    <div className="diceBoxBlack">{rollModifier}</div>
-                                    {douradoRoll > 0 && <div className="diceBoxYellow">{douradoRoll}</div>}
-                                </div>
-                                <div className="successIndicator">
-                                    Total: {rollValue} - {isSuccess ? '✓' : '✗'} {successLevel}
                                 </div>
                                 {isSkillRoll && (
                                     <div className="subSkills">

@@ -36,12 +36,12 @@ const PlayerDashboard = () => {
         basicInfo: {
           name: 'Novo Personagem',
           player: user.username,
-          role: '',
-          specialty: '',
-          circle: '',
+          race: '',
+          class: '',
+          background: '',
           plan: '',
           religion: '',
-          birthplace: '',
+          alignment: '',
           characterImage: ''
         },
         body: {
@@ -64,9 +64,9 @@ const PlayerDashboard = () => {
           luck: 0
         },
         skills: {
-          roleskills: '',
-          specialtyskills: '',
-          circleskills: ''
+          raceskills: '',
+          classskills: '',
+          backgroundskills: ''
         },
         equipment: [],
         notes: {
@@ -146,7 +146,7 @@ const PlayerDashboard = () => {
                   <FileText size={16} className="character-name-icon" />
                   {char.basicInfo.name}
                 </td>
-                <td>{char.basicInfo.role || '-'}</td>
+                <td>{char.basicInfo.race || '-'}</td>
                 <td>
                   {new Date(char.updatedAt).toLocaleDateString()} {new Date(char.updatedAt).toLocaleTimeString()}
                 </td>

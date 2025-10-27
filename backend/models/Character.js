@@ -51,12 +51,12 @@ const characterSchema = new mongoose.Schema({
   basicInfo: {
     name: { type: String, required: true },
     player: { type: String, required: true },
-    role: { type: String, default: '' },
-    specialty: { type: String, default: '' },
-    circle: { type: String, default: '' },
+    race: { type: String, default: '' },
+    class: { type: String, default: '' },
+    background: { type: String, default: '' },
     plan: { type: String, default: '' },
     level: { type: Number, default: 0 },
-    birthplace: { type: String, default: '' },
+    alignment: { type: String, default: '' },
     characterImage: { type: String, default: '' }, // URL da imagem
     personalDescription: { type: String, default: '' },
     familyAndFriends: { type: String, default: '' },
@@ -64,84 +64,97 @@ const characterSchema = new mongoose.Schema({
     wounds: { type: String, default: '' }
   },
   
-  // Características (atributos principais)
-  body: {
-    move: { type: Number, default: 0 },
-    moveDourado: { type: Boolean, default: false },
-    attack: { type: Number, default: 0 },
-    attackDourado: { type: Boolean, default: false },
-    control: { type: Number, default: 0 },
-    controlDourado: { type: Boolean, default: false },
-    maxImpulsos: { type: Number, default: 1 },
-    impulsos: [{ type: Boolean, default: false }],
-    acoes: [{
-      dourado: { type: Boolean, default: false },
-      acoes: [{ type: Boolean, default: false }]
-    }],
-    resistencias: [{ type: Boolean, default: false }]
-  },
-  cunning: {
-    sway: { type: Number, default: 0 },
-    swayDourado: { type: Boolean, default: false },
-    read: { type: Number, default: 0 },
-    readDourado: { type: Boolean, default: false },
-    hide: { type: Number, default: 0 },
-    hideDourado: { type: Boolean, default: false },
-    maxImpulsos: { type: Number, default: 1 },
-    impulsos: [{ type: Boolean, default: false }],
-    acoes: [{
-      dourado: { type: Boolean, default: false },
-      acoes: [{ type: Boolean, default: false }]
-    }],
-    resistencias: [{ type: Boolean, default: false }]
-  },
-  intuition: {
-    search: { type: Number, default: 0 },
-    searchDourado: { type: Boolean, default: false },
-    focus: { type: Number, default: 0 },
-    focusDourado: { type: Boolean, default: false },
-    sense: { type: Number, default: 0 },
-    senseDourado: { type: Boolean, default: false },
-    maxImpulsos: { type: Number, default: 1 },
-    impulsos: [{ type: Boolean, default: false }],
-    acoes: [{
-      dourado: { type: Boolean, default: false },
-      acoes: [{ type: Boolean, default: false }]
-    }],
-    resistencias: [{ type: Boolean, default: false }]
+  // Atributos D&D
+  attributes: {
+    strength: {
+      score: { type: Number, default: 10 },
+      modifier: { type: Number, default: 0 },
+      savingThrow: { type: Number, default: 0 }
+    },
+    dexterity: {
+      score: { type: Number, default: 10 },
+      modifier: { type: Number, default: 0 },
+      savingThrow: { type: Number, default: 0 }
+    },
+    constitution: {
+      score: { type: Number, default: 10 },
+      modifier: { type: Number, default: 0 },
+      savingThrow: { type: Number, default: 0 }
+    },
+    intelligence: {
+      score: { type: Number, default: 10 },
+      modifier: { type: Number, default: 0 },
+      savingThrow: { type: Number, default: 0 }
+    },
+    wisdom: {
+      score: { type: Number, default: 10 },
+      modifier: { type: Number, default: 0 },
+      savingThrow: { type: Number, default: 0 }
+    },
+    charisma: {
+      score: { type: Number, default: 10 },
+      modifier: { type: Number, default: 0 },
+      savingThrow: { type: Number, default: 0 }
+    }
   },
   
   // Status do personagem
   status: {
-    marks: {
-      body: {
-        maxMarks: { type: Number, default: 0 },
-        marks: [{ type: Boolean, default: false }]
-      },
-      mind: {
-        maxMarks: { type: Number, default: 0 },
-        marks: [{ type: Boolean, default: false }]
-      },
-      blood: {
-        maxMarks: { type: Number, default: 0 },
-        marks: [{ type: Boolean, default: false }]
-      }
+    health: {
+      current: { type: Number, default: 10 },
+      max: { type: Number, default: 10 },
+      temporary: { type: Number, default: 0 }
     },
-    scars: {
-      type: [{
-        checked: { type: Boolean, default: false },
-        description: { type: String, default: '' }
-      }],
-      default: [{checked: false, description: ''}, {checked: false, description: ''}, {checked: false, description: ''}]
+    healthDice: {
+      total: { type: Number, default: 0 },
+      max: { type: Number, default: 0 }
+    },
+    deathSaves: {
+      success: {
+        min: { type: Number, default: 0 },
+        max: { type: Number, default: 3 }
+      },
+      failure: {
+        min: { type: Number, default: 0 },
+        max: { type: Number, default: 3 }
+      }
     },
     luck: { type: Number, default: 0 }
   },
+
+  // Inspiração
+  inspiration: { type: Number, default: 0 },
+
+  // Bônus de Proficiência
+  proficiencyBonus: { type: Number, default: 0 },
+
+  // Combate
+  combat: {
+    defense: { type: Number, default: 0 },
+    initiative: { type: Number, default: 0 },
+    movement: { type: Number, default: 0 }
+  },
   
-  // Habilidades do personagem
+  // Perícias do personagem
   skills: {
-    roleskills: { type: String, default: '' },
-    specialtyskills: { type: String, default: '' },
-    circleskills: { type: String, default: '' }
+    acrobacia: { value: { type: Number, default: 0 } },
+    arcanismo: { value: { type: Number, default: 0 } },
+    atletismo: { value: { type: Number, default: 0 } },
+    atuacao: { value: { type: Number, default: 0 } },
+    blefar: { value: { type: Number, default: 0 } },
+    furtividade: { value: { type: Number, default: 0 } },
+    historia: { value: { type: Number, default: 0 } },
+    intimidacao: { value: { type: Number, default: 0 } },
+    intuicao: { value: { type: Number, default: 0 } },
+    investigacao: { value: { type: Number, default: 0 } },
+    lidarComAnimais: { value: { type: Number, default: 0 } },
+    medicina: { value: { type: Number, default: 0 } },
+    natureza: { value: { type: Number, default: 0 } },
+    percepcao: { value: { type: Number, default: 0 } },
+    persuasao: { value: { type: Number, default: 0 } },
+    prestidigitacao: { value: { type: Number, default: 0 } },
+    religiao: { value: { type: Number, default: 0 } },
+    sobrevivencia: { value: { type: Number, default: 0 } }
   },
   
   // Equipamentos
@@ -166,10 +179,58 @@ const characterSchema = new mongoose.Schema({
   // História do personagem
   history: { type: String, default: '' },
 
-  // Renda e economias
-  incomeAndEconomy: {
-    possessions: { type: String, default: '' },
-    properties: { type: String, default: '' }
+  // Slots de magia
+  magicSlots: {
+    level0: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level1: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level2: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level3: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level4: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level5: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level6: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level7: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level8: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    },
+    level9: {
+      used: { type: Number, default: 0 },
+      max: { type: Number, default: 0 },
+      spells: { type: String, default: '' }
+    }
   },
 
   // Controle de versão

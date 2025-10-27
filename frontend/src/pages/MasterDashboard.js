@@ -211,7 +211,7 @@ const MasterDashboard = () => {
                     {level}
                   </div>
                   <span className="master-dashboard-card-type">
-                    {character.basicInfo?.specialty || 'Sem papel'}
+                    {character.basicInfo?.class || 'Sem classe'}
                   </span>
                 </div>
                 <div className="master-dashboard-card-buttons">
