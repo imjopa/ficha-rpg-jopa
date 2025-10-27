@@ -235,7 +235,8 @@ const characterSchema = new mongoose.Schema({
 
   // Controle de versão
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now }
+  updatedAt: { type: Date, default: Date.now },
+  lastAccessed: { type: Date, default: Date.now }
 });
 
 // Atualizar campo updatedAt sempre que modificar

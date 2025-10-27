@@ -15,11 +15,13 @@ const MasterDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const isRecentUpdate = (updatedAt) => {
+  const isRecentUpdate = (updatedAt, lastAccessed) => {
     const now = new Date();
-    const updateDate = new Date(updatedAt);
     const twentyFourHoursAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-    return updateDate > twentyFourHoursAgo;
+    const updateDate = new Date(updatedAt);
+    const accessDate = lastAccessed ? new Date(lastAccessed) : null;
+    // Consider active if updated recently or accessed recently
+    return updateDate > twentyFourHoursAgo || (accessDate && accessDate > twentyFourHoursAgo);
   };
 
   // Buscar todas as fichas do backend
@@ -178,7 +180,7 @@ const MasterDashboard = () => {
             const name = character.basicInfo?.name || 'Sem nome';
             const player = character.owner?.username || 'Desconhecido';
             const level = character.basicInfo?.level || 0;
-            const isRecent = isRecentUpdate(character.updatedAt);
+            const isRecent = isRecentUpdate(character.updatedAt, character.lastAccessed);
             const imageSrc = character.image || defaultSilhouette;
 
             return (

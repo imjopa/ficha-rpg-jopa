@@ -46,17 +46,20 @@ router.get('/:id', auth, async (req, res) => {
   try {
     const character = await Character.findById(req.params.id)
       .populate('owner', 'username email');
-    
+
     if (!character) {
       return res.status(404).json({ message: 'Ficha não encontrada' });
     }
-    
+
     // Verificar permissão: dono da ficha ou mestre
-    if (character.owner._id.toString() !== req.user._id.toString() && 
+    if (character.owner._id.toString() !== req.user._id.toString() &&
         req.user.role !== 'master') {
       return res.status(403).json({ message: 'Acesso negado' });
     }
-    
+
+    // Atualizar lastAccessed
+    await Character.findByIdAndUpdate(req.params.id, { lastAccessed: new Date() });
+
     res.json(character);
   } catch (error) {
     res.status(500).json({ message: 'Erro ao buscar ficha', error: error.message });
@@ -67,23 +70,23 @@ router.get('/:id', auth, async (req, res) => {
 router.put('/:id', auth, async (req, res) => {
   try {
     const character = await Character.findById(req.params.id);
-    
+
     if (!character) {
       return res.status(404).json({ message: 'Ficha não encontrada' });
     }
-    
+
     // Verificar permissão: dono da ficha ou mestre
-    if (character.owner.toString() !== req.user._id.toString() && 
+    if (character.owner.toString() !== req.user._id.toString() &&
         req.user.role !== 'master') {
       return res.status(403).json({ message: 'Acesso negado' });
     }
-    
+
     const updatedCharacter = await Character.findByIdAndUpdate(
       req.params.id,
-      req.body,
+      { ...req.body, lastAccessed: new Date() },
       { new: true }
     ).populate('owner', 'username email');
-    
+
     res.json(updatedCharacter);
   } catch (error) {
     res.status(500).json({ message: 'Erro ao atualizar ficha', error: error.message });

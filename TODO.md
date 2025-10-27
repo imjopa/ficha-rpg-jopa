@@ -1,13 +1,5 @@
-# TODO: Update Dice Roll History with Categories
+# TODO: Modify Active/Idle Status
 
-## Tasks
-- [ ] Modify handleRollD20 in CharacterSheet.js to accept a category parameter (default 'ATRIBUTOS')
-- [ ] Update dice button in attributes section to pass 'ATRIBUTOS' to handleRollD20
-- [ ] Update dice button in combat section to pass 'COMBATE' to handleRollD20
-- [ ] Add category field to roll objects in handleRollLuck: 'Atributos e Perícias'
-- [ ] Add category field to roll objects in handleRollD20: based on parameter
-- [ ] Add category field to roll objects in rollDice: 'Geral'
-- [ ] Add category field to roll objects in rollDamageDice: 'Dano'
-- [ ] Update DiceHistory component to display dice icon and category mark next to each history item
-- [ ] Update DiceRoller.css to style the new dice icon and category elements
-- [ ] Test dice rolling in different sections to ensure categories are correctly assigned and displayed
+- [x] Add lastAccessed field to Character model
+- [x] Update characters.js to set lastAccessed on access (GET and PUT)
+- [x] Modify MasterDashboard.js logic to check both updatedAt and lastAccessed

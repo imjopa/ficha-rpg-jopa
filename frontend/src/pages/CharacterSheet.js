@@ -441,13 +441,14 @@ const CharacterSheet = () => {
             }
 
             const newRoll = {
+                rollType: 'damage',
+                rollName: weapon.name || 'Arma',
                 diceType: weapon.damage,
                 numDice: rolls.length,
                 total,
                 rolls,
                 constants,
-                isDamage: true,
-                description: `Total: ${total}`,
+                breakdown: [`Rolou ${rolls.length}x dados: ${rolls.join(', ')}`, ...(constants.length > 0 ? [`Constantes: ${constants.join(', ')}`] : [])],
                 timestamp: new Date().toLocaleString()
             };
 
@@ -473,10 +474,13 @@ const CharacterSheet = () => {
             }
 
             const newRoll = {
+                rollType: 'general',
+                rollName: `${numDice}x${selectedDice}`,
                 diceType: selectedDice,
                 numDice,
                 total,
                 rolls,
+                breakdown: [`Rolou ${numDice}x${selectedDice}: ${rolls.join(', ')}`],
                 timestamp: new Date().toLocaleString()
             };
 
