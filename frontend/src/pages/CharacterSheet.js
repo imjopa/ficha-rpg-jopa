@@ -28,6 +28,51 @@ const diceTypes = [
     { label: 'd100', sides: 100 }
 ];
 
+const getModifier = (score) => {
+    if (score === 1) return -5;
+    if (score >= 2 && score <= 3) return -4;
+    if (score >= 4 && score <= 5) return -3;
+    if (score >= 6 && score <= 7) return -2;
+    if (score >= 8 && score <= 9) return -1;
+    if (score >= 10 && score <= 11) return 0;
+    if (score >= 12 && score <= 13) return 1;
+    if (score >= 14 && score <= 15) return 2;
+    if (score >= 16 && score <= 17) return 3;
+    if (score >= 18 && score <= 19) return 4;
+    if (score >= 20 && score <= 21) return 5;
+    return 5 + Math.floor((score - 21) / 2);
+};
+
+const attributeSkills = {
+    strength: ['atletismo'],
+    dexterity: ['acrobacia', 'furtividade', 'prestidigitacao'],
+    constitution: [],
+    intelligence: ['arcanismo', 'historia', 'investigacao', 'natureza', 'religiao'],
+    wisdom: ['intuicao', 'lidarComAnimais', 'medicina', 'percepcao', 'sobrevivencia'],
+    charisma: ['atuacao', 'blefar', 'intimidacao', 'persuasao']
+};
+
+const skillToAttribute = {
+    atletismo: 'strength',
+    acrobacia: 'dexterity',
+    furtividade: 'dexterity',
+    prestidigitacao: 'dexterity',
+    arcanismo: 'intelligence',
+    historia: 'intelligence',
+    investigacao: 'intelligence',
+    natureza: 'intelligence',
+    religiao: 'intelligence',
+    intuicao: 'wisdom',
+    lidarComAnimais: 'wisdom',
+    medicina: 'wisdom',
+    percepcao: 'wisdom',
+    sobrevivencia: 'wisdom',
+    atuacao: 'charisma',
+    blefar: 'charisma',
+    intimidacao: 'charisma',
+    persuasao: 'charisma'
+};
+
 
 const CharacterSheet = () => {
     const { id } = useParams();
@@ -335,16 +380,43 @@ const CharacterSheet = () => {
     };
 
     const handleAttributeChange = (attribute, field, value) => {
-        setCharacter(prev => ({
-            ...prev,
-            attributes: {
+        setCharacter(prev => {
+            const newAttributes = {
                 ...prev.attributes,
                 [attribute]: {
                     ...prev.attributes[attribute],
                     [field]: value,
                 },
-            },
-        }));
+            };
+
+            // If score changed, calculate modifier
+            if (field === 'score') {
+                const score = Number(value);
+                const modifier = getModifier(score);
+                newAttributes[attribute].modifier = modifier;
+
+                // Update skills for this attribute
+                const newSkills = { ...prev.skills };
+                const skillsForAttr = attributeSkills[attribute] || [];
+                skillsForAttr.forEach(skill => {
+                    if (newSkills[skill]) {
+                        const proficiencyBonus = newSkills[skill].checked ? (prev.proficiencyBonus || 0) : 0;
+                        newSkills[skill].value = modifier + proficiencyBonus;
+                    }
+                });
+
+                return {
+                    ...prev,
+                    attributes: newAttributes,
+                    skills: newSkills,
+                };
+            }
+
+            return {
+                ...prev,
+                attributes: newAttributes,
+            };
+        });
     };
 
 
@@ -932,7 +1004,7 @@ const CharacterSheet = () => {
                                         min="-5"
                                         max="10"
                                         value={character.attributes?.strength?.modifier || 0}
-                                        onChange={e => handleAttributeChange('strength', 'modifier', Number(e.target.value))}
+                                        readOnly
                                         className="smallInputmd"
                                         placeholder="Mod"
                                     />
@@ -998,7 +1070,7 @@ const CharacterSheet = () => {
                                         min="-5"
                                         max="10"
                                         value={character.attributes?.dexterity?.modifier || 0}
-                                        onChange={e => handleAttributeChange('dexterity', 'modifier', Number(e.target.value))}
+                                        readOnly
                                         className="smallInputmd"
                                         placeholder="Mod"
                                     />
@@ -1128,7 +1200,7 @@ const CharacterSheet = () => {
                                         min="-5"
                                         max="10"
                                         value={character.attributes?.constitution?.modifier || 0}
-                                        onChange={e => handleAttributeChange('constitution', 'modifier', Number(e.target.value))}
+                                        readOnly
                                         className="smallInputmd"
                                         placeholder="Mod"
                                     />
@@ -1162,7 +1234,7 @@ const CharacterSheet = () => {
                                         min="-5"
                                         max="10"
                                         value={character.attributes?.intelligence?.modifier || 0}
-                                        onChange={e => handleAttributeChange('intelligence', 'modifier', Number(e.target.value))}
+                                        readOnly
                                         className="smallInputmd"
                                         placeholder="Mod"
                                     />
@@ -1356,7 +1428,7 @@ const CharacterSheet = () => {
                                         min="-5"
                                         max="10"
                                         value={character.attributes?.wisdom?.modifier || 0}
-                                        onChange={e => handleAttributeChange('wisdom', 'modifier', Number(e.target.value))}
+                                        readOnly
                                         className="smallInputmd"
                                         placeholder="Mod"
                                     />
@@ -1550,7 +1622,7 @@ const CharacterSheet = () => {
                                         min="-5"
                                         max="10"
                                         value={character.attributes?.charisma?.modifier || 0}
-                                        onChange={e => handleAttributeChange('charisma', 'modifier', Number(e.target.value))}
+                                        readOnly
                                         className="smallInputmd"
                                         placeholder="Mod"
                                     />
