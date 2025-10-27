@@ -110,14 +110,8 @@ const characterSchema = new mongoose.Schema({
       max: { type: Number, default: 0 }
     },
     deathSaves: {
-      success: {
-        min: { type: Number, default: 0 },
-        max: { type: Number, default: 3 }
-      },
-      failure: {
-        min: { type: Number, default: 0 },
-        max: { type: Number, default: 3 }
-      }
+      success: { type: Number, default: 0 },
+      failure: { type: Number, default: 0 }
     },
     luck: { type: Number, default: 0 }
   },

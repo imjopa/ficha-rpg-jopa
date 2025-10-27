@@ -165,14 +165,8 @@ const CharacterSheet = () => {
                             max: charData.status?.healthDice?.max || 0
                         },
                         deathSaves: {
-                            success: {
-                                min: charData.status?.deathSaves?.success?.min || 0,
-                                max: charData.status?.deathSaves?.success?.max || 3
-                            },
-                            failure: {
-                                min: charData.status?.deathSaves?.failure?.min || 0,
-                                max: charData.status?.deathSaves?.failure?.max || 3
-                            }
+                            success: charData.status?.deathSaves?.success || 0,
+                            failure: charData.status?.deathSaves?.failure || 0
                         },
 
                     },
@@ -819,61 +813,39 @@ const CharacterSheet = () => {
                                     <div className="deathSavesInputs">
                                         <div className="deathSaveRow">
                                             <span className="deathSaveType">Sucesso</span>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                max="3"
-                                                value={character.status?.deathSaves?.success?.min || 0}
-                                                onChange={e => {
-                                                    const newStatus = { ...character.status };
-                                                    if (!newStatus.deathSaves) {
-                                                        newStatus.deathSaves = {
-                                                            success: { min: 0, max: 3 },
-                                                            failure: { min: 0, max: 3 }
-                                                        };
-                                                    }
-                                                    newStatus.deathSaves = { ...newStatus.deathSaves, success: { ...newStatus.deathSaves.success, min: Number(e.target.value) } };
-                                                    setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                }}
-                                                className="smallInput"
-                                                placeholder="0"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                value={character.status?.deathSaves?.success?.max || 3}
-                                                readOnly
-                                                className="smallInput"
-                                            />
+                                            {[0, 1, 2].map(index => (
+                                                <input
+                                                    key={index}
+                                                    type="checkbox"
+                                                    className="checkboxInput success"
+                                                    checked={(character.status?.deathSaves?.success || 0) > index}
+                                                    onChange={e => {
+                                                        const newStatus = { ...character.status };
+                                                        const currentSuccess = newStatus.deathSaves?.success || 0;
+                                                        const newSuccess = e.target.checked ? currentSuccess + 1 : currentSuccess - 1;
+                                                        newStatus.deathSaves = { ...newStatus.deathSaves, success: Math.max(0, Math.min(3, newSuccess)) };
+                                                        setCharacter(prev => ({ ...prev, status: newStatus }));
+                                                    }}
+                                                />
+                                            ))}
                                         </div>
                                         <div className="deathSaveRow">
                                             <span className="deathSaveType">Fracasso</span>
-                                            <input
-                                                type="number"
-                                                min="0"
-                                                max="3"
-                                                value={character.status?.deathSaves?.failure?.min || 0}
-                                                onChange={e => {
-                                                    const newStatus = { ...character.status };
-                                                    if (!newStatus.deathSaves) {
-                                                        newStatus.deathSaves = {
-                                                            success: { min: 0, max: 3 },
-                                                            failure: { min: 0, max: 3 }
-                                                        };
-                                                    }
-                                                    newStatus.deathSaves = { ...newStatus.deathSaves, failure: { ...newStatus.deathSaves.failure, min: Number(e.target.value) } };
-                                                    setCharacter(prev => ({ ...prev, status: newStatus }));
-                                                }}
-                                                className="smallInput"
-                                                placeholder="0"
-                                            />
-                                            <span>/</span>
-                                            <input
-                                                type="number"
-                                                value={character.status?.deathSaves?.failure?.max || 3}
-                                                readOnly
-                                                className="smallInput"
-                                            />
+                                            {[0, 1, 2].map(index => (
+                                                <input
+                                                    key={index}
+                                                    type="checkbox"
+                                                    className="checkboxInput"
+                                                    checked={(character.status?.deathSaves?.failure || 0) > index}
+                                                    onChange={e => {
+                                                        const newStatus = { ...character.status };
+                                                        const currentFailure = newStatus.deathSaves?.failure || 0;
+                                                        const newFailure = e.target.checked ? currentFailure + 1 : currentFailure - 1;
+                                                        newStatus.deathSaves = { ...newStatus.deathSaves, failure: Math.max(0, Math.min(3, newFailure)) };
+                                                        setCharacter(prev => ({ ...prev, status: newStatus }));
+                                                    }}
+                                                />
+                                            ))}
                                         </div>
                                     </div>
                                 </div>
