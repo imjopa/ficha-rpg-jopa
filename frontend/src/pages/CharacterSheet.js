@@ -408,6 +408,7 @@ const CharacterSheet = () => {
                 }
             }));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier, character?.magicInfo?.keyAbility]);
 
     // Handlers para atualizar campos aninhados
