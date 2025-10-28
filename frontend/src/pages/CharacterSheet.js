@@ -2256,13 +2256,18 @@ const CharacterSheet = () => {
                                                 className="tableInput"
                                             >
                                                 <option value="">Selecione o tipo</option>
-                                                <option value="Contundente">Contundente</option>
-                                                <option value="Perfurante">Perfurante</option>
-                                                <option value="Cortante">Cortante</option>
                                                 <option value="Ácido">Ácido</option>
+                                                <option value="Contundente">Contundente</option>
+                                                <option value="Cortante">Cortante</option>
+                                                <option value="Elétrico">Elétrico</option>
+                                                <option value="Gélido">Gélido</option>
+                                                <option value="ígneo">Ígneo</option>
                                                 <option value="Mágico">Mágico</option>
                                                 <option value="Necrótico">Necrótico</option>
+                                                <option value="Perfurante">Perfurante</option>
                                                 <option value="Psíquico">Psíquico</option>
+                                                <option value="Radiante">Radiante</option>
+                                                <option value="Trovejante">Trovejante</option>
                                                 <option value="Venenoso">Venenoso</option>
                                             </select>
                                         </td>
