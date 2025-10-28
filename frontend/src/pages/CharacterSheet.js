@@ -367,7 +367,7 @@ const CharacterSheet = () => {
 
     useEffect(() => {
         setImagePreview(character?.image || '');
-    }, [character]);
+    }, [character?.image]);
 
     // Recalculate skills when proficiencyBonus changes
     useEffect(() => {
@@ -407,7 +407,7 @@ const CharacterSheet = () => {
                 }
             }));
         }
-    }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier]);
+    }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier, character?.magicInfo?.keyAbility, character]);
 
     // Handlers para atualizar campos aninhados
     const handleBasicInfoChange = (field, value) => {
@@ -2963,7 +2963,7 @@ const CharacterSheet = () => {
                             </div>
 
                             <div className="flexCol">
-                                <label className="label">Episódios de Insanidade</label>
+                                <label className="label">Tesouros</label>
                                 <textarea
                                     value={character.basicInfo.insanityEpisodes || ''}
                                     onChange={e => handleBasicInfoChange('insanityEpisodes', e.target.value)}
