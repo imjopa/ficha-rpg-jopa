@@ -387,7 +387,7 @@ const CharacterSheet = () => {
                 return { ...prev, skills: newSkills };
             });
         }
-    }, [character?.proficiencyBonus, character]);
+    }, [character?.proficiencyBonus]);
 
     // Update magic attack bonus when attributes change
     useEffect(() => {
@@ -407,7 +407,7 @@ const CharacterSheet = () => {
                 }
             }));
         }
-    }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier, character?.magicInfo?.keyAbility, character]);
+    }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier, character?.magicInfo?.keyAbility]);
 
     // Handlers para atualizar campos aninhados
     const handleBasicInfoChange = (field, value) => {
