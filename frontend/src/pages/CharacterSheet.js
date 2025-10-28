@@ -43,6 +43,15 @@ const getModifier = (score) => {
     return 5 + Math.floor((score - 21) / 2);
 };
 
+const getProficiencyBonus = (level) => {
+    if (level >= 1 && level <= 4) return 2;
+    if (level >= 5 && level <= 8) return 3;
+    if (level >= 9 && level <= 12) return 4;
+    if (level >= 13 && level <= 16) return 5;
+    if (level >= 17 && level <= 20) return 6;
+    return 0;
+};
+
 const attributeSkills = {
     strength: ['atletismo'],
     dexterity: ['acrobacia', 'furtividade', 'prestidigitacao'],
@@ -122,6 +131,9 @@ const CharacterSheet = () => {
 
     const imageInputRef = useRef(null);
 
+    // Estado para modificadores de vida
+    const [healthModifierValue, setHealthModifierValue] = useState(0);
+
 
 
     // Função para lidar com upload da imagem
@@ -171,32 +183,50 @@ const CharacterSheet = () => {
                         strength: {
                             score: charData.attributes?.strength?.score || 0,
                             modifier: charData.attributes?.strength?.modifier || 0,
-                            savingThrow: charData.attributes?.strength?.savingThrow || 0
+                            savingThrow: {
+                                value: charData.attributes?.strength?.savingThrow?.value || 0,
+                                checked: charData.attributes?.strength?.savingThrow?.checked || false
+                            }
                         },
                         dexterity: {
                             score: charData.attributes?.dexterity?.score || 0,
                             modifier: charData.attributes?.dexterity?.modifier || 0,
-                            savingThrow: charData.attributes?.dexterity?.savingThrow || 0
+                            savingThrow: {
+                                value: charData.attributes?.dexterity?.savingThrow?.value || 0,
+                                checked: charData.attributes?.dexterity?.savingThrow?.checked || false
+                            }
                         },
                         constitution: {
                             score: charData.attributes?.constitution?.score || 0,
                             modifier: charData.attributes?.constitution?.modifier || 0,
-                            savingThrow: charData.attributes?.constitution?.savingThrow || 0
+                            savingThrow: {
+                                value: charData.attributes?.constitution?.savingThrow?.value || 0,
+                                checked: charData.attributes?.constitution?.savingThrow?.checked || false
+                            }
                         },
                         intelligence: {
                             score: charData.attributes?.intelligence?.score || 0,
                             modifier: charData.attributes?.intelligence?.modifier || 0,
-                            savingThrow: charData.attributes?.intelligence?.savingThrow || 0
+                            savingThrow: {
+                                value: charData.attributes?.intelligence?.savingThrow?.value || 0,
+                                checked: charData.attributes?.intelligence?.savingThrow?.checked || false
+                            }
                         },
                         wisdom: {
                             score: charData.attributes?.wisdom?.score || 0,
                             modifier: charData.attributes?.wisdom?.modifier || 0,
-                            savingThrow: charData.attributes?.wisdom?.savingThrow || 0
+                            savingThrow: {
+                                value: charData.attributes?.wisdom?.savingThrow?.value || 0,
+                                checked: charData.attributes?.wisdom?.savingThrow?.checked || false
+                            }
                         },
                         charisma: {
                             score: charData.attributes?.charisma?.score || 0,
                             modifier: charData.attributes?.charisma?.modifier || 0,
-                            savingThrow: charData.attributes?.charisma?.savingThrow || 0
+                            savingThrow: {
+                                value: charData.attributes?.charisma?.savingThrow?.value || 0,
+                                checked: charData.attributes?.charisma?.savingThrow?.checked || false
+                            }
                         }
                     },
                     status: {
@@ -246,6 +276,8 @@ const CharacterSheet = () => {
                     notes: {
                         treasuredPossessions: charData.notes?.treasuredPossessions || '',
                         rituals: charData.notes?.rituals || '',
+                        proficiencies: charData.notes?.proficiencies || '',
+                        languages: charData.notes?.languages || '',
                         generalNotes: charData.notes?.generalNotes || ''
                     },
                     history: charData.history || '',
@@ -254,6 +286,16 @@ const CharacterSheet = () => {
 
                 // Remove incomeAndEconomy from character data if it exists
                 delete charData.incomeAndEconomy;
+
+                // Ensure magicInfo structure is initialized
+                charData = {
+                    ...charData,
+                    magicInfo: {
+                        keyAbility: charData.magicInfo?.keyAbility || '',
+                        attackBonus: charData.magicInfo?.attackBonus || '',
+                        dt: charData.magicInfo?.dt || 0
+                    }
+                };
 
                 // Ensure magicSlots structure is initialized
                 charData = {
@@ -326,15 +368,85 @@ const CharacterSheet = () => {
         setImagePreview(character?.image || '');
     }, [character]);
 
+    // Recalculate skills when proficiencyBonus changes
+    useEffect(() => {
+        if (character) {
+            setCharacter(prev => {
+                const newSkills = { ...prev.skills };
+                Object.keys(attributeSkills).forEach(attr => {
+                    const modifier = prev.attributes[attr]?.modifier || 0;
+                    const skills = attributeSkills[attr];
+                    skills.forEach(skill => {
+                        if (newSkills[skill]) {
+                            const proficiencyBonus = newSkills[skill].checked ? prev.proficiencyBonus : 0;
+                            newSkills[skill].value = modifier + proficiencyBonus;
+                        }
+                    });
+                });
+                return { ...prev, skills: newSkills };
+            });
+        }
+    }, [character?.proficiencyBonus]);
+
+    // Update magic attack bonus when attributes change
+    useEffect(() => {
+        if (character && character.magicInfo?.keyAbility) {
+            const attrMap = {
+                'Inteligência': 'intelligence',
+                'Sabedoria': 'wisdom',
+                'Carisma': 'charisma'
+            };
+            const attr = attrMap[character.magicInfo.keyAbility];
+            const modifier = character.attributes[attr]?.modifier || 0;
+            setCharacter(prev => ({
+                ...prev,
+                magicInfo: {
+                    ...prev.magicInfo,
+                    attackBonus: modifier.toString()
+                }
+            }));
+        }
+    }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier]);
+
     // Handlers para atualizar campos aninhados
     const handleBasicInfoChange = (field, value) => {
-        setCharacter(prev => ({
-            ...prev,
-            basicInfo: {
+        setCharacter(prev => {
+            const newBasicInfo = {
                 ...prev.basicInfo,
                 [field]: value,
-            },
-        }));
+            };
+
+            // If level changed, update proficiency bonus
+            if (field === 'level') {
+                const newLevel = Number(value);
+                const newProficiencyBonus = getProficiencyBonus(newLevel);
+
+                // Recalculate skills with new proficiency bonus
+                const newSkills = { ...prev.skills };
+                Object.keys(attributeSkills).forEach(attr => {
+                    const modifier = prev.attributes[attr]?.modifier || 0;
+                    const skills = attributeSkills[attr];
+                    skills.forEach(skill => {
+                        if (newSkills[skill]) {
+                            const proficiencyBonus = newSkills[skill].checked ? newProficiencyBonus : 0;
+                            newSkills[skill].value = modifier + proficiencyBonus;
+                        }
+                    });
+                });
+
+                return {
+                    ...prev,
+                    basicInfo: newBasicInfo,
+                    proficiencyBonus: newProficiencyBonus,
+                    skills: newSkills,
+                };
+            }
+
+            return {
+                ...prev,
+                basicInfo: newBasicInfo,
+            };
+        });
     };
 
 
@@ -395,6 +507,12 @@ const CharacterSheet = () => {
                 const modifier = getModifier(score);
                 newAttributes[attribute].modifier = modifier;
 
+                // Update saving throw
+                newAttributes[attribute].savingThrow = {
+                    ...newAttributes[attribute].savingThrow,
+                    value: modifier + (newAttributes[attribute].savingThrow?.checked ? prev.proficiencyBonus : 0)
+                };
+
                 // Update skills for this attribute
                 const newSkills = { ...prev.skills };
                 const skillsForAttr = attributeSkills[attribute] || [];
@@ -409,6 +527,19 @@ const CharacterSheet = () => {
                     ...prev,
                     attributes: newAttributes,
                     skills: newSkills,
+                };
+            }
+
+            // If saving throw proficiency changed
+            if (field === 'savingThrowChecked') {
+                newAttributes[attribute].savingThrow = {
+                    ...newAttributes[attribute].savingThrow,
+                    checked: value,
+                    value: prev.attributes[attribute].modifier + (value ? prev.proficiencyBonus : 0)
+                };
+                return {
+                    ...prev,
+                    attributes: newAttributes,
                 };
             }
 
@@ -436,7 +567,7 @@ const CharacterSheet = () => {
     const addWeapon = () => {
         setCharacter(prev => ({
             ...prev,
-            weapons: [...(prev.weapons || []), { name: '', type: '', damage: '', range: '', attack: '' }],
+            weapons: [...(prev.weapons || []), { name: '', type: '', damage: '', range: '', attack: '', proficiency: false }],
         }));
     };
 
@@ -465,6 +596,47 @@ const CharacterSheet = () => {
             showNotification('Erro ao salvar ficha.', 'error');
         }
         setSaving(false);
+    };
+
+    const handleApplyDamage = () => {
+        const damage = Number(healthModifierValue);
+        if (damage > 0) {
+            setCharacter(prev => {
+                const newCurrent = Math.max(0, prev.status.health.current - damage);
+                return {
+                    ...prev,
+                    status: {
+                        ...prev.status,
+                        health: {
+                            ...prev.status.health,
+                            current: newCurrent
+                        }
+                    }
+                };
+            });
+            setHealthModifierValue(0);
+        }
+    };
+
+    const handleApplyHeal = () => {
+        const heal = Number(healthModifierValue);
+        if (heal > 0) {
+            setCharacter(prev => {
+                const maxHealth = prev.status.health.max;
+                const newCurrent = Math.min(maxHealth, prev.status.health.current + heal);
+                return {
+                    ...prev,
+                    status: {
+                        ...prev.status,
+                        health: {
+                            ...prev.status.health,
+                            current: newCurrent
+                        }
+                    }
+                };
+            });
+            setHealthModifierValue(0);
+        }
     };
 
     const parseDamageDice = (damageString) => {
@@ -801,6 +973,30 @@ const CharacterSheet = () => {
 
                             {/* Status Bars */}
                             <div className="barsContainer">
+                                {/* Health Modifiers */}
+                                <div className="healthModifiersContainer">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={healthModifierValue}
+                                        onChange={e => setHealthModifierValue(Number(e.target.value))}
+                                        className="healthModifierInput"
+                                        placeholder="Valor"
+                                    />
+                                    <button
+                                        onClick={handleApplyDamage}
+                                        className="healthModifierButton damageButton"
+                                    >
+                                    Dano
+                                    </button>
+                                    <button
+                                        onClick={handleApplyHeal}
+                                        className="healthModifierButton healButton"
+                                    >
+                                    Cura
+                                    </button>
+                                </div>
+
                                 {/* HP Bar */}
                                 <div className="hpBarContainer">
                                     <div className="barLabel">Vida</div>
@@ -964,12 +1160,10 @@ const CharacterSheet = () => {
                         <div className="inspirationStat">
                             <label className="inspirationLabel">Inspiração</label>
                             <input
-                                type="number"
-                                min="0"
-                                value={character.inspiration || 0}
-                                onChange={e => setCharacter(prev => ({ ...prev, inspiration: Number(e.target.value) }))}
-                                className="inspirationInput"
-                                placeholder="0"
+                                type="checkbox"
+                                checked={!!character.inspiration}
+                                onChange={e => setCharacter(prev => ({ ...prev, inspiration: e.target.checked ? 1 : 0 }))}
+                                className="inspirationCheckbox"
                             />
                         </div>
                         <div className="proficiencyStat">
@@ -978,7 +1172,7 @@ const CharacterSheet = () => {
                                 type="number"
                                 min="0"
                                 value={character.proficiencyBonus || 0}
-                                onChange={e => setCharacter(prev => ({ ...prev, proficiencyBonus: Number(e.target.value) }))}
+                                readOnly
                                 className="proficiencyInput"
                                 placeholder="0"
                             />
@@ -988,7 +1182,15 @@ const CharacterSheet = () => {
                         <div className="attributesGrid">
                             {/* Força */}
                             <div className="strengthColumn">
-                                <h3 className="strengthHeader">{translations.attributes.strength}</h3>
+                                <h3 className="strengthHeader">
+                                    <input
+                                        type="checkbox"
+                                        checked={character.attributes?.strength?.savingThrow?.checked || false}
+                                        onChange={e => handleAttributeChange('strength', 'savingThrowChecked', e.target.checked)}
+                                        className="attributeProficiencyCheckbox"
+                                    />
+                                    {translations.attributes.strength}
+                                </h3>
                                 <div className="strengthItem">
                                     <input
                                         type="number"
@@ -1010,10 +1212,10 @@ const CharacterSheet = () => {
                                     />
                                     <input
                                         type="number"
-                                        min="0"
-                                        max="5"
-                                        value={character.attributes?.strength?.savingThrow || 0}
-                                        onChange={e => handleAttributeChange('strength', 'savingThrow', Number(e.target.value))}
+                                        min="-5"
+                                        max="15"
+                                        value={character.attributes?.strength?.savingThrow?.value || 0}
+                                        readOnly
                                         className="smallInputst"
                                         placeholder="ST"
                                     />
@@ -1023,13 +1225,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.atletismo?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    atletismo: { ...prev.skills.atletismo, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.strength?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        atletismo: { ...prev.skills.atletismo, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Atletismo
@@ -1054,7 +1261,15 @@ const CharacterSheet = () => {
 
                             {/* Destreza */}
                             <div className="dexterityColumn">
-                                <h3 className="dexterityHeader">{translations.attributes.dexterity}</h3>
+                                <h3 className="dexterityHeader">
+                                    <input
+                                        type="checkbox"
+                                        checked={character.attributes?.dexterity?.savingThrow?.checked || false}
+                                        onChange={e => handleAttributeChange('dexterity', 'savingThrowChecked', e.target.checked)}
+                                        className="attributeProficiencyCheckbox"
+                                    />
+                                    {translations.attributes.dexterity}
+                                </h3>
                                 <div className="dexterityItem">
                                     <input
                                         type="number"
@@ -1076,10 +1291,10 @@ const CharacterSheet = () => {
                                     />
                                     <input
                                         type="number"
-                                        min="0"
-                                        max="5"
-                                        value={character.attributes?.dexterity?.savingThrow || 0}
-                                        onChange={e => handleAttributeChange('dexterity', 'savingThrow', Number(e.target.value))}
+                                        min="-5"
+                                        max="15"
+                                        value={character.attributes?.dexterity?.savingThrow?.value || 0}
+                                        readOnly
                                         className="smallInputst"
                                         placeholder="ST"
                                     />
@@ -1089,13 +1304,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.acrobacia?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    acrobacia: { ...prev.skills.acrobacia, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.dexterity?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        acrobacia: { ...prev.skills.acrobacia, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Acrobacia
@@ -1121,13 +1341,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.furtividade?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    furtividade: { ...prev.skills.furtividade, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.dexterity?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        furtividade: { ...prev.skills.furtividade, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Furtividade
@@ -1153,13 +1378,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.prestidigitacao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    prestidigitacao: { ...prev.skills.prestidigitacao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.dexterity?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        prestidigitacao: { ...prev.skills.prestidigitacao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Prestidigitação
@@ -1184,7 +1414,15 @@ const CharacterSheet = () => {
 
                             {/* Constituição */}
                             <div className="constitutionColumn">
-                                <h3 className="constitutionHeader">{translations.attributes.constitution}</h3>
+                                <h3 className="constitutionHeader">
+                                    <input
+                                        type="checkbox"
+                                        checked={character.attributes?.constitution?.savingThrow?.checked || false}
+                                        onChange={e => handleAttributeChange('constitution', 'savingThrowChecked', e.target.checked)}
+                                        className="attributeProficiencyCheckbox"
+                                    />
+                                    {translations.attributes.constitution}
+                                </h3>
                                 <div className="constitutionItem">
                                     <input
                                         type="number"
@@ -1206,10 +1444,10 @@ const CharacterSheet = () => {
                                     />
                                     <input
                                         type="number"
-                                        min="0"
-                                        max="5"
-                                        value={character.attributes?.constitution?.savingThrow || 0}
-                                        onChange={e => handleAttributeChange('constitution', 'savingThrow', Number(e.target.value))}
+                                        min="-5"
+                                        max="15"
+                                        value={character.attributes?.constitution?.savingThrow?.value || 0}
+                                        readOnly
                                         className="smallInputst"
                                         placeholder="ST"
                                     />
@@ -1218,7 +1456,15 @@ const CharacterSheet = () => {
 
                             {/* Inteligência */}
                             <div className="intelligenceColumn">
-                                <h3 className="intelligenceHeader">{translations.attributes.intelligence}</h3>
+                                <h3 className="intelligenceHeader">
+                                    <input
+                                        type="checkbox"
+                                        checked={character.attributes?.intelligence?.savingThrow?.checked || false}
+                                        onChange={e => handleAttributeChange('intelligence', 'savingThrowChecked', e.target.checked)}
+                                        className="attributeProficiencyCheckbox"
+                                    />
+                                    {translations.attributes.intelligence}
+                                </h3>
                                 <div className="intelligenceItem">
                                     <input
                                         type="number"
@@ -1240,10 +1486,10 @@ const CharacterSheet = () => {
                                     />
                                     <input
                                         type="number"
-                                        min="0"
-                                        max="5"
-                                        value={character.attributes?.intelligence?.savingThrow || 0}
-                                        onChange={e => handleAttributeChange('intelligence', 'savingThrow', Number(e.target.value))}
+                                        min="-5"
+                                        max="15"
+                                        value={character.attributes?.intelligence?.savingThrow?.value || 0}
+                                        readOnly
                                         className="smallInputst"
                                         placeholder="ST"
                                     />
@@ -1253,13 +1499,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.arcanismo?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    arcanismo: { ...prev.skills.arcanismo, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.intelligence?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        arcanismo: { ...prev.skills.arcanismo, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Arcanismo
@@ -1285,13 +1536,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.historia?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    historia: { ...prev.skills.historia, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.intelligence?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        historia: { ...prev.skills.historia, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         História
@@ -1317,13 +1573,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.investigacao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    investigacao: { ...prev.skills.investigacao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.intelligence?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        investigacao: { ...prev.skills.investigacao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Investigação
@@ -1349,13 +1610,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.natureza?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    natureza: { ...prev.skills.natureza, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.intelligence?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        natureza: { ...prev.skills.natureza, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Natureza
@@ -1381,13 +1647,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.religiao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    religiao: { ...prev.skills.religiao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.intelligence?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        religiao: { ...prev.skills.religiao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Religião
@@ -1412,7 +1683,15 @@ const CharacterSheet = () => {
 
                             {/* Sabedoria */}
                             <div className="wisdomColumn">
-                                <h3 className="wisdomHeader">{translations.attributes.wisdom}</h3>
+                                <h3 className="wisdomHeader">
+                                    <input
+                                        type="checkbox"
+                                        checked={character.attributes?.wisdom?.savingThrow?.checked || false}
+                                        onChange={e => handleAttributeChange('wisdom', 'savingThrowChecked', e.target.checked)}
+                                        className="attributeProficiencyCheckbox"
+                                    />
+                                    {translations.attributes.wisdom}
+                                </h3>
                                 <div className="wisdomItem">
                                     <input
                                         type="number"
@@ -1434,10 +1713,10 @@ const CharacterSheet = () => {
                                     />
                                     <input
                                         type="number"
-                                        min="0"
-                                        max="5"
-                                        value={character.attributes?.wisdom?.savingThrow || 0}
-                                        onChange={e => handleAttributeChange('wisdom', 'savingThrow', Number(e.target.value))}
+                                        min="-5"
+                                        max="15"
+                                        value={character.attributes?.wisdom?.savingThrow?.value || 0}
+                                        readOnly
                                         className="smallInputst"
                                         placeholder="ST"
                                     />
@@ -1447,13 +1726,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.intuicao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    intuicao: { ...prev.skills.intuicao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.wisdom?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        intuicao: { ...prev.skills.intuicao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Intuição
@@ -1479,13 +1763,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.lidarComAnimais?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    lidarComAnimais: { ...prev.skills.lidarComAnimais, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.wisdom?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        lidarComAnimais: { ...prev.skills.lidarComAnimais, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Lidar com Animais
@@ -1511,13 +1800,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.medicina?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    medicina: { ...prev.skills.medicina, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.wisdom?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        medicina: { ...prev.skills.medicina, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Medicina
@@ -1543,13 +1837,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.percepcao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    percepcao: { ...prev.skills.percepcao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.wisdom?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        percepcao: { ...prev.skills.percepcao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Percepção
@@ -1575,13 +1874,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.sobrevivencia?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    sobrevivencia: { ...prev.skills.sobrevivencia, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.wisdom?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        sobrevivencia: { ...prev.skills.sobrevivencia, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Sobrevivência
@@ -1606,7 +1910,15 @@ const CharacterSheet = () => {
 
                             {/* Carisma */}
                             <div className="charismaColumn">
-                                <h3 className="charismaHeader">{translations.attributes.charisma}</h3>
+                                <h3 className="charismaHeader">
+                                    <input
+                                        type="checkbox"
+                                        checked={character.attributes?.charisma?.savingThrow?.checked || false}
+                                        onChange={e => handleAttributeChange('charisma', 'savingThrowChecked', e.target.checked)}
+                                        className="attributeProficiencyCheckbox"
+                                    />
+                                    {translations.attributes.charisma}
+                                </h3>
                                 <div className="charismaItem">
                                     <input
                                         type="number"
@@ -1628,10 +1940,10 @@ const CharacterSheet = () => {
                                     />
                                     <input
                                         type="number"
-                                        min="0"
-                                        max="5"
-                                        value={character.attributes?.charisma?.savingThrow || 0}
-                                        onChange={e => handleAttributeChange('charisma', 'savingThrow', Number(e.target.value))}
+                                        min="-5"
+                                        max="15"
+                                        value={character.attributes?.charisma?.savingThrow?.value || 0}
+                                        readOnly
                                         className="smallInputst"
                                         placeholder="ST"
                                     />
@@ -1641,13 +1953,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.atuacao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    atuacao: { ...prev.skills.atuacao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.charisma?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        atuacao: { ...prev.skills.atuacao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Atuação
@@ -1673,13 +1990,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.blefar?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    blefar: { ...prev.skills.blefar, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.charisma?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        blefar: { ...prev.skills.blefar, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Blefar
@@ -1705,13 +2027,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.intimidacao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    intimidacao: { ...prev.skills.intimidacao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.charisma?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        intimidacao: { ...prev.skills.intimidacao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Intimidação
@@ -1737,13 +2064,18 @@ const CharacterSheet = () => {
                                         <input
                                             type="checkbox"
                                             checked={character.skills?.persuasao?.checked || false}
-                                            onChange={e => setCharacter(prev => ({
-                                                ...prev,
-                                                skills: {
-                                                    ...prev.skills,
-                                                    persuasao: { ...prev.skills.persuasao, checked: e.target.checked }
-                                                }
-                                            }))}
+                                            onChange={e => setCharacter(prev => {
+                                                const modifier = prev.attributes.charisma?.modifier || 0;
+                                                const proficiencyBonus = e.target.checked ? prev.proficiencyBonus : 0;
+                                                const newValue = modifier + proficiencyBonus;
+                                                return {
+                                                    ...prev,
+                                                    skills: {
+                                                        ...prev.skills,
+                                                        persuasao: { ...prev.skills.persuasao, checked: e.target.checked, value: newValue }
+                                                    }
+                                                };
+                                            })}
                                             className="skillCheckbox"
                                         />
                                         Persuasão
@@ -1764,6 +2096,37 @@ const CharacterSheet = () => {
                                         placeholder="0"
                                     />
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Proficiências */}
+                <section className="section">
+                    <div className="sectionHeader">Proficiências</div>
+                    <div className="sectionBorder">
+                        <div className="skillsContainer">
+                            <div className="skillItem">
+                                <textarea
+                                    value={character.notes?.proficiencies || ''}
+                                    onChange={e => setCharacter(prev => ({
+                                        ...prev,
+                                        notes: { ...prev.notes, proficiencies: e.target.value }
+                                    }))}
+                                    className="textarea habilidadesTextarea"
+                                    placeholder="Proficiências..."
+                                />
+                            </div>
+                            <div className="skillItem">
+                                <textarea
+                                    value={character.notes?.languages || ''}
+                                    onChange={e => setCharacter(prev => ({
+                                        ...prev,
+                                        notes: { ...prev.notes, languages: e.target.value }
+                                    }))}
+                                    className="textarea habilidadesTextarea"
+                                    placeholder="Proficiências..."
+                                />
                             </div>
                         </div>
                     </div>
@@ -1821,16 +2184,25 @@ const CharacterSheet = () => {
                         <table className="table">
                             <thead>
                                 <tr>
+                                    <th className="th">Proficiência</th>
                                     <th className="th">Nome</th>
                                     <th className="th">Tipo</th>
                                     <th className="th">Dano</th>
                                     <th className="th">Alcance</th>
-                                    <th className="th">Ataques</th>
+                                    <th className="th">Efeitos</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {character.weapons.map((weapon, index) => (
                                     <tr key={index}>
+                                        <td className="td">
+                                            <input
+                                                type="checkbox"
+                                                checked={weapon.proficiency || false}
+                                                onChange={e => handleWeaponChange(index, 'proficiency', e.target.checked)}
+                                                className="skillCheckbox"
+                                            />
+                                        </td>
                                         <td className="td">
                                             <input
                                                 type="text"
@@ -1891,7 +2263,7 @@ const CharacterSheet = () => {
                                                 value={weapon.attack || ''}
                                                 onChange={e => handleWeaponChange(index, 'attack', e.target.value)}
                                                 className="tableInput"
-                                                placeholder="Ata"
+                                                placeholder="Efeitos"
                                             />
                                         </td>
                                         <td className="td">
@@ -2044,6 +2416,62 @@ const CharacterSheet = () => {
                 <section className="section">
                     <div className="sectionHeader">Mágicka</div>
                         <div className="sectionBorder">
+                            <div className="magicStats">
+                                <div className="magicStat">
+                                    <label className="magicLabel">Habilidade Chave</label>
+                                    <select
+                                        value={character.magicInfo?.keyAbility || ''}
+                                        onChange={e => {
+                                            const selected = e.target.value;
+                                            const attrMap = {
+                                                'Inteligência': 'intelligence',
+                                                'Sabedoria': 'wisdom',
+                                                'Carisma': 'charisma'
+                                            };
+                                            const attr = attrMap[selected];
+                                            const modifier = character.attributes[attr]?.modifier || 0;
+                                            setCharacter(prev => ({
+                                                ...prev,
+                                                magicInfo: {
+                                                    ...prev.magicInfo,
+                                                    keyAbility: selected,
+                                                    attackBonus: modifier.toString()
+                                                }
+                                            }));
+                                        }}
+                                        className="magicInput"
+                                    >
+                                        <option value="">Selecione</option>
+                                        <option value="Inteligência">Inteligência</option>
+                                        <option value="Sabedoria">Sabedoria</option>
+                                        <option value="Carisma">Carisma</option>
+                                    </select>
+                                </div>
+                                <div className="magicStat">
+                                    <label className="magicLabel">Bônus de Ataque</label>
+                                    <input
+                                        type="number"
+                                        value={character.magicInfo?.attackBonus || 0}
+                                        readOnly
+                                        className="magicInput"
+                                        placeholder="Bônus de Ataque"
+                                    />
+                                </div>
+                                <div className="magicStat">
+                                    <label className="magicLabel">DT</label>
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        value={character.magicInfo?.dt || 0}
+                                        onChange={e => setCharacter(prev => ({
+                                            ...prev,
+                                            magicInfo: { ...prev.magicInfo, dt: Number(e.target.value) }
+                                        }))}
+                                        className="magicInput"
+                                        placeholder="DT"
+                                    />
+                                </div>
+                            </div>
                             <div className="magicContainer">
                                 {/* Truques (Level 0) */}
                                 <div className="skillItem">

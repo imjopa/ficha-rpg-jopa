@@ -1529,6 +1529,23 @@ input[type="number"] {
     box-shadow: 0 0 10px #fff;
 }
 
+.attributeProficiencyCheckbox {
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin-right: 5px;
+}
+
+.attributeProficiencyCheckbox:checked {
+    background-color: #fff;
+    box-shadow: 0 0 10px #fff;
+}
+
 .checkboxInput {
     appearance: none;
     width: 15px;
@@ -1732,6 +1749,40 @@ input[type="number"] {
     justify-content: center;
 }
 
+/* Magic stats styles */
+.magicStats {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.magicStat {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 120px;
+}
+
+.magicLabel {
+    text-align: center;
+}
+
+.magicInput {
+    border: none;
+    border-bottom: 1.5px solid #fff;
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 4px 2px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
 .combatStat {
     display: flex;
     flex-direction: column;
@@ -1770,6 +1821,28 @@ input[type="number"] {
     flex-direction: column;
     gap: 5px;
     min-width: 120px;
+}
+
+.inspirationLabel {
+    margin-left: 13px;
+}
+
+.inspirationCheckbox {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #fff;
+    border-radius: 30%;
+    background-color: #000;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 auto;
+    display: block;
+}
+
+.inspirationCheckbox:checked {
+    background-color: #fff;
+    box-shadow: 0 0 10px #fff;
 }
 
 .inspirationInput, .proficiencyInput {
@@ -1823,5 +1896,63 @@ input[type="number"] {
     color: #fff;
     min-width: 60px;
     text-align: center;
+}
+
+/* Health Modifiers */
+.healthModifiersContainer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.healthModifierInput {
+    border: none;
+    border-bottom: 1.5px solid #fff;
+    width: 80px;
+    font-size: 1.1rem;
+    padding: 4px 2px;
+    font-family: inherit;
+    outline: none;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+.healthModifierButton {
+    background: #000;
+    color: #fff;
+    border: 1px solid #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+.healthModifierButton:hover {
+    background: #fff;
+    color: #000;
+}
+
+.damageButton {
+    background: #c0392b;
+    border-color: #c0392b;
+}
+
+.damageButton:hover {
+    background: #e74c3c;
+    border-color: #e74c3c;
+}
+
+.healButton {
+    background: #27ae60;
+    border-color: #27ae60;
+}
+
+.healButton:hover {
+    background: #2ecc71;
+    border-color: #2ecc71;
 }
 

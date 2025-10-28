@@ -15,7 +15,8 @@ const weaponSchema = new mongoose.Schema({
   currentAmmo: { type: Number, default: 0 },
   maxAmmo: { type: Number, default: 0 },
   range: { type: String, default: '' },
-  attack: { type: String, default: '' }
+  attack: { type: String, default: '' },
+  proficiency: { type: Boolean, default: false }
 });
 
 // Esquema para histórico de dados
@@ -69,32 +70,50 @@ const characterSchema = new mongoose.Schema({
     strength: {
       score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
-      savingThrow: { type: Number, default: 0 }
+      savingThrow: {
+        value: { type: Number, default: 0 },
+        checked: { type: Boolean, default: false }
+      }
     },
     dexterity: {
       score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
-      savingThrow: { type: Number, default: 0 }
+      savingThrow: {
+        value: { type: Number, default: 0 },
+        checked: { type: Boolean, default: false }
+      }
     },
     constitution: {
       score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
-      savingThrow: { type: Number, default: 0 }
+      savingThrow: {
+        value: { type: Number, default: 0 },
+        checked: { type: Boolean, default: false }
+      }
     },
     intelligence: {
       score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
-      savingThrow: { type: Number, default: 0 }
+      savingThrow: {
+        value: { type: Number, default: 0 },
+        checked: { type: Boolean, default: false }
+      }
     },
     wisdom: {
       score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
-      savingThrow: { type: Number, default: 0 }
+      savingThrow: {
+        value: { type: Number, default: 0 },
+        checked: { type: Boolean, default: false }
+      }
     },
     charisma: {
       score: { type: Number, default: 0 },
       modifier: { type: Number, default: 0 },
-      savingThrow: { type: Number, default: 0 }
+      savingThrow: {
+        value: { type: Number, default: 0 },
+        checked: { type: Boolean, default: false }
+      }
     }
   },
   
@@ -167,11 +186,20 @@ const characterSchema = new mongoose.Schema({
     meaningfulLocations: { type: String, default: '' },
     treasuredPossessions: { type: String, default: '' },
     rituals: { type: String, default: '' },
+    proficiencies: { type: String, default: '' },
+    languages: { type: String, default: '' },
     generalNotes: { type: String, default: '' }
   },
 
   // História do personagem
   history: { type: String, default: '' },
+
+  // Informações de Mágicka
+  magicInfo: {
+    keyAbility: { type: String, default: '' },
+    attackBonus: { type: String, default: '' },
+    dt: { type: Number, default: 0 }
+  },
 
   // Slots de magia
   magicSlots: {
