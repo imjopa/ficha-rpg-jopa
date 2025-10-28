@@ -387,6 +387,7 @@ const CharacterSheet = () => {
                 return { ...prev, skills: newSkills };
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [character?.proficiencyBonus]);
 
     // Update magic attack bonus when attributes change
