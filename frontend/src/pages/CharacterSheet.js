@@ -2968,7 +2968,7 @@ const CharacterSheet = () => {
                                     value={character.basicInfo.insanityEpisodes || ''}
                                     onChange={e => handleBasicInfoChange('insanityEpisodes', e.target.value)}
                                     className="insanityEpisodesTextarea"
-                                    placeholder="Detalhes sobre insanidade..."
+                                    placeholder="Tesouros..."
                                 />
 
                                 <label className="label">Ferimentos</label>
