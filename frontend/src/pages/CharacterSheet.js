@@ -1204,6 +1204,16 @@ const CharacterSheet = () => {
                                 placeholder="0"
                             />
                         </div>
+                        <div className="passivePerceptionStat">
+                            <label className="passivePerceptionLabel">Percepção Passiva</label>
+                            <input
+                                type="number"
+                                value={10 + (character.attributes?.wisdom?.modifier || 0) + ((character.attributes?.wisdom?.savingThrow?.checked ? character.proficiencyBonus : 0) || 0)}
+                                readOnly
+                                className="passivePerceptionInput"
+                                placeholder="0"
+                            />
+                        </div>
                     </div>
                     <div className="attributesBorder">
                         <div className="attributesGrid">
@@ -2982,11 +2992,22 @@ const CharacterSheet = () => {
                                     className="woundsTextarea"
                                     placeholder="Ferimentos e lesões..."
                                 />
-
-
-
                             </div>
                         </div>
+                    </section>
+                )}
+
+                {/* Informações Pessoais para Monstros */}
+                {isMonster && (
+                    <section className="section">
+                        <div className="sectionHeader">Informações Pessoais</div>
+                        <label className="label">Detalhes Pessoais</label>
+                        <textarea
+                            value={character.basicInfo.personalDescription || ''}
+                            onChange={e => handleBasicInfoChange('personalDescription', e.target.value)}
+                            className="monsterPersonalDetailsTextarea"
+                            placeholder="Detalhes pessoais do monstro..."
+                        />
                     </section>
                 )}
 

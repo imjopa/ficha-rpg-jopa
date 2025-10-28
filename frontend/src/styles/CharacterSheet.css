@@ -1658,6 +1658,20 @@ input[type="number"] {
     color: #fff;
 }
 
+/* Monster Personal Details textarea */
+.monsterPersonalDetailsTextarea {
+    border: 1.5px solid #fff;
+    width: 860px;
+    font-size: 1.1rem;
+    padding: 6px 8px;
+    margin-bottom: 12px;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 200px;
+    background-color: #000;
+    color: #fff;
+}
+
 /* Skills section styles */
 .skillsContainer {
     display: flex;
@@ -1812,19 +1826,24 @@ input[type="number"] {
     display: flex;
     gap: 20px;
     margin-bottom: 20px;
+    margin-left: 50px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
-.inspirationStat, .proficiencyStat {
+.inspirationStat, .proficiencyStat, .passivePerceptionStat {
     display: flex;
     flex-direction: column;
     gap: 5px;
     min-width: 120px;
 }
 
+.proficiencyLabel {
+    margin-left: 10px;
+}
+
 .inspirationLabel {
-    margin-left: 13px;
+    text-align: center;
 }
 
 .inspirationCheckbox {
@@ -1845,7 +1864,7 @@ input[type="number"] {
     box-shadow: 0 0 10px #fff;
 }
 
-.inspirationInput, .proficiencyInput {
+.inspirationInput, .proficiencyInput, .passivePerceptionInput {
     border: none;
     border-bottom: 1.5px solid #fff;
     width: 100%;
@@ -1860,6 +1879,10 @@ input[type="number"] {
 }
 
 .proficiencyLabel {
+    text-align: center;
+}
+
+.passivePerceptionLabel {
     text-align: center;
 }
 
