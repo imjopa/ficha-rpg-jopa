@@ -390,7 +390,7 @@ const CharacterSheet = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [character?.proficiencyBonus]);
 
-    // Update magic attack bonus when attributes change
+    // Update magic attack bonus and DT when attributes change
     useEffect(() => {
         if (character && character.magicInfo?.keyAbility) {
             const attrMap = {
@@ -400,16 +400,21 @@ const CharacterSheet = () => {
             };
             const attr = attrMap[character.magicInfo.keyAbility];
             const modifier = character.attributes[attr]?.modifier || 0;
+            const isProficient = character.attributes[attr]?.savingThrow?.checked || false;
+            const proficiencyBonus = character.proficiencyBonus || 0;
+            const attackBonus = isProficient ? modifier + proficiencyBonus : modifier;
+            const dt = 8 + modifier + (isProficient ? proficiencyBonus : 0);
             setCharacter(prev => ({
                 ...prev,
                 magicInfo: {
                     ...prev.magicInfo,
-                    attackBonus: modifier.toString()
+                    attackBonus: attackBonus.toString(),
+                    dt: dt
                 }
             }));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier, character?.magicInfo?.keyAbility]);
+    }, [character?.attributes?.intelligence?.modifier, character?.attributes?.wisdom?.modifier, character?.attributes?.charisma?.modifier, character?.magicInfo?.keyAbility, character?.proficiencyBonus, character?.attributes?.intelligence?.savingThrow?.checked, character?.attributes?.wisdom?.savingThrow?.checked, character?.attributes?.charisma?.savingThrow?.checked]);
 
     // Handlers para atualizar campos aninhados
     const handleBasicInfoChange = (field, value) => {
@@ -2578,10 +2583,7 @@ const CharacterSheet = () => {
                                         type="number"
                                         min="0"
                                         value={character.magicInfo?.dt || 0}
-                                        onChange={e => setCharacter(prev => ({
-                                            ...prev,
-                                            magicInfo: { ...prev.magicInfo, dt: Number(e.target.value) }
-                                        }))}
+                                        readOnly
                                         className="magicInput"
                                         placeholder="DT"
                                     />
