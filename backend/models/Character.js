@@ -19,6 +19,16 @@ const weaponSchema = new mongoose.Schema({
   proficiency: { type: Boolean, default: false }
 });
 
+// Esquema para armaduras
+const armorSchema = new mongoose.Schema({
+  name: { type: String, default: '' },
+  type: { type: String, default: '' },
+  ca: { type: String, default: '' },
+  stealth: { type: String, default: '' },
+  weight: { type: Number, default: 0 },
+  proficiency: { type: Boolean, default: false }
+});
+
 // Esquema para histórico de dados
 const diceRollSchema = new mongoose.Schema({
   rollType: { type: String, enum: ['attribute', 'skill', 'damage', 'general'], required: true },
@@ -175,6 +185,9 @@ const characterSchema = new mongoose.Schema({
 
   // Armas
   weapons: [weaponSchema],
+
+  // Armaduras
+  armors: [armorSchema],
 
   // Histórico de dados
   diceHistory: [diceRollSchema],

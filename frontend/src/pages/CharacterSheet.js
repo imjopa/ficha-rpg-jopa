@@ -281,7 +281,8 @@ const CharacterSheet = () => {
                         generalNotes: charData.notes?.generalNotes || ''
                     },
                     history: charData.history || '',
-                    weapons: Array.isArray(charData.weapons) ? charData.weapons : []
+                    weapons: Array.isArray(charData.weapons) ? charData.weapons : [],
+                    armors: Array.isArray(charData.armors) ? charData.armors : []
                 };
 
                 // Remove incomeAndEconomy from character data if it exists
@@ -575,6 +576,25 @@ const CharacterSheet = () => {
         const newWeapons = [...(character.weapons || [])];
         newWeapons.splice(index, 1);
         setCharacter(prev => ({ ...prev, weapons: newWeapons }));
+    };
+
+    const handleArmorChange = (index, field, value) => {
+        const newArmors = [...(character.armors || [])];
+        newArmors[index] = { ...newArmors[index], [field]: value };
+        setCharacter(prev => ({ ...prev, armors: newArmors }));
+    };
+
+    const addArmor = () => {
+        setCharacter(prev => ({
+            ...prev,
+            armors: [...(prev.armors || []), { name: '', type: '', ca: '', stealth: '', weight: 0, proficiency: false }],
+        }));
+    };
+
+    const removeArmor = index => {
+        const newArmors = [...(character.armors || [])];
+        newArmors.splice(index, 1);
+        setCharacter(prev => ({ ...prev, armors: newArmors }));
     };
 
     const showNotification = (message, type = 'info') => {
@@ -2283,6 +2303,99 @@ const CharacterSheet = () => {
                         <p>Nenhum item de combate cadastrado.</p>
                     )}
                     <button onClick={addWeapon} className="button-primary">+ Adicionar Item</button>
+                    <br />
+                    <br />
+                    {(character.armors && character.armors.length > 0) ? (
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th className="th">Proficiência</th>
+                                    <th className="th">Nome</th>
+                                    <th className="th">Tipo</th>
+                                    <th className="th">CA</th>
+                                    <th className="th">Furtividade</th>
+                                    <th className="th">Peso (kg)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {character.armors.map((armor, index) => (
+                                    <tr key={index}>
+                                        <td className="td">
+                                            <input
+                                                type="checkbox"
+                                                checked={armor.proficiency || false}
+                                                onChange={e => handleArmorChange(index, 'proficiency', e.target.checked)}
+                                                className="skillCheckbox"
+                                            />
+                                        </td>
+                                        <td className="td">
+                                            <input
+                                                type="text"
+                                                value={armor.name || ''}
+                                                onChange={e => handleArmorChange(index, 'name', e.target.value)}
+                                                className="tableInput"
+                                                placeholder="Nome"
+                                            />
+                                        </td>
+                                        <td className="td">
+                                            <select
+                                                value={armor.type || ''}
+                                                onChange={e => handleArmorChange(index, 'type', e.target.value)}
+                                                className="tableInput"
+                                            >
+                                                <option value="">Selecione o tipo</option>
+                                                <option value="Armadura Leve">Armadura Leve</option>
+                                                <option value="Armadura Média">Armadura Média</option>
+                                                <option value="Armadura Pesada">Armadura Pesada</option>
+                                                <option value="Escudo">Escudo</option>
+                                            </select>
+                                        </td>
+                                        <td className="td">
+                                            <input
+                                                type="text"
+                                                value={armor.ca || ''}
+                                                onChange={e => handleArmorChange(index, 'ca', e.target.value)}
+                                                className="tableInput"
+                                                placeholder="CA"
+                                            />
+                                        </td>
+                                        <td className="td">
+                                            <select
+                                                value={armor.stealth || ''}
+                                                onChange={e => handleArmorChange(index, 'stealth', e.target.value)}
+                                                className="tableInput"
+                                            >
+                                                <option value="">Selecione</option>
+                                                <option value="Desvantagem">Desvantagem</option>
+                                            </select>
+                                        </td>
+                                        <td className="td">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={armor.weight || 0}
+                                                onChange={e => handleArmorChange(index, 'weight', Number(e.target.value))}
+                                                className="tableInput"
+                                                placeholder="Peso"
+                                            />
+                                        </td>
+                                        <td className="td">
+                                            <button
+                                                onClick={() => removeArmor(index)}
+                                                className="buttonDanger"
+                                                title="Remover"
+                                            >
+                                                X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <p>Nenhuma armadura cadastrada.</p>
+                    )}
+                    <button onClick={addArmor} className="button-primary">+ Adicionar Armadura</button>
                 </section>
 
                 {!isMonster && (
