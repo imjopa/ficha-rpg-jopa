@@ -177,3 +177,21 @@
     align-items: center;
   }
 }
+
+/* Phone (≤480px): let the table scroll horizontally */
+@media (max-width: 480px) {
+  .characters-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.3rem;
+  }
+
+  .create-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

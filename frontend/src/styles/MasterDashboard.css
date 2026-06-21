@@ -314,3 +314,37 @@
     font-size: 14px;
   }
 }
+
+/* Phone (≤480px) */
+@media (max-width: 480px) {
+  .master-dashboard-header {
+    padding: 10px;
+  }
+
+  .master-dashboard-title {
+    font-size: 1.2rem;
+  }
+
+  .master-dashboard-main {
+    padding: 10px;
+  }
+
+  .master-dashboard-create-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .master-dashboard-search {
+    font-size: 13px;
+  }
+
+  .master-dashboard-card-name {
+    font-size: 15px;
+  }
+
+  .master-dashboard-card-edit-btn,
+  .master-dashboard-card-delete-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}

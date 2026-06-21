@@ -49,6 +49,31 @@
   }
 }
 
+/* Phone (≤480px) */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 6px;
+  }
+
+  .register-card {
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .register-icon-container {
+    width: 60px;
+    height: 60px;
+  }
+
+  .register-title {
+    font-size: 20px;
+  }
+
+  .register-subtitle {
+    font-size: 14px;
+  }
+}
+
 .register-header {
   text-align: center;
   margin-bottom: 30px;

@@ -44,6 +44,31 @@
   }
 }
 
+/* Phone (≤480px) */
+@media (max-width: 480px) {
+  .login-container {
+    padding: 6px;
+  }
+
+  .login-card {
+    padding: 16px;
+    border-radius: 8px;
+  }
+
+  .login-icon-container {
+    width: 60px;
+    height: 60px;
+  }
+
+  .login-title {
+    font-size: 20px;
+  }
+
+  .login-subtitle {
+    font-size: 14px;
+  }
+}
+
 .login-header {
   text-align: center;
   margin-bottom: 30px;

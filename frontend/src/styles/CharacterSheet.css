@@ -1979,3 +1979,229 @@ input[type="number"] {
     border-color: #2ecc71;
 }
 
+/* ============================================================
+   RESPONSIVE — TABLET (≤768px)
+   ============================================================ */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+        margin: 10px auto;
+    }
+
+    .section {
+        padding: 8px;
+    }
+
+    /* Header */
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .headerTitle {
+        font-size: 1.4rem;
+    }
+
+    /* Section headers */
+    .sectionHeader,
+    .sectionHeaderWithDice {
+        font-size: 1.1rem;
+        padding: 5px 0;
+    }
+
+    /* Level label & input: remove fixed left margin */
+    .levelLabel {
+        margin-left: 0;
+    }
+
+    .levelInput {
+        margin-left: 0;
+    }
+
+    /* Details panel: stacked vertically */
+    .detailsContainer {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* Image + dice: wrap and center */
+    .imageDiceContainer {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    /* Attributes grid: 3-col → 2-col */
+    .attributesGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    /* Flex column items: allow full width reflow */
+    .flexCol {
+        min-width: 0;
+        flex: 1 1 100%;
+    }
+
+    .sectionFlex,
+    .sectionFlex400 {
+        min-width: 0;
+        flex: 1 1 100%;
+    }
+
+    /* Scars container */
+    .scarsContainer {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Inspiration/proficiency container */
+    .inspirationProficiencyContainer {
+        margin-left: 0;
+    }
+
+    /* Skills columns: stacked */
+    .skillsContainer {
+        flex-direction: column;
+    }
+
+    /* Magic container: 2-col → 1-col */
+    .magicContainer {
+        grid-template-columns: 1fr;
+    }
+
+    /* Stat min-widths */
+    .combatStat,
+    .magicStat,
+    .inspirationStat,
+    .proficiencyStat,
+    .passivePerceptionStat {
+        min-width: 80px;
+    }
+
+    /* Save buttons: stacked */
+    .saveButtons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .saveButton,
+    .cancelButton {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* All fixed-width textareas → fluid */
+    .textareaSmall,
+    .textareaMedium,
+    .textareaLarge,
+    .historyTextarea,
+    .generalNotesTextarea,
+    .personalDescriptionTextarea,
+    .familyAndFriendsTextarea,
+    .insanityEpisodesTextarea,
+    .woundsTextarea,
+    .monsterPersonalDetailsTextarea,
+    .habilidadesTextarea,
+    .truquesTextarea,
+    .textarea100x400,
+    .textareaAdventure,
+    .textareaMythos {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    /* Modal */
+    .modalContent {
+        max-width: 95vw;
+        width: 95vw;
+        margin: 10px;
+    }
+
+    /* Tables */
+    .table {
+        font-size: 0.8rem;
+    }
+
+    .th,
+    .theq,
+    .td {
+        padding: 4px 2px;
+        font-size: 0.75rem;
+    }
+}
+
+/* ============================================================
+   RESPONSIVE — PHONE (≤480px)
+   ============================================================ */
+@media (max-width: 480px) {
+    .container {
+        padding: 0 6px;
+    }
+
+    /* Attributes grid: 2-col → 1-col */
+    .attributesGrid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Image container */
+    .imageContainer,
+    .noImage {
+        width: 100px;
+        height: 100px;
+    }
+
+    .diceImage {
+        width: 100px;
+        height: 100px;
+    }
+
+    /* Section headers */
+    .sectionHeader,
+    .sectionHeaderWithDice {
+        font-size: 0.95rem;
+    }
+
+    /* Labels and inputs */
+    .label {
+        font-size: 1rem;
+    }
+
+    .input,
+    .textarea {
+        font-size: 1rem;
+    }
+
+    /* Derived stats row: stack vertically */
+    .derivedRow {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    /* Luck/level container: wrap */
+    .luckLevelContainer {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    /* Dice boxes: slightly smaller */
+    .diceBox,
+    .diceBoxWhite,
+    .diceBoxBlack {
+        width: 32px;
+        height: 32px;
+        font-size: 1.3rem;
+    }
+
+    /* Modal */
+    .modalContent {
+        padding: 8px;
+    }
+
+    /* Combat / magic stats */
+    .combatStat,
+    .magicStat {
+        min-width: 60px;
+    }
+}
+
