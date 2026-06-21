@@ -1037,11 +1037,10 @@ const CharacterSheet = () => {
                                             <input
                                                 type="number"
                                                 min="0"
-                                                max={character.status?.health?.maximum || 99}
                                                 value={character.status?.health?.current || 0}
                                                 onChange={e => {
                                                     const newStatus = { ...character.status };
-                                                    newStatus.health = { ...newStatus.health, current: Math.min(Number(e.target.value), newStatus.health.maximum || 99) };
+                                                    newStatus.health = { ...newStatus.health, current: Number(e.target.value) };
                                                     setCharacter(prev => ({ ...prev, status: newStatus }));
                                                 }}
                                                 className="smallInput"
