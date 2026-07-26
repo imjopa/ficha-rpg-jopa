@@ -270,7 +270,7 @@ const characterSchema = new mongoose.Schema({
 
   // Controle de versão
   createdAt: { type: Date, default: Date.now },
-  updatedAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now, index: true },
   lastAccessed: { type: Date, default: Date.now }
 });
 
