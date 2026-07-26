@@ -12,6 +12,7 @@ const MasterDashboard = () => {
   const { user, logout } = useAuth();
   const [characters, setCharacters] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [typeFilter, setTypeFilter] = useState('all');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -42,10 +43,27 @@ const MasterDashboard = () => {
   }, []);
 
   // Filtrar fichas pelo nome ou jogador
-  const filteredCharacters = characters.filter(c =>
+  const searchedCharacters = characters.filter(c =>
     (c.basicInfo?.name || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
     (c.owner?.username && c.owner.username.toLowerCase().includes(searchTerm.toLowerCase()))
   );
+
+  // Separar por tipo de ficha (jogador, NPC, monstro) pra manter o dashboard sempre organizado
+  const characterGroups = [
+    { key: 'player', label: 'Jogadores', list: searchedCharacters.filter(c => (c.characterType || 'player') === 'player') },
+    { key: 'npc', label: 'NPCs', list: searchedCharacters.filter(c => c.characterType === 'npc') },
+    { key: 'monster', label: 'Inimigos', list: searchedCharacters.filter(c => c.characterType === 'monster') }
+  ];
+
+  const visibleGroups = characterGroups.filter(group => typeFilter === 'all' || typeFilter === group.key);
+  const totalVisible = visibleGroups.reduce((sum, group) => sum + group.list.length, 0);
+
+  const typeFilterOptions = [
+    { key: 'all', label: 'Todos' },
+    { key: 'player', label: 'Jogadores' },
+    { key: 'npc', label: 'NPCs' },
+    { key: 'monster', label: 'Inimigos' }
+  ];
 
   // Editar ficha (navegar para página da ficha)
   const handleEdit = (id) => {
@@ -112,7 +130,68 @@ const MasterDashboard = () => {
     }
   };
 
+  // Renderiza o card de uma ficha (usado dentro de cada grupo por tipo)
+  const renderCharacterCard = (character) => {
+    const name = character.basicInfo?.name || 'Sem nome';
+    const player = character.owner?.username || 'Desconhecido';
+    const level = character.basicInfo?.level || 0;
+    const isRecent = isRecentUpdate(character.updatedAt, character.lastAccessed);
+    const imageSrc = character.image || defaultSilhouette;
 
+    return (
+      <div
+        key={character._id}
+        className="master-dashboard-card"
+      >
+        <img
+          src={imageSrc}
+          alt={name}
+          className="master-dashboard-card-img"
+        />
+        <p className="master-dashboard-card-player">
+          {player}
+        </p>
+        <h3
+          className="master-dashboard-card-name"
+          onClick={() => handleEdit(character._id)}
+        >
+          <FileText size={16} className="master-dashboard-card-name-icon" />
+          {name}
+        </h3>
+        <span
+          className={`master-dashboard-card-status ${isRecent ? 'active' : ''}`}
+        >
+          {isRecent ? 'Ativo' : 'Ocioso'}
+        </span>
+        <div className="master-dashboard-card-stats">
+          <div className="master-dashboard-card-level">
+            {level}
+          </div>
+          <span className="master-dashboard-card-type">
+            {character.basicInfo?.class || 'Sem classe'}
+          </span>
+        </div>
+        <div className="master-dashboard-card-buttons">
+          <button
+            onClick={() => handleEdit(character._id)}
+            title="Editar"
+            className="master-dashboard-card-edit-btn"
+          >
+            <Edit size={16} />
+            Editar
+          </button>
+          <button
+            onClick={() => handleDelete(character._id, name)}
+            title="Deletar"
+            className="master-dashboard-card-delete-btn"
+          >
+            <Trash2 size={16} />
+            Deletar
+          </button>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div className="master-dashboard">
@@ -157,6 +236,18 @@ const MasterDashboard = () => {
           className="master-dashboard-search"
         />
 
+        <div className="master-dashboard-type-filters">
+          {typeFilterOptions.map(option => (
+            <button
+              key={option.key}
+              onClick={() => setTypeFilter(option.key)}
+              className={`master-dashboard-type-filter-btn${typeFilter === option.key ? ' active' : ''}`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+
       {loading && (
         <div className="master-dashboard-loading">
           <p>Carregando fichas...</p>
@@ -168,77 +259,24 @@ const MasterDashboard = () => {
         </div>
       )}
 
-      {!loading && filteredCharacters.length === 0 && (
+      {!loading && totalVisible === 0 && (
         <div className="master-dashboard-no-results">
           <p>Nenhuma ficha encontrada.</p>
         </div>
       )}
 
-      {!loading && filteredCharacters.length > 0 && (
-        <div className="master-dashboard-grid">
-          {filteredCharacters.map((character) => {
-            const name = character.basicInfo?.name || 'Sem nome';
-            const player = character.owner?.username || 'Desconhecido';
-            const level = character.basicInfo?.level || 0;
-            const isRecent = isRecentUpdate(character.updatedAt, character.lastAccessed);
-            const imageSrc = character.image || defaultSilhouette;
-
-            return (
-              <div
-                key={character._id}
-                className="master-dashboard-card"
-              >
-                <img
-                  src={imageSrc}
-                  alt={name}
-                  className="master-dashboard-card-img"
-                />
-                <p className="master-dashboard-card-player">
-                  {player}
-                </p>
-                <h3
-                  className="master-dashboard-card-name"
-                  onClick={() => handleEdit(character._id)}
-                >
-                  <FileText size={16} className="master-dashboard-card-name-icon" />
-                  {name}
-                </h3>
-                <span
-                  className={`master-dashboard-card-status ${isRecent ? 'active' : ''}`}
-                >
-                  {isRecent ? 'Ativo' : 'Ocioso'}
-                </span>
-                <div className="master-dashboard-card-stats">
-                  <div className="master-dashboard-card-level">
-                    {level}
-                  </div>
-                  <span className="master-dashboard-card-type">
-                    {character.basicInfo?.class || 'Sem classe'}
-                  </span>
-                </div>
-                <div className="master-dashboard-card-buttons">
-                  <button
-                    onClick={() => handleEdit(character._id)}
-                    title="Editar"
-                    className="master-dashboard-card-edit-btn"
-                  >
-                    <Edit size={16} />
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => handleDelete(character._id, name)}
-                    title="Deletar"
-                    className="master-dashboard-card-delete-btn"
-                  >
-                    <Trash2 size={16} />
-                    Deletar
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
+      {!loading && totalVisible > 0 && visibleGroups.map(group => (
+        group.list.length > 0 && (
+          <div key={group.key} className="master-dashboard-group">
+            <h2 className="master-dashboard-group-header">
+              {group.label} <span className="master-dashboard-group-count">({group.list.length})</span>
+            </h2>
+            <div className="master-dashboard-grid">
+              {group.list.map(renderCharacterCard)}
+            </div>
+          </div>
+        )
+      ))}
       </div>
     </div>
   );
