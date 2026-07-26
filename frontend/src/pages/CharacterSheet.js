@@ -95,6 +95,8 @@ const CharacterSheet = () => {
     const [character, setCharacter] = useState(null);
     const isNPCOrMonster = character?.characterType === 'npc' || character?.characterType === 'monster';
     const isMonster = character?.characterType === 'monster';
+    const isPlayer = character?.characterType === 'player';
+    const [activePage, setActivePage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
     const [error, setError] = useState('');
@@ -134,6 +136,9 @@ const CharacterSheet = () => {
     // Estado para modificadores de vida
     const [healthModifierValue, setHealthModifierValue] = useState(0);
 
+    // Estado para upload do anexo de magia (página 2)
+    const [uploadingSpell, setUploadingSpell] = useState(false);
+
 
 
     // Função para lidar com upload da imagem
@@ -160,6 +165,42 @@ const CharacterSheet = () => {
   }
 };
 
+    // Função para lidar com upload do anexo de magia (imagem ou PDF)
+    const handleSpellAttachmentChange = async e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        setUploadingSpell(true);
+        try {
+            const response = await characterAPI.uploadSpellAttachment(character._id, file);
+            setCharacter(prev => ({
+                ...prev,
+                spellAttachment: response.data.spellAttachment
+            }));
+            showNotification('Anexo de magia enviado com sucesso!', 'success');
+        } catch (error) {
+            console.error('Erro ao fazer upload do anexo de magia:', error);
+            showNotification(error.response?.data?.message || 'Erro ao enviar anexo de magia.', 'error');
+        }
+        setUploadingSpell(false);
+        e.target.value = '';
+    };
+
+    const handleRemoveSpellAttachment = async () => {
+        setUploadingSpell(true);
+        try {
+            await characterAPI.removeSpellAttachment(character._id);
+            setCharacter(prev => ({
+                ...prev,
+                spellAttachment: { url: '', publicId: '', resourceType: '', format: '', fileName: '' }
+            }));
+            showNotification('Anexo de magia removido.', 'success');
+        } catch (error) {
+            console.error('Erro ao remover anexo de magia:', error);
+            showNotification(error.response?.data?.message || 'Erro ao remover anexo de magia.', 'error');
+        }
+        setUploadingSpell(false);
+    };
+
     useEffect(() => {
         const fetchCharacter = async () => {
             setLoading(true);
@@ -177,6 +218,7 @@ const CharacterSheet = () => {
                         player: charData.basicInfo?.player || '',
                         race: charData.basicInfo?.race || '',
                         class: charData.basicInfo?.class || '',
+                        subclass: charData.basicInfo?.subclass || '',
                         background: charData.basicInfo?.background || '',
                         level: charData.basicInfo?.level || 0,
                         alignment: charData.basicInfo?.alignment || '',
@@ -363,6 +405,20 @@ const CharacterSheet = () => {
                     }
                 };
 
+                // Ensure subclass description, additional abilities and spell attachment are initialized
+                charData = {
+                    ...charData,
+                    subclassDescription: charData.subclassDescription || '',
+                    additionalAbilities: charData.additionalAbilities || '',
+                    spellAttachment: {
+                        url: charData.spellAttachment?.url || '',
+                        publicId: charData.spellAttachment?.publicId || '',
+                        resourceType: charData.spellAttachment?.resourceType || '',
+                        format: charData.spellAttachment?.format || '',
+                        fileName: charData.spellAttachment?.fileName || ''
+                    }
+                };
+
                 setCharacter(charData);
             } catch (err) {
                 console.error('Error loading character:', err);
@@ -376,6 +432,10 @@ const CharacterSheet = () => {
     useEffect(() => {
         setImagePreview(character?.image || '');
     }, [character?.image]);
+
+    useEffect(() => {
+        if (!isPlayer && activePage !== 1) setActivePage(1);
+    }, [isPlayer, activePage]);
 
     // Recalculate skills when proficiencyBonus changes
     useEffect(() => {
@@ -2224,6 +2284,7 @@ const CharacterSheet = () => {
                         </div>
                     </div>
                     {(character.weapons && character.weapons.length > 0) ? (
+                        <div className="tableScroll">
                         <table className="table">
                             <thead>
                                 <tr>
@@ -2327,6 +2388,7 @@ const CharacterSheet = () => {
                                 ))}
                             </tbody>
                         </table>
+                        </div>
                     ) : (
                         <p>Nenhum item de combate cadastrado.</p>
                     )}
@@ -2334,6 +2396,7 @@ const CharacterSheet = () => {
                     <br />
                     <br />
                     {(character.armors && character.armors.length > 0) ? (
+                        <div className="tableScroll">
                         <table className="table">
                             <thead>
                                 <tr>
@@ -2420,6 +2483,7 @@ const CharacterSheet = () => {
                                 ))}
                             </tbody>
                         </table>
+                        </div>
                     ) : (
                         <p>Nenhuma armadura cadastrada.</p>
                     )}
@@ -2432,6 +2496,7 @@ const CharacterSheet = () => {
                         <section className="section">
                             <div className="sectionHeader">Equipamentos</div>
                             {(character.equipment && character.equipment.length > 0) ? (
+                                <div className="tableScroll">
                                 <table className="table">
                                     <thead>
                                         <tr>
@@ -2500,6 +2565,7 @@ const CharacterSheet = () => {
                                         ))}
                                     </tbody>
                                 </table>
+                                </div>
                             ) : (
                                 <p>Nenhum equipamento cadastrado.</p>
                             )}
@@ -2551,7 +2617,43 @@ const CharacterSheet = () => {
 
                 </section>
 
-
+                {/* Subclasse e Habilidades Adicionais (somente jogadores) */}
+                {isPlayer && (
+                    <section className="section">
+                        <div className="sectionHeader">Subclasse e Habilidades Adicionais</div>
+                        <div className="skillsContainer">
+                            <div className="skillItem">
+                                <div className="subclasseNameRow">
+                                    <label className="label">Subclasse</label>
+                                    <input
+                                        type="text"
+                                        value={character.basicInfo.subclass || ''}
+                                        onChange={e => handleBasicInfoChange('subclass', e.target.value)}
+                                        className="input subclasseNameInput"
+                                        placeholder="Nome da subclasse"
+                                    />
+                                </div>
+                                <textarea
+                                    value={character.subclassDescription || ''}
+                                    onChange={e => setCharacter(prev => ({ ...prev, subclassDescription: e.target.value }))}
+                                    className="textarea habilidadesTextarea subclasseTextarea"
+                                    placeholder="Características e habilidades da subclasse..."
+                                />
+                            </div>
+                            <div className="skillItem">
+                                <div className="subclasseNameRow">
+                                    <label className="label">Habilidades Adicionais</label>
+                                </div>
+                                <textarea
+                                    value={character.additionalAbilities || ''}
+                                    onChange={e => setCharacter(prev => ({ ...prev, additionalAbilities: e.target.value }))}
+                                    className="textarea habilidadesTextarea subclasseTextarea"
+                                    placeholder="Habilidades adicionais de classe e subclasse..."
+                                />
+                            </div>
+                        </div>
+                    </section>
+                )}
 
                 {/* Mágicka */}
                 <section className="section">
@@ -2962,48 +3064,50 @@ const CharacterSheet = () => {
                             </div>
                         </div>
                     </section>
-               
 
-                {/* Detalhes Pessoais */}
-                {!isNPCOrMonster && (
+                {/* Anexo (somente jogadores) */}
+                {isPlayer && (
                     <section className="section">
-                        <div className="sectionHeader">Informações Pessoais</div>
-                        <div className="flexRow">
-                            <div className="flexCol">
-                                <label className="label">Descrição Pessoal</label>
-                                <textarea
-                                    value={character.basicInfo.personalDescription || ''}
-                                    onChange={e => handleBasicInfoChange('personalDescription', e.target.value)}
-                                    className="personalDescriptionTextarea"
-                                    placeholder="Descreva o personagem..."
-                                />
-
-                                <label className="label">Família e Amigos</label>
-                                <textarea
-                                    value={character.basicInfo.familyAndFriends || ''}
-                                    onChange={e => handleBasicInfoChange('familyAndFriends', e.target.value)}
-                                    className="familyAndFriendsTextarea"
-                                    placeholder="Família, amigos, contatos..."
-                                />
-                            </div>
-
-                            <div className="flexCol">
-                                <label className="label">Tesouros</label>
-                                <textarea
-                                    value={character.basicInfo.insanityEpisodes || ''}
-                                    onChange={e => handleBasicInfoChange('insanityEpisodes', e.target.value)}
-                                    className="insanityEpisodesTextarea"
-                                    placeholder="Tesouros..."
-                                />
-
-                                <label className="label">Ferimentos</label>
-                                <textarea
-                                    value={character.basicInfo.wounds || ''}
-                                    onChange={e => handleBasicInfoChange('wounds', e.target.value)}
-                                    className="woundsTextarea"
-                                    placeholder="Ferimentos e lesões..."
-                                />
-                            </div>
+                        <div className="sectionHeader">Anexo</div>
+                        <div className="spellAttachmentContainer">
+                            {character.spellAttachment?.url ? (
+                                <div className="spellAttachmentPreview">
+                                    <a
+                                        href={character.spellAttachment.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="spellAttachmentLink"
+                                    >
+                                        {['jpg', 'jpeg', 'png', 'webp', 'gif'].includes((character.spellAttachment.format || '').toLowerCase()) ? (
+                                            <img
+                                                src={character.spellAttachment.url}
+                                                alt="Anexo de magia"
+                                                className="spellAttachmentImage"
+                                            />
+                                        ) : (
+                                            <span>📄 {character.spellAttachment.fileName || 'Abrir arquivo'}</span>
+                                        )}
+                                    </a>
+                                    <button
+                                        type="button"
+                                        onClick={handleRemoveSpellAttachment}
+                                        className="cancelButton"
+                                        disabled={uploadingSpell}
+                                    >
+                                        Remover Anexo
+                                    </button>
+                                </div>
+                            ) : (
+                                <p className="label">Nenhum arquivo anexado.</p>
+                            )}
+                            <input
+                                type="file"
+                                accept="image/*,application/pdf"
+                                onChange={handleSpellAttachmentChange}
+                                disabled={uploadingSpell}
+                                className="spellFileInput"
+                            />
+                            {uploadingSpell && <p className="label">Enviando arquivo...</p>}
                         </div>
                     </section>
                 )}
@@ -3022,8 +3126,8 @@ const CharacterSheet = () => {
                     </section>
                 )}
 
-                {/* História do Personagem */}
-                {!isMonster && (
+                {/* História do Personagem (NPC) */}
+                {isNPCOrMonster && !isMonster && (
                     <section className="section">
                         <div className="sectionHeader">História do Personagem</div>
                         <label className="label">História do Personagem</label>
@@ -3047,6 +3151,73 @@ const CharacterSheet = () => {
                     </section>
                 )}
 
+                {/* Página 2: Informações de Personagem (somente jogadores) */}
+                {isPlayer && activePage === 2 && (
+                    <>
+                        <section className="section">
+                            <div className="sectionHeader">Informações Pessoais</div>
+                            <div className="flexRow">
+                                <div className="flexCol">
+                                    <label className="label">Descrição Pessoal</label>
+                                    <textarea
+                                        value={character.basicInfo.personalDescription || ''}
+                                        onChange={e => handleBasicInfoChange('personalDescription', e.target.value)}
+                                        className="personalDescriptionTextarea"
+                                        placeholder="Descreva o personagem..."
+                                    />
+
+                                    <label className="label">Família e Amigos</label>
+                                    <textarea
+                                        value={character.basicInfo.familyAndFriends || ''}
+                                        onChange={e => handleBasicInfoChange('familyAndFriends', e.target.value)}
+                                        className="familyAndFriendsTextarea"
+                                        placeholder="Família, amigos, contatos..."
+                                    />
+                                </div>
+
+                                <div className="flexCol">
+                                    <label className="label">Tesouros</label>
+                                    <textarea
+                                        value={character.basicInfo.insanityEpisodes || ''}
+                                        onChange={e => handleBasicInfoChange('insanityEpisodes', e.target.value)}
+                                        className="insanityEpisodesTextarea"
+                                        placeholder="Tesouros..."
+                                    />
+
+                                    <label className="label">Ferimentos</label>
+                                    <textarea
+                                        value={character.basicInfo.wounds || ''}
+                                        onChange={e => handleBasicInfoChange('wounds', e.target.value)}
+                                        className="woundsTextarea"
+                                        placeholder="Ferimentos e lesões..."
+                                    />
+                                </div>
+                            </div>
+                        </section>
+
+                        <section className="section">
+                            <div className="sectionHeader">História do Personagem</div>
+                            <label className="label">História do Personagem</label>
+                            <textarea
+                                value={character.history || ''}
+                                onChange={e => setCharacter(prev => ({ ...prev, history: e.target.value }))}
+                                className="historyTextarea"
+                                placeholder="História do personagem..."
+                            />
+                            <label className="label">Notas Gerais</label>
+                            <textarea
+                                value={character.notes?.generalNotes || ''}
+                                onChange={e => setCharacter(prev => ({
+                                    ...prev,
+                                    notes: { ...prev.notes, generalNotes: e.target.value }
+                                }))}
+                                className="generalNotesTextarea"
+                                placeholder="Notas gerais..."
+                            />
+                        </section>
+                    </>
+                )}
+
                 {/* Dados */}
                 <section className="section">
                     <div className="sectionHeader">Histórico de Dados</div>
@@ -3055,6 +3226,22 @@ const CharacterSheet = () => {
 
                 {/* Botões Salvar / Cancelar */}
                 <div className="saveButtons">
+                    {isPlayer && activePage === 1 && (
+                        <button
+                            onClick={() => setActivePage(2)}
+                            className="pageNavButton"
+                        >
+                            Informações do Personagem
+                        </button>
+                    )}
+                    {isPlayer && activePage === 2 && (
+                        <button
+                            onClick={() => setActivePage(1)}
+                            className="pageNavButton"
+                        >
+                            ← Voltar à Ficha
+                        </button>
+                    )}
                     <button
                         onClick={handleSave}
                         className="saveButton"

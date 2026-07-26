@@ -449,6 +449,22 @@ body{
     font-weight: 600;
 }
 
+.pageNavButton {
+    background: #000;
+    color: #fff;
+    border: 2px solid #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: inherit;
+}
+
+.pageNavButton:hover {
+    background: #fff;
+    color: #000;
+}
+
 .attributesGrid {
      display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -710,6 +726,12 @@ body{
     border-radius: 50%;
     animation: spin 1s linear infinite;
     margin: 0 auto 20px;
+}
+
+.tableScroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 .table {
@@ -1692,6 +1714,60 @@ input[type="number"] {
     resize: vertical;
 }
 
+.subclasseTextarea {
+    min-height: 470px;
+}
+
+.subclasseNameRow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 32px;
+    margin-bottom: 8px;
+}
+
+.subclasseNameRow .label {
+    margin-bottom: 0;
+    white-space: nowrap;
+}
+
+.subclasseNameInput {
+    width: 220px;
+    margin-bottom: 0;
+}
+
+.spellAttachmentContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 10px;
+}
+
+.spellAttachmentPreview {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.spellAttachmentImage {
+    max-width: 100%;
+    max-height: 500px;
+    border: 2px solid #fff;
+    border-radius: 4px;
+}
+
+.spellAttachmentLink {
+    color: #fff;
+    text-decoration: underline;
+    font-size: 1.1rem;
+}
+
+.spellFileInput {
+    color: #fff;
+    font-family: inherit;
+}
+
 /* Truques styles */
 .truquesHeader {
     display: flex;
@@ -2086,7 +2162,8 @@ input[type="number"] {
     }
 
     .saveButton,
-    .cancelButton {
+    .cancelButton,
+    .pageNavButton {
         width: 100%;
         text-align: center;
     }
@@ -2118,9 +2195,11 @@ input[type="number"] {
         margin: 10px;
     }
 
-    /* Tables */
+    /* Tables: keep natural width and let .tableScroll wrapper scroll horizontally */
     .table {
         font-size: 0.8rem;
+        width: auto;
+        min-width: 600px;
     }
 
     .th,
@@ -2128,6 +2207,21 @@ input[type="number"] {
     .td {
         padding: 4px 2px;
         font-size: 0.75rem;
+    }
+
+    /* Magic slot rows: wrap instead of overflowing */
+    .truquesHeader,
+    .slotsContainer {
+        flex-wrap: wrap;
+    }
+
+    /* Subclasse: name field goes full width when wrapped */
+    .subclasseNameRow {
+        flex-wrap: wrap;
+    }
+
+    .subclasseNameInput {
+        width: 100%;
     }
 }
 

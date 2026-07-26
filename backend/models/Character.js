@@ -64,6 +64,7 @@ const characterSchema = new mongoose.Schema({
     player: { type: String, required: true },
     race: { type: String, default: '' },
     class: { type: String, default: '' },
+    subclass: { type: String, default: '' },
     background: { type: String, default: '' },
     plan: { type: String, default: '' },
     level: { type: Number, default: 0 },
@@ -266,6 +267,21 @@ const characterSchema = new mongoose.Schema({
       max: { type: Number, default: 0 },
       spells: { type: String, default: '' }
     }
+  },
+
+  // Descrição/traços da subclasse (página 1, fichas de jogador)
+  subclassDescription: { type: String, default: '' },
+
+  // Habilidades adicionais de classe/subclasse (página 1, fichas de jogador)
+  additionalAbilities: { type: String, default: '' },
+
+  // Anexo de magia (imagem ou PDF) - página 2, fichas de jogador
+  spellAttachment: {
+    url: { type: String, default: '' },
+    publicId: { type: String, default: '' },
+    resourceType: { type: String, default: '' },
+    format: { type: String, default: '' },
+    fileName: { type: String, default: '' }
   },
 
   // Controle de versão

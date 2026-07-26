@@ -59,7 +59,15 @@ export const characterAPI = {
     return api.post(`/characters/${id}/upload-image`, formData, {
       headers: { 'Content-Type': 'multipart/form-data' }
     });
-  }
+  },
+  uploadSpellAttachment: (id, file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+    return api.post(`/characters/${id}/upload-spell-attachment`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  },
+  removeSpellAttachment: (id) => api.delete(`/characters/${id}/spell-attachment`)
 };
 
 export default api;
