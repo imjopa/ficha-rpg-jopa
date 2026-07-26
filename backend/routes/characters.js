@@ -3,6 +3,7 @@ const Character = require('../models/Character');
 const { auth, masterAuth } = require('../middleware/auth');
 const router = express.Router();
 const upload = require('../middleware/upload');
+const multer = require('multer');
 
 // Criar nova ficha (jogadores e mestres)
 router.post('/', auth, async (req, res) => {
@@ -82,9 +83,11 @@ router.put('/:id', auth, async (req, res) => {
       return res.status(403).json({ message: 'Acesso negado' });
     }
 
+    const { image, ...safeBody } = req.body;
+
     const updatedCharacter = await Character.findOneAndUpdate(
       { _id: req.params.id },
-      { $set: { ...req.body, lastAccessed: new Date() } },
+      { $set: { ...safeBody, lastAccessed: new Date() } },
       { new: true }
     ).populate('owner', 'username email');
 
@@ -95,7 +98,19 @@ router.put('/:id', auth, async (req, res) => {
 });
 
 // Upload de imagem do personagem
-router.post('/:id/upload-image', auth, upload.single('image'), async (req, res) => {
+router.post('/:id/upload-image', auth, (req, res, next) => {
+  upload.single('image')(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ message: 'Imagem muito grande. O limite é 10MB.' });
+      }
+      return res.status(400).json({ message: 'Erro no upload da imagem', error: err.message });
+    } else if (err) {
+      return res.status(500).json({ message: 'Erro ao processar imagem', error: err.message });
+    }
+    next();
+  });
+}, async (req, res) => {
   try {
     const character = await Character.findById(req.params.id);
 
