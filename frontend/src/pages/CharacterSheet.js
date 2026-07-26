@@ -137,20 +137,28 @@ const CharacterSheet = () => {
 
 
     // Função para lidar com upload da imagem
-    const handleImageChange = e => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImagePreview(reader.result);
-                setCharacter(prev => ({
-                    ...prev,
-                    image: reader.result, // salva base64 no objeto character
-                }));
-            };
-            reader.readAsDataURL(file);
-        }
+    const handleImageChange = async e => {
+  const file = e.target.files[0];
+  if (file) {
+    // Mostrar preview imediato local, antes do upload terminar
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result);
     };
+    reader.readAsDataURL(file);
+
+    // Fazer upload de verdade pro Cloudinary
+    try {
+      const response = await characterAPI.uploadImage(character._id, file);
+      setCharacter(prev => ({
+        ...prev,
+        image: response.data.image
+      }));
+    } catch (error) {
+      console.error('Erro ao fazer upload da imagem:', error);
+    }
+  }
+};
 
     useEffect(() => {
         const fetchCharacter = async () => {

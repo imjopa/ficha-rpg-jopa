@@ -52,7 +52,14 @@ export const characterAPI = {
   getAllCharacters: () => api.get('/characters/all'), // Apenas mestres
   getById: (id) => api.get(`/characters/${id}`),
   update: (id, characterData) => api.put(`/characters/${id}`, characterData),
-  delete: (id) => api.delete(`/characters/${id}`)
+  delete: (id) => api.delete(`/characters/${id}`),
+  uploadImage: (id, file) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    return api.post(`/characters/${id}/upload-image`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+  }
 };
 
 export default api;

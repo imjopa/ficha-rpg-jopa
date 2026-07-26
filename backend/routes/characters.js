@@ -2,6 +2,7 @@ const express = require('express');
 const Character = require('../models/Character');
 const { auth, masterAuth } = require('../middleware/auth');
 const router = express.Router();
+const upload = require('../middleware/upload');
 
 // Criar nova ficha (jogadores e mestres)
 router.post('/', auth, async (req, res) => {
@@ -90,6 +91,35 @@ router.put('/:id', auth, async (req, res) => {
     res.json(updatedCharacter);
   } catch (error) {
     res.status(500).json({ message: 'Erro ao atualizar ficha', error: error.message });
+  }
+});
+
+// Upload de imagem do personagem
+router.post('/:id/upload-image', auth, upload.single('image'), async (req, res) => {
+  try {
+    const character = await Character.findById(req.params.id);
+
+    if (!character) {
+      return res.status(404).json({ message: 'Ficha não encontrada' });
+    }
+
+    // Verificar permissão: dono da ficha ou mestre
+    if (character.owner.toString() !== req.user._id.toString() &&
+        req.user.role !== 'master') {
+      return res.status(403).json({ message: 'Acesso negado' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'Nenhuma imagem enviada' });
+    }
+
+    character.image = req.file.path;
+    character.lastAccessed = new Date();
+    await character.save();
+
+    res.json({ message: 'Imagem atualizada com sucesso', image: character.image });
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao fazer upload da imagem', error: error.message });
   }
 });
 
