@@ -96,6 +96,7 @@ const CharacterSheet = () => {
     const isNPCOrMonster = character?.characterType === 'npc' || character?.characterType === 'monster';
     const isMonster = character?.characterType === 'monster';
     const isPlayer = character?.characterType === 'player';
+    const isMonk = (character?.basicInfo?.class || '').trim().toLowerCase().includes('monge');
     const [activePage, setActivePage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -410,6 +411,11 @@ const CharacterSheet = () => {
                     ...charData,
                     subclassDescription: charData.subclassDescription || '',
                     additionalAbilities: charData.additionalAbilities || '',
+                    monkFocusPoints: {
+                        used: charData.monkFocusPoints?.used || 0,
+                        max: charData.monkFocusPoints?.max || 0,
+                        notes: charData.monkFocusPoints?.notes || ''
+                    },
                     spellAttachment: {
                         url: charData.spellAttachment?.url || '',
                         publicId: charData.spellAttachment?.publicId || '',
@@ -561,6 +567,30 @@ const CharacterSheet = () => {
                         ...prev.magicSlots[level],
                         used: newUsed,
                     },
+                },
+            };
+        });
+    };
+
+    const handleFocusPointsChange = (field, value) => {
+        setCharacter(prev => ({
+            ...prev,
+            monkFocusPoints: {
+                ...prev.monkFocusPoints,
+                [field]: value,
+            },
+        }));
+    };
+
+    const handleFocusPointCheckboxChange = (index) => {
+        setCharacter(prev => {
+            const currentUsed = prev.monkFocusPoints?.used || 0;
+            const newUsed = index + 1 === currentUsed ? index : index + 1;
+            return {
+                ...prev,
+                monkFocusPoints: {
+                    ...prev.monkFocusPoints,
+                    used: newUsed,
                 },
             };
         });
@@ -2650,6 +2680,49 @@ const CharacterSheet = () => {
                                     className="textarea habilidadesTextarea subclasseTextarea"
                                     placeholder="Habilidades adicionais de classe e subclasse..."
                                 />
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {/* Pontos de Foco (somente Monge) */}
+                {isPlayer && isMonk && (
+                    <section className="section">
+                        <div className="sectionHeader">Pontos de Foco</div>
+                        <div className="sectionBorder">
+                            <div className="skillsContainer">
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Controle de Pontos de Foco</span>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.monkFocusPoints?.max || 0}
+                                                onChange={e => handleFocusPointsChange('max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.monkFocusPoints?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.monkFocusPoints?.used || 0) > index}
+                                                        onChange={() => handleFocusPointCheckboxChange(index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.monkFocusPoints?.notes || ''}
+                                        onChange={e => handleFocusPointsChange('notes', e.target.value)}
+                                        className="textarea focusPointsTextarea"
+                                        placeholder="Usos e técnicas de pontos de foco..."
+                                    />
+                                </div>
                             </div>
                         </div>
                     </section>

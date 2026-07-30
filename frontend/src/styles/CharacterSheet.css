@@ -1718,6 +1718,13 @@ input[type="number"] {
     min-height: 470px;
 }
 
+.focusPointsTextarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 300px;
+    resize: vertical;
+}
+
 .subclasseNameRow {
     display: flex;
     align-items: center;

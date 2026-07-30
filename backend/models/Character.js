@@ -275,6 +275,13 @@ const characterSchema = new mongoose.Schema({
   // Habilidades adicionais de classe/subclasse (página 1, fichas de jogador)
   additionalAbilities: { type: String, default: '' },
 
+  // Controle de Pontos de Foco (classe Monge)
+  monkFocusPoints: {
+    used: { type: Number, default: 0 },
+    max: { type: Number, default: 0 },
+    notes: { type: String, default: '' }
+  },
+
   // Anexo de magia (imagem ou PDF) - página 2, fichas de jogador
   spellAttachment: {
     url: { type: String, default: '' },
