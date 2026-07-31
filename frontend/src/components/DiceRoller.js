@@ -20,10 +20,14 @@ const DiceHistory = ({ history }) => {
                 {roll.rollType === 'skill' && `Habilidade: ${roll.rollName}`}
                 {roll.rollType === 'luck' && `Sorte: ${roll.rollName}`}
                 {roll.rollType === 'damage' && `Dano: ${roll.rollName || 'Arma'}`}
+                {roll.rollType === 'attack' && `Ataque: ${roll.rollName || 'Arma'}`}
                 {roll.rollType === 'general' && `Geral: ${roll.numDice}x${roll.diceType}`}
               </div>
               {roll.rollType === 'damage' && (
                 <div>Rolou {roll.numDice}x{roll.diceType}: Total {roll.total}</div>
+              )}
+              {roll.rollType === 'attack' && (
+                <div>Rolou 1d20: Total {roll.total}</div>
               )}
               {roll.rollType === 'general' && (
                 <div>Rolou {roll.numDice}x{roll.diceType}: Total {roll.total}</div>

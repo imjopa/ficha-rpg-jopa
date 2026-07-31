@@ -223,9 +223,9 @@ const MasterDashboard = () => {
           <button
             onClick={handleCreateMonster}
             className="master-dashboard-create-btn"
-            title="Criar Monstro"
+            title="Criar Inimigo"
           >
-            <Plus size={16} /> Criar Monstro
+            <Plus size={16} /> Criar Inimigo
           </button>
         </div>
         <input

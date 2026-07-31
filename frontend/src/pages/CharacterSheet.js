@@ -82,6 +82,50 @@ const skillToAttribute = {
     persuasao: 'charisma'
 };
 
+const ARMOR_TABLE = {
+    'Nenhuma': { base: 10, type: 'Nenhuma' },
+    'Couro': { base: 11, type: 'Leve' },
+    'Couro Batido': { base: 12, type: 'Leve' },
+    'Gibão de Peles': { base: 12, type: 'Média' },
+    'Peitoral': { base: 14, type: 'Média' },
+    'Meia Armadura': { base: 15, type: 'Média' },
+    'Cota de Escamas': { base: 14, type: 'Média' },
+    'Cota de Malha': { base: 16, type: 'Pesada' },
+    'Cota de Talas': { base: 17, type: 'Pesada' },
+    'Placas': { base: 18, type: 'Pesada' }
+};
+
+const SHIELD_TABLE = {
+    'Escudo': 2,
+    'Escudo +1': 3,
+    'Escudo +2': 4,
+    'Escudo +3': 5
+};
+
+const ATTRIBUTE_ABBR_TO_KEY = {
+    FOR: 'strength',
+    DES: 'dexterity',
+    CON: 'constitution',
+    INT: 'intelligence',
+    SAB: 'wisdom',
+    CAR: 'charisma'
+};
+
+const calculateDefense = (armors, shields, dexModifier) => {
+    const equippedArmor = (armors || []).find(a => a.equipped);
+    const armorInfo = ARMOR_TABLE[equippedArmor?.name] || ARMOR_TABLE['Nenhuma'];
+
+    let dexContribution = dexModifier || 0;
+    if (armorInfo.type === 'Média') dexContribution = Math.min(dexContribution, 2);
+    else if (armorInfo.type === 'Pesada') dexContribution = 0;
+
+    const bonusExtra = Number(equippedArmor?.bonusExtra || 0);
+    const shieldBonus = (shields || [])
+        .filter(s => s.equipped)
+        .reduce((sum, s) => sum + (SHIELD_TABLE[s.name] || 0), 0);
+
+    return armorInfo.base + dexContribution + bonusExtra + shieldBonus;
+};
 
 const CharacterSheet = () => {
     const { id } = useParams();
@@ -97,6 +141,7 @@ const CharacterSheet = () => {
     const isMonster = character?.characterType === 'monster';
     const isPlayer = character?.characterType === 'player';
     const isMonk = (character?.basicInfo?.class || '').trim().toLowerCase().includes('monge');
+    const isSorcerer = (character?.basicInfo?.class || '').trim().toLowerCase().includes('feiticeiro');
     const [activePage, setActivePage] = useState(1);
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -333,7 +378,8 @@ const CharacterSheet = () => {
                     },
                     history: charData.history || '',
                     weapons: Array.isArray(charData.weapons) ? charData.weapons : [],
-                    armors: Array.isArray(charData.armors) ? charData.armors : []
+                    armors: Array.isArray(charData.armors) ? charData.armors : [],
+                    shields: Array.isArray(charData.shields) ? charData.shields : []
                 };
 
                 // Remove incomeAndEconomy from character data if it exists
@@ -415,6 +461,11 @@ const CharacterSheet = () => {
                         used: charData.monkFocusPoints?.used || 0,
                         max: charData.monkFocusPoints?.max || 0,
                         notes: charData.monkFocusPoints?.notes || ''
+                    },
+                    sorceryPoints: {
+                        used: charData.sorceryPoints?.used || 0,
+                        max: charData.sorceryPoints?.max || 0,
+                        notes: charData.sorceryPoints?.notes || ''
                     },
                     spellAttachment: {
                         url: charData.spellAttachment?.url || '',
@@ -596,6 +647,30 @@ const CharacterSheet = () => {
         });
     };
 
+    const handleSorceryPointsChange = (field, value) => {
+        setCharacter(prev => ({
+            ...prev,
+            sorceryPoints: {
+                ...prev.sorceryPoints,
+                [field]: value,
+            },
+        }));
+    };
+
+    const handleSorceryPointCheckboxChange = (index) => {
+        setCharacter(prev => {
+            const currentUsed = prev.sorceryPoints?.used || 0;
+            const newUsed = index + 1 === currentUsed ? index : index + 1;
+            return {
+                ...prev,
+                sorceryPoints: {
+                    ...prev.sorceryPoints,
+                    used: newUsed,
+                },
+            };
+        });
+    };
+
     const handleAttributeChange = (attribute, field, value) => {
         setCharacter(prev => {
             const newAttributes = {
@@ -628,6 +703,17 @@ const CharacterSheet = () => {
                     }
                 });
 
+                // Dexterity modifier feeds into the automatic defense calculation
+                if (attribute === 'dexterity') {
+                    const defense = calculateDefense(prev.armors, prev.shields, modifier);
+                    return {
+                        ...prev,
+                        attributes: newAttributes,
+                        skills: newSkills,
+                        combat: { ...prev.combat, defense },
+                    };
+                }
+
                 return {
                     ...prev,
                     attributes: newAttributes,
@@ -642,9 +728,17 @@ const CharacterSheet = () => {
                     checked: value,
                     value: prev.attributes[attribute].modifier + (value ? prev.proficiencyBonus : 0)
                 };
+
+                // Keep weapons using this attribute in sync with its proficiency
+                const attrAbbr = Object.keys(ATTRIBUTE_ABBR_TO_KEY).find(abbr => ATTRIBUTE_ABBR_TO_KEY[abbr] === attribute);
+                const newWeapons = (prev.weapons || []).map(w =>
+                    w.attribute === attrAbbr ? { ...w, proficiency: value } : w
+                );
+
                 return {
                     ...prev,
                     attributes: newAttributes,
+                    weapons: newWeapons,
                 };
             }
 
@@ -666,13 +760,19 @@ const CharacterSheet = () => {
     const handleWeaponChange = (index, field, value) => {
         const newWeapons = [...(character.weapons || [])];
         newWeapons[index] = { ...newWeapons[index], [field]: value };
+
+        if (field === 'attribute') {
+            const attrKey = ATTRIBUTE_ABBR_TO_KEY[value];
+            newWeapons[index].proficiency = attrKey ? !!character.attributes?.[attrKey]?.savingThrow?.checked : false;
+        }
+
         setCharacter(prev => ({ ...prev, weapons: newWeapons }));
     };
 
     const addWeapon = () => {
         setCharacter(prev => ({
             ...prev,
-            weapons: [...(prev.weapons || []), { name: '', type: '', damage: '', range: '', attack: '', proficiency: false }],
+            weapons: [...(prev.weapons || []), { name: '', category: '', type: '', damage: '', range: '', attribute: '', attack: '', proficiency: false }],
         }));
     };
 
@@ -685,20 +785,47 @@ const CharacterSheet = () => {
     const handleArmorChange = (index, field, value) => {
         const newArmors = [...(character.armors || [])];
         newArmors[index] = { ...newArmors[index], [field]: value };
-        setCharacter(prev => ({ ...prev, armors: newArmors }));
+        const dexModifier = character.attributes?.dexterity?.modifier || 0;
+        const defense = calculateDefense(newArmors, character.shields, dexModifier);
+        setCharacter(prev => ({ ...prev, armors: newArmors, combat: { ...prev.combat, defense } }));
     };
 
     const addArmor = () => {
         setCharacter(prev => ({
             ...prev,
-            armors: [...(prev.armors || []), { name: '', type: '', ca: '', stealth: '', weight: 0, proficiency: false }],
+            armors: [...(prev.armors || []), { name: '', equipped: false, bonusExtra: 0 }],
         }));
     };
 
     const removeArmor = index => {
         const newArmors = [...(character.armors || [])];
         newArmors.splice(index, 1);
-        setCharacter(prev => ({ ...prev, armors: newArmors }));
+        const dexModifier = character.attributes?.dexterity?.modifier || 0;
+        const defense = calculateDefense(newArmors, character.shields, dexModifier);
+        setCharacter(prev => ({ ...prev, armors: newArmors, combat: { ...prev.combat, defense } }));
+    };
+
+    const handleShieldChange = (index, field, value) => {
+        const newShields = [...(character.shields || [])];
+        newShields[index] = { ...newShields[index], [field]: value };
+        const dexModifier = character.attributes?.dexterity?.modifier || 0;
+        const defense = calculateDefense(character.armors, newShields, dexModifier);
+        setCharacter(prev => ({ ...prev, shields: newShields, combat: { ...prev.combat, defense } }));
+    };
+
+    const addShield = () => {
+        setCharacter(prev => ({
+            ...prev,
+            shields: [...(prev.shields || []), { name: '', equipped: false }],
+        }));
+    };
+
+    const removeShield = index => {
+        const newShields = [...(character.shields || [])];
+        newShields.splice(index, 1);
+        const dexModifier = character.attributes?.dexterity?.modifier || 0;
+        const defense = calculateDefense(character.armors, newShields, dexModifier);
+        setCharacter(prev => ({ ...prev, shields: newShields, combat: { ...prev.combat, defense } }));
     };
 
     const showNotification = (message, type = 'info') => {
@@ -819,6 +946,13 @@ const CharacterSheet = () => {
                 }
             }
 
+            const attrKey = weapon.category !== 'Magia' ? ATTRIBUTE_ABBR_TO_KEY[weapon.attribute] : null;
+            const attrMod = attrKey ? (character.attributes?.[attrKey]?.modifier || 0) : 0;
+            if (attrMod) {
+                constants.push(attrMod);
+                total += attrMod;
+            }
+
             const newRoll = {
                 rollType: 'damage',
                 rollName: weapon.name || 'Arma',
@@ -860,6 +994,49 @@ const CharacterSheet = () => {
                 total,
                 rolls,
                 breakdown: [`Rolou ${numDice}x${selectedDice}: ${rolls.join(', ')}`],
+                timestamp: new Date().toLocaleString()
+            };
+
+            setRollResult(newRoll);
+            setIsRollingDice(false);
+        }, 1000);
+    };
+
+    const getWeaponAttackBonus = (weapon) => {
+        const attrKey = ATTRIBUTE_ABBR_TO_KEY[weapon?.attribute];
+        const attrMod = attrKey ? (character.attributes?.[attrKey]?.modifier || 0) : 0;
+        const proficiencyBonus = weapon?.proficiency ? (character.proficiencyBonus || 0) : 0;
+        return attrMod + proficiencyBonus;
+    };
+
+    const rollAttackDice = (index) => {
+        const weapon = character.weapons[index];
+        const attrKey = ATTRIBUTE_ABBR_TO_KEY[weapon.attribute];
+        const attrMod = attrKey ? (character.attributes?.[attrKey]?.modifier || 0) : 0;
+        const proficiencyBonus = weapon.proficiency ? (character.proficiencyBonus || 0) : 0;
+        const bonus = attrMod + proficiencyBonus;
+
+        setIsRollingDice(true);
+        setShowDiceModal(true);
+        setRollResult(null);
+
+        setTimeout(() => {
+            const roll = Math.floor(Math.random() * 20) + 1;
+            const total = roll + bonus;
+
+            const newRoll = {
+                rollType: 'attack',
+                rollName: weapon.name || 'Arma',
+                diceType: 'd20',
+                numDice: 1,
+                total,
+                rolls: [roll],
+                constants: bonus ? [bonus] : [],
+                breakdown: [
+                    `Rolou 1d20: ${roll}`,
+                    ...(attrMod ? [`Modificador de ${weapon.attribute}: ${attrMod >= 0 ? '+' : ''}${attrMod}`] : []),
+                    ...(proficiencyBonus ? [`Bônus de Proficiência: +${proficiencyBonus}`] : [])
+                ],
                 timestamp: new Date().toLocaleString()
             };
 
@@ -2318,17 +2495,67 @@ const CharacterSheet = () => {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th className="th">Proficiência</th>
                                     <th className="th">Nome</th>
-                                    <th className="th">Tipo</th>
-                                    <th className="th">Dano</th>
+                                    <th className="th">Categoria</th>
                                     <th className="th">Alcance</th>
-                                    <th className="th">Efeitos</th>
+                                    <th className="th">Atributo</th>
+                                    <th className="th">Proficiente</th>
+                                    <th className="th">Ataque</th>
+                                    <th className="th">Dano</th>
+                                    <th className="th">Tipo</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {character.weapons.map((weapon, index) => (
+                                {character.weapons.map((weapon, index) => {
+                                    const attackBonus = getWeaponAttackBonus(weapon);
+                                    return (
                                     <tr key={index}>
+                                        <td className="td">
+                                            <input
+                                                type="text"
+                                                value={weapon.name || ''}
+                                                onChange={e => handleWeaponChange(index, 'name', e.target.value)}
+                                                className="tableInput"
+                                                placeholder="Nome"
+                                            />
+                                        </td>
+                                        <td className="td">
+                                            <select
+                                                value={weapon.category || ''}
+                                                onChange={e => handleWeaponChange(index, 'category', e.target.value)}
+                                                className="tableInput"
+                                            >
+                                                <option value="">Selecione</option>
+                                                <option value="Corpo a Corpo">Corpo a Corpo</option>
+                                                <option value="À Distância">À Distância</option>
+                                                <option value="Magia">Magia</option>
+                                                <option value="Outro">Outro</option>
+                                            </select>
+                                        </td>
+                                        <td className="td">
+                                            <input
+                                                type="text"
+                                                value={weapon.range || ''}
+                                                onChange={e => handleWeaponChange(index, 'range', e.target.value)}
+                                                className="tableInput"
+                                                placeholder="Alcance"
+                                            />
+                                        </td>
+                                        <td className="td">
+                                            <select
+                                                value={weapon.attribute || ''}
+                                                onChange={e => handleWeaponChange(index, 'attribute', e.target.value)}
+                                                className="tableInput"
+                                            >
+                                                <option value="">Selecione</option>
+                                                <option value="FOR">FOR</option>
+                                                <option value="DES">DES</option>
+                                                <option value="CON">CON</option>
+                                                <option value="INT">INT</option>
+                                                <option value="SAB">SAB</option>
+                                                <option value="CAR">CAR</option>
+                                            </select>
+                                        </td>
                                         <td className="td">
                                             <input
                                                 type="checkbox"
@@ -2338,13 +2565,40 @@ const CharacterSheet = () => {
                                             />
                                         </td>
                                         <td className="td">
-                                            <input
-                                                type="text"
-                                                value={weapon.name || ''}
-                                                onChange={e => handleWeaponChange(index, 'name', e.target.value)}
-                                                className="tableInput"
-                                                placeholder="Nome"
-                                            />
+                                            <div className="damageTd">
+                                                <span>{attackBonus >= 0 ? `+${attackBonus}` : attackBonus}</span>
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        rollAttackDice(index);
+                                                    }}
+                                                    className="diceButtonSmall"
+                                                    title="Rolar Ataque (1d20 + Atributo + Proficiência)"
+                                                >
+                                                    <img src="/images/unnamed(1).png" alt="Rolar Ataque" className="damageRollImg24" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td className="td">
+                                            <div className="damageTd">
+                                                <input
+                                                    type="text"
+                                                    value={weapon.damage || ''}
+                                                    onChange={e => handleWeaponChange(index, 'damage', e.target.value)}
+                                                    className="tableInput"
+                                                    placeholder="Dano"
+                                                />
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        rollDamageDice(index);
+                                                    }}
+                                                    className="diceButtonSmall"
+                                                    title="Rolar Dano (+ Atributo)"
+                                                >
+                                                    <img src="/images/unnamed(1).png" alt="Rolar Dado" className="damageRollImg24" />
+                                                </button>
+                                            </div>
                                         </td>
                                         <td className="td">
                                             <select
@@ -2368,43 +2622,6 @@ const CharacterSheet = () => {
                                                 <option value="Venenoso">Venenoso</option>
                                             </select>
                                         </td>
-                                        <td className="td damageTd">
-                                            <input
-                                                type="text"
-                                                value={weapon.damage || ''}
-                                                onChange={e => handleWeaponChange(index, 'damage', e.target.value)}
-                                                className="tableInput"
-                                                placeholder="Dano"
-                                            />
-                                            <button
-                                                onClick={(e) => {
-                                                    e.stopPropagation();
-                                                    rollDamageDice(index);
-                                                }}
-                                                className="diceButtonSmall"
-                                                title="Rolar Dano"
-                                            >
-                                                <img src="/images/unnamed(1).png" alt="Rolar Dado" className="damageRollImg24" />
-                                            </button>
-                                        </td>
-                                        <td className="td">
-                                            <input
-                                                type="text"
-                                                value={weapon.range || ''}
-                                                onChange={e => handleWeaponChange(index, 'range', e.target.value)}
-                                                className="tableInput"
-                                                placeholder="Alcance"
-                                            />
-                                        </td>
-                                        <td className="td">
-                                            <input
-                                                type="text"
-                                                value={weapon.attack || ''}
-                                                onChange={e => handleWeaponChange(index, 'attack', e.target.value)}
-                                                className="tableInput"
-                                                placeholder="Efeitos"
-                                            />
-                                        </td>
                                         <td className="td">
                                             <button
                                                 onClick={() => removeWeapon(index)}
@@ -2415,7 +2632,8 @@ const CharacterSheet = () => {
                                             </button>
                                         </td>
                                     </tr>
-                                ))}
+                                    );
+                                })}
                             </tbody>
                         </table>
                         </div>
@@ -2430,12 +2648,9 @@ const CharacterSheet = () => {
                         <table className="table">
                             <thead>
                                 <tr>
-                                    <th className="th">Proficiência</th>
-                                    <th className="th">Nome</th>
-                                    <th className="th">Tipo</th>
-                                    <th className="th">CA</th>
-                                    <th className="th">Furtividade</th>
-                                    <th className="th">Peso (kg)</th>
+                                    <th className="th">Equipado</th>
+                                    <th className="th">Armadura</th>
+                                    <th className="th">Bônus Extra</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -2444,60 +2659,30 @@ const CharacterSheet = () => {
                                         <td className="td">
                                             <input
                                                 type="checkbox"
-                                                checked={armor.proficiency || false}
-                                                onChange={e => handleArmorChange(index, 'proficiency', e.target.checked)}
+                                                checked={armor.equipped || false}
+                                                onChange={e => handleArmorChange(index, 'equipped', e.target.checked)}
                                                 className="skillCheckbox"
                                             />
                                         </td>
                                         <td className="td">
-                                            <input
-                                                type="text"
+                                            <select
                                                 value={armor.name || ''}
                                                 onChange={e => handleArmorChange(index, 'name', e.target.value)}
                                                 className="tableInput"
-                                                placeholder="Nome"
-                                            />
-                                        </td>
-                                        <td className="td">
-                                            <select
-                                                value={armor.type || ''}
-                                                onChange={e => handleArmorChange(index, 'type', e.target.value)}
-                                                className="tableInput"
                                             >
-                                                <option value="">Selecione o tipo</option>
-                                                <option value="Armadura Leve">Armadura Leve</option>
-                                                <option value="Armadura Média">Armadura Média</option>
-                                                <option value="Armadura Pesada">Armadura Pesada</option>
-                                                <option value="Escudo">Escudo</option>
-                                            </select>
-                                        </td>
-                                        <td className="td">
-                                            <input
-                                                type="text"
-                                                value={armor.ca || ''}
-                                                onChange={e => handleArmorChange(index, 'ca', e.target.value)}
-                                                className="tableInput"
-                                                placeholder="CA"
-                                            />
-                                        </td>
-                                        <td className="td">
-                                            <select
-                                                value={armor.stealth || ''}
-                                                onChange={e => handleArmorChange(index, 'stealth', e.target.value)}
-                                                className="tableInput"
-                                            >
-                                                <option value="">Selecione</option>
-                                                <option value="Desvantagem">Desvantagem</option>
+                                                <option value="">Selecione a armadura</option>
+                                                {Object.keys(ARMOR_TABLE).map(armorName => (
+                                                    <option key={armorName} value={armorName}>{armorName}</option>
+                                                ))}
                                             </select>
                                         </td>
                                         <td className="td">
                                             <input
                                                 type="number"
-                                                min="0"
-                                                value={armor.weight || 0}
-                                                onChange={e => handleArmorChange(index, 'weight', Number(e.target.value))}
+                                                value={armor.bonusExtra || 0}
+                                                onChange={e => handleArmorChange(index, 'bonusExtra', Number(e.target.value))}
                                                 className="tableInput"
-                                                placeholder="Peso"
+                                                placeholder="+0"
                                             />
                                         </td>
                                         <td className="td">
@@ -2518,6 +2703,58 @@ const CharacterSheet = () => {
                         <p>Nenhuma armadura cadastrada.</p>
                     )}
                     <button onClick={addArmor} className="button-primary">+ Adicionar Armadura</button>
+                    <br />
+                    <br />
+                    {(character.shields && character.shields.length > 0) ? (
+                        <div className="tableScroll">
+                        <table className="table">
+                            <thead>
+                                <tr>
+                                    <th className="th">Equipado</th>
+                                    <th className="th">Escudo</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {character.shields.map((shield, index) => (
+                                    <tr key={index}>
+                                        <td className="td">
+                                            <input
+                                                type="checkbox"
+                                                checked={shield.equipped || false}
+                                                onChange={e => handleShieldChange(index, 'equipped', e.target.checked)}
+                                                className="skillCheckbox"
+                                            />
+                                        </td>
+                                        <td className="td">
+                                            <select
+                                                value={shield.name || ''}
+                                                onChange={e => handleShieldChange(index, 'name', e.target.value)}
+                                                className="tableInput"
+                                            >
+                                                <option value="">Selecione o escudo</option>
+                                                {Object.keys(SHIELD_TABLE).map(shieldName => (
+                                                    <option key={shieldName} value={shieldName}>{shieldName}</option>
+                                                ))}
+                                            </select>
+                                        </td>
+                                        <td className="td">
+                                            <button
+                                                onClick={() => removeShield(index)}
+                                                className="buttonDanger"
+                                                title="Remover"
+                                            >
+                                                X
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                        </div>
+                    ) : (
+                        <p>Nenhum escudo cadastrado.</p>
+                    )}
+                    <button onClick={addShield} className="button-primary">+ Adicionar Escudo</button>
                 </section>
 
                 {!isMonster && (
@@ -2721,6 +2958,49 @@ const CharacterSheet = () => {
                                         onChange={e => handleFocusPointsChange('notes', e.target.value)}
                                         className="textarea focusPointsTextarea"
                                         placeholder="Usos e técnicas de pontos de foco..."
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {/* Metamagia (somente Feiticeiro) */}
+                {isPlayer && isSorcerer && (
+                    <section className="section">
+                        <div className="sectionHeader">Metamagia</div>
+                        <div className="sectionBorder">
+                            <div className="skillsContainer">
+                                <div className="skillItem">
+                                    <div className="truquesHeader">
+                                        <span className="truquesLabel">Pontos de Feitiçaria</span>
+                                        <div className="slotsContainer">
+                                            <input
+                                                type="number"
+                                                min="0"
+                                                value={character.sorceryPoints?.max || 0}
+                                                onChange={e => handleSorceryPointsChange('max', Number(e.target.value))}
+                                                className="smallInput"
+                                                placeholder="Total"
+                                            />
+                                            <div className="checkboxes">
+                                                {Array.from({ length: character.sorceryPoints?.max || 0 }, (_, index) => (
+                                                    <input
+                                                        key={index}
+                                                        type="checkbox"
+                                                        checked={(character.sorceryPoints?.used || 0) > index}
+                                                        onChange={() => handleSorceryPointCheckboxChange(index)}
+                                                        className="checkboxInput"
+                                                    />
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <textarea
+                                        value={character.sorceryPoints?.notes || ''}
+                                        onChange={e => handleSorceryPointsChange('notes', e.target.value)}
+                                        className="textarea focusPointsTextarea"
+                                        placeholder="Usos e técnicas de metamagia..."
                                     />
                                 </div>
                             </div>

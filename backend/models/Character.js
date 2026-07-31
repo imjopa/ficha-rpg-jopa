@@ -10,11 +10,13 @@ const equipmentSchema = new mongoose.Schema({
 // Esquema para armas
 const weaponSchema = new mongoose.Schema({
   name: { type: String, default: '' },
+  category: { type: String, default: '' },
   type: { type: String, default: '' },
   damage: { type: String, default: '' },
   currentAmmo: { type: Number, default: 0 },
   maxAmmo: { type: Number, default: 0 },
   range: { type: String, default: '' },
+  attribute: { type: String, default: '' },
   attack: { type: String, default: '' },
   proficiency: { type: Boolean, default: false }
 });
@@ -22,11 +24,14 @@ const weaponSchema = new mongoose.Schema({
 // Esquema para armaduras
 const armorSchema = new mongoose.Schema({
   name: { type: String, default: '' },
-  type: { type: String, default: '' },
-  ca: { type: String, default: '' },
-  stealth: { type: String, default: '' },
-  weight: { type: Number, default: 0 },
-  proficiency: { type: Boolean, default: false }
+  equipped: { type: Boolean, default: false },
+  bonusExtra: { type: Number, default: 0 }
+});
+
+// Esquema para escudos
+const shieldSchema = new mongoose.Schema({
+  name: { type: String, default: '' },
+  equipped: { type: Boolean, default: false }
 });
 
 // Esquema para histórico de dados
@@ -190,6 +195,9 @@ const characterSchema = new mongoose.Schema({
   // Armaduras
   armors: [armorSchema],
 
+  // Escudos
+  shields: [shieldSchema],
+
   // Histórico de dados
   diceHistory: [diceRollSchema],
 
@@ -277,6 +285,13 @@ const characterSchema = new mongoose.Schema({
 
   // Controle de Pontos de Foco (classe Monge)
   monkFocusPoints: {
+    used: { type: Number, default: 0 },
+    max: { type: Number, default: 0 },
+    notes: { type: String, default: '' }
+  },
+
+  // Controle de Pontos de Feitiçaria / Metamagia (classe Feiticeiro)
+  sorceryPoints: {
     used: { type: Number, default: 0 },
     max: { type: Number, default: 0 },
     notes: { type: String, default: '' }
